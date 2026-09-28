@@ -1,3 +1,10 @@
+# shellcheck shell=sh
+# Sourced by customize.sh and service.sh after they set MODPATH.
+
+MODULE_ID="duck-toolbox"
+DATA_ROOT="${DUCK_TOOLBOX_DATA_ROOT:-/data/adb/$MODULE_ID}"
+VAR_DIR="$DATA_ROOT/var"
+
 dir_has_entries() {
   dir="$1"
   [ -d "$dir" ] || return 1

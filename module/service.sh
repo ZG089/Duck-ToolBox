@@ -5,10 +5,8 @@
 
 umask 077
 MODPATH=${0%/*}
-MODULE_ID="duck-toolbox"
-DATA_ROOT="${DUCK_TOOLBOX_DATA_ROOT:-/data/adb/$MODULE_ID}"
-VAR_DIR="$DATA_ROOT/var"
 
+# shellcheck source=util_functions.sh
 . "$MODPATH/util_functions.sh"
 
 repair_runtime

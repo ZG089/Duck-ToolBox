@@ -2,9 +2,6 @@
 # Sourced by the KernelSU/APatch/Magisk installer, in BusyBox ash standalone mode. Only the
 # installer helpers (ui_print, abort, set_perm*) and its variables are guaranteed here.
 
-MODULE_ID="duck-toolbox"
-DATA_ROOT="${DUCK_TOOLBOX_DATA_ROOT:-/data/adb/$MODULE_ID}"
-VAR_DIR="$DATA_ROOT/var"
 
 # Nothing is mounted, so a metamodule that supports hot install (e.g. mountify) may bring the
 # module up without a reboot and run hotinstall.sh.
@@ -46,6 +43,7 @@ if [ "$KSU" = "true" ] || [ "$APATCH" = "true" ]; then
   rm -f "$MODPATH/action.sh"
 fi
 
+# shellcheck source=util_functions.sh
 . "$MODPATH/util_functions.sh"
 
 ui_print "- Preparing runtime directory at $DATA_ROOT"
