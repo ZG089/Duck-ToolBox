@@ -29,6 +29,7 @@ $version = $versionLine.Split('=', 2)[1].Trim()
 New-Item -ItemType Directory -Force -Path $distRoot | Out-Null
 
 Copy-Item (Join-Path $repoRoot "README.md") (Join-Path $moduleDir "README.md") -Force
+Copy-Item (Join-Path $repoRoot "CHANGELOG.md") (Join-Path $moduleDir "CHANGELOG.md") -Force
 Copy-Item $binaryFullPath (Join-Path $moduleDir "bin\duckd") -Force
 
 $archivePath = Join-Path $distRoot "duck-toolbox-$version.zip"

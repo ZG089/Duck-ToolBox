@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-  [string]$NdkRoot = "C:\Development\Android\NDK\android-ndk-r29",
+  [string]$NdkRoot = $(if ($env:ANDROID_NDK_HOME) { $env:ANDROID_NDK_HOME } else { "C:\Development\Android\NDK\android-ndk-r30" }),
   [ValidateSet("debug", "release")]
   [string]$Profile = "release",
   [string]$AndroidAbi = "arm64-v8a",
@@ -99,7 +99,7 @@ if (-not $SkipRust) {
 }
 
 if (-not $SkipWeb) {
-  Assert-Command "pnpm" "Install pnpm 10+ before running this script."
+  Assert-Command "pnpm" "Install pnpm 11 (run corepack enable) before running this script."
 
   Invoke-Step "Installing WebUI dependencies" {
     Push-Location $uiDir
