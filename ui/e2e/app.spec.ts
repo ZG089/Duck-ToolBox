@@ -37,6 +37,19 @@ test("saves an RKP profile with a direct seed", async ({ page, open }) => {
   await expect(page.getByText("Profile saved")).toBeVisible()
 })
 
+test("installs an RKP keybox through the Tricky Store extension point", async ({ page, open }) => {
+  await open("/rkp")
+  await page.getByText("Direct seed").click()
+  await page.getByLabel("Seed (CDI_Leaf)").fill("ab".repeat(32))
+  await page.getByRole("tab", { name: "Keybox" }).click()
+  await page.getByRole("button", { name: "Generate keybox" }).click()
+  await expect(page.getByText("keybox.xml generated")).toBeVisible()
+  await page.getByRole("button", { name: "Install to Tricky Store" }).click()
+  await expect(
+    page.getByText("Keybox installed to /data/adb/tricky_store/keybox.xml"),
+  ).toBeVisible()
+})
+
 test("lays out right-to-left languages mirrored", async ({ page, open }) => {
   await open("/", { locale: "ar" })
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl")
