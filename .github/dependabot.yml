@@ -1,20 +1,28 @@
 version: 2
+
+# Minor and patch updates arrive grouped; every major update gets its own pull request so a
+# breaking change is reviewed (and tested by CI) on its own.
 updates:
   - package-ecosystem: cargo
     directory: /
     schedule:
       interval: weekly
     groups:
-      rust:
-        patterns: ["*"]
+      rust-minor:
+        update-types: [minor, patch]
 
   - package-ecosystem: npm
     directory: /ui
     schedule:
       interval: weekly
     groups:
-      webui:
-        patterns: ["*"]
+      webui-minor:
+        update-types: [minor, patch]
+    ignore:
+      # vue-tsc 3 drives the classic TypeScript compiler API, which TypeScript 7 (the Go
+      # port) no longer exposes. Revisit once vue-tsc supports it.
+      - dependency-name: typescript
+        versions: [">=7"]
 
   - package-ecosystem: github-actions
     directory: /

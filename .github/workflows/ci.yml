@@ -1,7 +1,9 @@
 name: CI
 
+# The file name matters: canary update checks read `workflows/ci/main` through nightly.link.
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -12,7 +14,9 @@ env:
   MODULE_ID: duck-toolbox
   ANDROID_API_LEVEL: 26
   TARGET: aarch64-linux-android
-  NDK_VERSION: r28
+  NDK_VERSION: r30
+  NODE_VERSION: 24
+  CARGO_TERM_COLOR: always
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -27,7 +31,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Fail if any source file exceeds 600 lines
-        run: cargo run --quiet --package xtask -- line-limit
+        run: cargo xtask line-limit
 
   rust:
     name: Rust checks
@@ -37,7 +41,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-          targets: ${{ env.TARGET }}
       - uses: Swatinem/rust-cache@v2
       - name: Format
         run: cargo fmt --all --check
@@ -45,6 +48,13 @@ jobs:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - name: Test
         run: cargo test --workspace --locked
+      - name: Every feature builds on its own
+        run: |
+          for feature in rkp device-ids tricky-store system; do
+            echo "::group::duckd with only ${feature}"
+            cargo check --locked --package duckd --no-default-features --features "${feature}"
+            echo "::endgroup::"
+          done
 
   android-backend:
     name: Android backend build
@@ -63,12 +73,13 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Build backend binary
         env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-          CC_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang
-          CXX_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang++
-          AR_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar
-          CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang
-        run: cargo build --locked --release --package duckd --target ${{ env.TARGET }}
+          TOOLCHAIN: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin
+        run: |
+          export CC_aarch64_linux_android="${TOOLCHAIN}/${TARGET}${ANDROID_API_LEVEL}-clang"
+          export CXX_aarch64_linux_android="${TOOLCHAIN}/${TARGET}${ANDROID_API_LEVEL}-clang++"
+          export AR_aarch64_linux_android="${TOOLCHAIN}/llvm-ar"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="${CC_aarch64_linux_android}"
+          cargo build --locked --release --package duckd --target "${TARGET}"
       - name: Upload backend binary
         uses: actions/upload-artifact@v7
         with:
@@ -77,26 +88,29 @@ jobs:
           if-no-files-found: error
 
   webui:
-    name: WebUI build
+    name: WebUI checks and build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
     steps:
       - uses: actions/checkout@v7
-      - name: Setup pnpm
+      - name: Setup pnpm (version from packageManager)
         uses: pnpm/action-setup@v6
         with:
-          version: 10
-          run_install: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+          package_json_file: ui/package.json
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
           cache-dependency-path: ui/pnpm-lock.yaml
-      - name: Install dependencies
-        working-directory: ui
-        run: pnpm install --frozen-lockfile
-      - name: Build WebUI (type-check + bundle)
-        working-directory: ui
+      - run: pnpm install --frozen-lockfile
+      - name: Lint (includes the 600-line and feature-boundary rules)
+        run: pnpm lint
+      - run: pnpm format:check
+      - name: Unit tests
+        run: pnpm test
+      - name: Type-check and bundle
         run: pnpm build
       - name: Upload WebUI bundle
         uses: actions/upload-artifact@v7
@@ -104,6 +118,36 @@ jobs:
           name: webroot
           path: module/webroot
           if-no-files-found: error
+
+  e2e:
+    name: WebUI end-to-end
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: ui/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Playwright against the mock KernelSU host
+        run: pnpm test:e2e
+      - name: Upload screenshots and report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: webui-e2e
+          path: |
+            ui/test-results
+            ui/playwright-report
+          retention-days: 14
 
   module:
     name: Module scripts
@@ -117,20 +161,21 @@ jobs:
         with:
           scandir: module
       - name: Verify LF line endings
-        working-directory: module
         run: |
-          if grep -rlIU $'\r' module.prop ./*.sh bin/*.sh >/dev/null 2>&1; then
-            echo "KernelSU module metadata and shell scripts must use LF line endings." >&2
+          if grep -rlIU $'\r' module; then
+            echo "KernelSU module files must use LF line endings." >&2
             exit 1
           fi
 
   package:
     name: Package module
     runs-on: ubuntu-latest
-    needs: [line-limit, rust, android-backend, webui, module]
+    needs: [line-limit, rust, android-backend, webui, e2e, module]
     environment: ${{ github.event_name == 'push' && 'Telegram' || '' }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Download backend binary
         uses: actions/download-artifact@v8
         with:
@@ -141,20 +186,27 @@ jobs:
         with:
           name: webroot
           path: module/webroot
-      - name: Assemble module archive
+      - name: Assemble canary module
         run: |
-          version="$(grep '^version=' module/module.prop | cut -d= -f2)"
+          version="$(sed -n 's/^version=//p' module/module.prop)"
+          code="$(git rev-list --count HEAD)"
+          # Canary builds count commits, so every push is newer than the one before.
+          sed -i "s/^versionCode=.*/versionCode=${code}/" module/module.prop
+          sed -i "s/^version=.*/version=${version} (${code}-canary)/" module/module.prop
           install -m 0755 artifact/bin/duckd module/bin/duckd
-          cp README.md module/
-          archive="dist/${MODULE_ID}-${version}.zip"
-          echo "MODULE_PATH=$archive" >> "$GITHUB_ENV"
+          cp README.md CHANGELOG.md module/
+          name="${MODULE_ID}-${version}-${code}-canary"
+          echo "ARTIFACT_NAME=${name}" >> "$GITHUB_ENV"
           mkdir -p dist
-          (cd module && zip -r "../$archive" .)
-      - name: Upload module archive
+          (cd module && zip -qr "../dist/${name}.zip" .)
+          echo "MODULE_PATH=dist/${name}.zip" >> "$GITHUB_ENV"
+      # The artifact is the module directory itself, so its nightly.link zip installs as is.
+      - name: Upload canary module
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.MODULE_ID }}-module
-          path: ${{ env.MODULE_PATH }}
+          name: ${{ env.ARTIFACT_NAME }}
+          path: module/
+          include-hidden-files: true
           if-no-files-found: error
       - name: Push module zip to Telegram
         if: github.event_name == 'push'

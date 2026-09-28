@@ -97,7 +97,10 @@ mod tests {
             ("ro.build.version.security_patch", "2026-09-05"),
             ("ro.vendor.build.security_patch", "2026-08-05"),
             ("ro.boot.vbmeta.digest", "ab"),
-            ("remote_provisioning.hostname", "remoteprovisioning.googleapis.com"),
+            (
+                "remote_provisioning.hostname",
+                "remoteprovisioning.googleapis.com",
+            ),
         ]
         .into_iter()
         .map(|(key, value)| (key.to_owned(), value.to_owned()))
