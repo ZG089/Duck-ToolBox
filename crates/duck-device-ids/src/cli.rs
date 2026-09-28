@@ -2,9 +2,25 @@ use std::io::{self, Read};
 
 use anyhow::{Context, Result, bail};
 use clap::{Args, Subcommand};
-use duck_core::{CommandResult, Context as RunContext, IntoCommandResult};
+use duck_core::{
+    BoxFuture, ClapFeature, CommandResult, Context as RunContext, FeatureInfo, IntoCommandResult,
+    feature::ready,
+};
 
 use crate::{DeviceIdsProfile, detect_defaults, error::code_of, provision};
+
+pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
+    FeatureInfo {
+        id: "device-ids",
+        summary: "Qualcomm Keymaster attestation device ID provisioning",
+        contract: 1,
+    },
+    dispatch,
+);
+
+fn dispatch<'a>(command: Command, ctx: &'a RunContext) -> BoxFuture<'a, CommandResult> {
+    ready(run(command, ctx))
+}
 
 #[derive(Debug, Subcommand)]
 pub enum Command {

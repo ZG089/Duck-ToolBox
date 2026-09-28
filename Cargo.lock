@@ -589,6 +589,7 @@ name = "duck-core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "clap",
  "serde",
  "serde_json",
 ]
@@ -652,6 +653,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "duck-system"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "duck-core",
+ "duck-platform",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror",
+ "zip",
+]
+
+[[package]]
 name = "duck-tricky-store"
 version = "0.1.0"
 dependencies = [
@@ -685,6 +701,7 @@ dependencies = [
  "duck-core",
  "duck-device-ids",
  "duck-rkp",
+ "duck-system",
  "duck-tricky-store",
  "serde",
  "serde_json",

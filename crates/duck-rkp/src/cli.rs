@@ -1,7 +1,20 @@
 use clap::{Args, Subcommand};
-use duck_core::{CommandResult, Context, IntoCommandResult};
+use duck_core::{BoxFuture, ClapFeature, CommandResult, Context, FeatureInfo, IntoCommandResult};
 
 use crate::{error::code_of, handlers, profile::DiceCurve};
+
+pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
+    FeatureInfo {
+        id: "rkp",
+        summary: "Remote Key Provisioning workbench",
+        contract: 1,
+    },
+    dispatch,
+);
+
+fn dispatch<'a>(command: Command, ctx: &'a Context) -> BoxFuture<'a, CommandResult> {
+    Box::pin(run(command, ctx))
+}
 
 #[derive(Debug, Subcommand)]
 pub enum Command {

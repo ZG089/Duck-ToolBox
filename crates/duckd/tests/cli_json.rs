@@ -217,16 +217,91 @@ fn device_ids_defaults_reports_dry_run_profile() {
 }
 
 #[test]
-fn artifacts_list_reports_runtime_paths() {
+fn features_manifest_lists_every_registered_tool() {
+    let env = env("features");
+    let payload = run(&env, &["features"]);
+    assert_eq!(payload["command"], "features");
+    let ids: Vec<&str> = payload["data"]["features"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|feature| feature["id"].as_str().unwrap())
+        .collect();
+    assert_eq!(ids, ["rkp", "device-ids", "tricky-store", "system"]);
+    assert_eq!(payload["data"]["api"], 1);
+}
+
+#[test]
+fn usage_errors_are_json_envelopes() {
+    let env = env("usage");
+    let output = command(&env)
+        .args(["tricky-store", "no-such-command"])
+        .output()
+        .unwrap();
+    assert_eq!(output.status.code(), Some(2));
+    let payload: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(payload["ok"], false);
+    assert_eq!(payload["error"]["code"], "usage_error");
+}
+
+#[test]
+fn system_artifacts_reports_runtime_paths() {
     let env = env("artifacts");
-    let payload = run(&env, &["artifacts", "list", "--json"]);
-    assert_eq!(payload["command"], "artifacts.list");
+    let payload = run(&env, &["system", "artifacts"]);
+    assert_eq!(payload["command"], "system.artifacts");
     assert!(
         payload["data"]["log_path"]
             .as_str()
             .unwrap()
             .ends_with("duckd.log")
     );
+}
+
+#[test]
+fn system_info_reads_module_and_kernel_state() {
+    let env = env("system-info");
+    fs::create_dir_all(env.sysroot.join("proc/sys/kernel")).unwrap();
+    fs::write(env.sysroot.join("proc/sys/kernel/osrelease"), "6.1.99\n").unwrap();
+    let payload = run(&env, &["system", "info"]);
+    assert_eq!(payload["data"]["module"]["id"], "duck-toolbox");
+    assert_eq!(payload["data"]["device"]["kernel_release"], "6.1.99");
+    assert!(payload["data"]["root_manager"].is_null());
+}
+
+#[test]
+fn system_uninstall_marks_magisk_module_for_removal() {
+    let env = env("uninstall");
+    fs::create_dir_all(env.sysroot.join("data/adb/magisk")).unwrap();
+    let module_dir = env.sysroot.join("data/adb/modules/duck-toolbox");
+    fs::create_dir_all(&module_dir).unwrap();
+
+    let payload = run(&env, &["system", "uninstall"]);
+    assert_eq!(payload["data"]["reboot_required"], true);
+    assert!(module_dir.join("remove").is_file());
+}
+
+#[test]
+fn system_open_url_rejects_non_web_schemes() {
+    let env = env("open-url");
+    let output = command(&env)
+        .args(["system", "open-url", "intent://evil"])
+        .output()
+        .unwrap();
+    assert!(!output.status.success());
+    let payload: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(payload["error"]["code"], "invalid_url");
+}
+
+#[test]
+fn command_log_keeps_outcomes_only() {
+    let env = env("log");
+    run(&env, &["rkp", "profile", "show"]);
+    let payload = run(&env, &["system", "log", "--limit", "5"]);
+    let entries = payload["data"]["entries"].as_array().unwrap();
+    assert_eq!(entries[0]["command"], "rkp.profile.show");
+    assert_eq!(entries[0]["ok"], true);
+    let raw = fs::read_to_string(env.data.join("var/logs/duckd.log")).unwrap();
+    assert!(!raw.contains("\"data\""));
 }
 
 #[test]

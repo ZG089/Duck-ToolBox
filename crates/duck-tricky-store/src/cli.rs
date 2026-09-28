@@ -2,13 +2,26 @@ use std::io::{self, Read};
 
 use anyhow::{Context as _, Result};
 use clap::{Args, Subcommand};
-use duck_core::{CommandResult, Context, IntoCommandResult};
+use duck_core::{BoxFuture, ClapFeature, CommandResult, Context, FeatureInfo, IntoCommandResult};
 use serde::de::DeserializeOwned;
 
 use crate::{
     auto, error::code_of, exclude, files, keybox, model::SaveRequest, props, providers, service,
     state::KeyboxProvider, xposed,
 };
+
+pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
+    FeatureInfo {
+        id: "tricky-store",
+        summary: "Tricky Store / TEESimulator / OhMyKeymint manager",
+        contract: 1,
+    },
+    dispatch,
+);
+
+fn dispatch<'a>(command: Command, ctx: &'a Context) -> BoxFuture<'a, CommandResult> {
+    Box::pin(run(command, ctx))
+}
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -174,7 +187,7 @@ async fn apps_command(command: AppsCommand, ctx: &Context) -> CommandResult {
             .map(|modules| serde_json::json!({ "packages": modules }))
             .into_command("tricky-store.apps.xposed", code_of),
         AppsCommand::Denylist => {
-            anyhow::Ok(serde_json::json!({ "packages": exclude::magisk_denylist() }))
+            anyhow::Ok(serde_json::json!({ "packages": exclude::denylist(ctx) }))
                 .into_command("tricky-store.apps.denylist", code_of)
         }
         AppsCommand::Unnecessary(args) => exclude::load(ctx, args.refresh)

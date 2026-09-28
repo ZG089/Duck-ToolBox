@@ -86,48 +86,21 @@ async fn fetch_remote() -> Result<String> {
     Err(TrickyError::Download("could not reach the unnecessary-apps list".into()).into())
 }
 
-/// Magisk's DenyList (`magisk --denylist ls` prints `package|process` lines). Only Magisk
-/// has a DenyList; on other managers this is empty.
-pub fn magisk_denylist() -> Vec<String> {
-    let magisk = duck_platform::exec::find_tool(
-        "magisk",
-        &[
-            "/data/adb/magisk/magisk",
-            "/debug_ramdisk/magisk",
-            "/sbin/magisk",
-        ],
-    );
-    let output = duck_platform::exec::stdout_or_empty(&magisk, &["--denylist", "ls"]);
-    parse_denylist(&output)
-}
-
-fn parse_denylist(output: &str) -> Vec<String> {
-    crate::targets::normalize_packages(
-        output
-            .lines()
-            .filter(|line| !line.contains("isolated"))
-            .filter_map(|line| line.split('|').next())
-            .map(str::to_owned)
-            .collect(),
-    )
+/// Magisk's DenyList; empty on managers without one.
+pub fn denylist(ctx: &Context) -> Vec<String> {
+    duck_platform::root::detect(&ctx.sysroot)
+        .map(|manager| manager.denylist())
+        .unwrap_or_default()
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{BUNDLED, parse, parse_denylist};
+    use super::{BUNDLED, parse};
 
     #[test]
     fn bundled_list_contains_root_managers() {
         let list = parse(BUNDLED).unwrap();
         assert!(list.iter().any(|app| app == "me.weishu.kernelsu"));
         assert!(list.iter().any(|app| app == "com.topjohnwu.magisk"));
-    }
-
-    #[test]
-    fn denylist_keeps_packages_and_skips_isolated() {
-        let parsed = parse_denylist(
-            "com.a|com.a\ncom.a|com.a:remote\ncom.b|com.b\ncom.c|isolated_process\n",
-        );
-        assert_eq!(parsed, vec!["com.a", "com.b"]);
     }
 }

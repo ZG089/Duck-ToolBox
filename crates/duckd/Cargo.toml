@@ -11,13 +11,22 @@ publish.workspace = true
 name = "duckd"
 path = "src/main.rs"
 
+# Each tool is an optional crate, so a build can ship any subset of them.
+[features]
+default = ["rkp", "device-ids", "tricky-store", "system"]
+rkp = ["dep:duck-rkp"]
+device-ids = ["dep:duck-device-ids"]
+tricky-store = ["dep:duck-tricky-store"]
+system = ["dep:duck-system"]
+
 [dependencies]
 anyhow.workspace = true
 clap.workspace = true
 duck-core.workspace = true
-duck-device-ids.workspace = true
-duck-rkp.workspace = true
-duck-tricky-store.workspace = true
+duck-device-ids = { workspace = true, optional = true }
+duck-rkp = { workspace = true, optional = true }
+duck-system = { workspace = true, optional = true }
+duck-tricky-store = { workspace = true, optional = true }
 serde.workspace = true
 serde_json.workspace = true
 tokio.workspace = true

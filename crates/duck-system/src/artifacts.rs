@@ -1,40 +1,30 @@
+//! Files the tools wrote to the shared outputs directory.
+
 use anyhow::{Context as _, Result};
-use clap::Subcommand;
 use duck_core::{
-    AppPaths, CommandResult, Context, IntoCommandResult, fs::list_files_recursive,
-    fs::modified_unix, internal_error,
+    AppPaths,
+    fs::{list_files_recursive, modified_unix},
 };
 use serde::Serialize;
 
-#[derive(Debug, Subcommand)]
-pub enum ArtifactCommand {
-    /// List generated output files and the runtime paths.
-    List,
+#[derive(Debug, Serialize)]
+pub struct ArtifactFile {
+    pub name: String,
+    pub path: String,
+    pub size: u64,
+    pub modified_unix: u64,
 }
 
 #[derive(Debug, Serialize)]
-struct ArtifactFile {
-    name: String,
-    path: String,
-    size: u64,
-    modified_unix: u64,
+pub struct ArtifactsData {
+    pub outputs: Vec<ArtifactFile>,
+    pub outputs_dir: String,
+    pub profile_path: String,
+    pub profile_secrets_path: String,
+    pub log_path: String,
 }
 
-#[derive(Debug, Serialize)]
-struct ArtifactsData {
-    outputs: Vec<ArtifactFile>,
-    profile_path: String,
-    profile_secrets_path: String,
-    log_path: String,
-}
-
-pub fn run(command: ArtifactCommand, ctx: &Context) -> CommandResult {
-    match command {
-        ArtifactCommand::List => list(&ctx.paths).into_command("artifacts.list", internal_error),
-    }
-}
-
-fn list(paths: &AppPaths) -> Result<ArtifactsData> {
+pub fn list(paths: &AppPaths) -> Result<ArtifactsData> {
     paths.ensure_runtime_dirs()?;
     let mut outputs = Vec::new();
 
@@ -57,6 +47,7 @@ fn list(paths: &AppPaths) -> Result<ArtifactsData> {
 
     Ok(ArtifactsData {
         outputs,
+        outputs_dir: paths.outputs_dir.display().to_string(),
         profile_path: paths.profile_path.display().to_string(),
         profile_secrets_path: paths.profile_secrets_path.display().to_string(),
         log_path: paths.log_path.display().to_string(),

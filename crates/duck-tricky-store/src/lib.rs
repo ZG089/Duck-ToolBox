@@ -24,7 +24,7 @@ pub mod xposed;
 
 pub mod cli;
 
-pub use cli::{Command, run};
+pub use cli::{Command, FEATURE, run};
 pub use detect::{detect_active, detect_all};
 pub use error::TrickyError;
 pub use service::{SaveData, StatusData, save, status};

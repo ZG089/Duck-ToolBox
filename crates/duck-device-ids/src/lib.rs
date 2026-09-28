@@ -17,7 +17,7 @@ mod qseecom;
 mod report;
 mod spec;
 
-pub use cli::{Command, run};
+pub use cli::{Command, FEATURE, run};
 pub use error::DeviceIdsError;
 
 const DEFAULT_TA_NAME: &str = "keymaster64";

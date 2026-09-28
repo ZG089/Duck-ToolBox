@@ -18,4 +18,4 @@ pub mod profile;
 pub mod validate;
 pub mod verify;
 
-pub use cli::{Command, run};
+pub use cli::{Command, FEATURE, run};

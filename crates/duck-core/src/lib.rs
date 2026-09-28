@@ -5,6 +5,7 @@
 
 pub mod command;
 pub mod envelope;
+pub mod feature;
 pub mod fs;
 pub mod log;
 pub mod paths;
@@ -14,6 +15,7 @@ pub use command::{
     CommandFailure, CommandOutput, CommandResult, Context, Failure, IntoCommandResult,
     internal_error,
 };
+pub use feature::{BoxFuture, ClapFeature, Feature, FeatureInfo};
 pub use paths::AppPaths;
 pub use sysroot::Sysroot;
 
