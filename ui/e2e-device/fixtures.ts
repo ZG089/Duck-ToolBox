@@ -20,7 +20,9 @@ export interface Device {
   screenshot(name: string): Promise<void>
 }
 
-const SCREENSHOTS = "test-results/device/screenshots"
+// Outside the config's outputDir, which Playwright empties at the start of every run:
+// scripts/device-test.sh runs the tests once per keystore module.
+const SCREENSHOTS = "test-results/device-screenshots"
 
 export const test = base.extend<{ device: Device; page: Page }>({
   device: async ({}, use) => {

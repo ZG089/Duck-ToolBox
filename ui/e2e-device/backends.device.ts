@@ -14,6 +14,11 @@ async function ensureTarget(page: Page, name: RegExp) {
   await expect(page.getByText("Config saved")).toBeVisible()
 }
 
+async function savePolicy(page: Page) {
+  await page.getByRole("button", { name: "Save" }).click()
+  await expect(page.getByText("Default policy saved").last()).toBeVisible()
+}
+
 async function installUnknownKeybox(page: Page) {
   await page.evaluate(() => (location.hash = "#/tricky-store/keybox"))
   await page.getByRole("button", { name: /Unknown/ }).click()
@@ -33,8 +38,7 @@ test("@teesim TEESimulator applies the target list, policy and a generated keybo
 
   await page.evaluate(() => (location.hash = "#/tricky-store/policy"))
   await page.getByRole("button", { name: "generation", exact: true }).click()
-  await page.getByRole("button", { name: "Save" }).click()
-  await expect(page.getByText("Default policy saved")).toBeVisible()
+  await savePolicy(page)
   await installUnknownKeybox(page)
 
   expect(await device.shell("cat /data/adb/teesim/config.json")).toContain(
@@ -58,17 +62,28 @@ test("@oh_my_keymint OhMyKeymint reloads the scoop, trust settings and a generat
   await ensureTarget(page, /Duck Detector/)
   await expect(page.getByText("OhMyKeymint", { exact: true })).toBeVisible()
 
+  // keymint applies a new security_patch at once, but only while no other trust setting
+  // differs from the ones it started with (src/config.rs).
   await page.evaluate(() => (location.hash = "#/tricky-store/policy"))
-  // OhMyKeymint only logs a security_patch that differs from the one it has.
   const patch = page.getByLabel("Security patch")
   await patch.fill((await patch.inputValue()) === "2026-09-01" ? "2026-08-01" : "2026-09-01")
-  await page.getByRole("switch", { name: "Bootloader locked" }).click()
-  await page.getByRole("button", { name: "Save" }).click()
-  await expect(page.getByText("Default policy saved")).toBeVisible()
-  // device_locked is applied by keymint only after a restart.
+  await savePolicy(page)
+  await expect
+    .poll(() => log(device, "OhMyKeymint"), { timeout: 60_000 })
+    .toMatch(/Applied runtime security_patch change/)
+
+  const locked = page.getByRole("switch", { name: "Bootloader locked" })
+  await locked.click()
+  await savePolicy(page)
   await expect(
-    page.getByText("Reboot to apply the changed Verified Boot and OS settings."),
+    page.getByText("Reboot to apply the changed Verified Boot and OS settings.").last(),
   ).toBeVisible()
+  await expect
+    .poll(() => log(device, "OhMyKeymint"), { timeout: 60_000 })
+    .toMatch(/restart keymint to apply vbmeta changes/)
+  // Put it back, or a rerun before keymint restarts could not apply a security_patch.
+  await locked.click()
+  await savePolicy(page)
   await installUnknownKeybox(page)
 
   const injector = await device.shell("cat /data/misc/keystore/omk/injector.toml")
@@ -78,7 +93,6 @@ test("@oh_my_keymint OhMyKeymint reloads the scoop, trust settings and a generat
     .toMatch(/active keybox identity updated/)
   const lines = await log(device, "OhMyKeymint")
   expect(lines).toMatch(/reloaded config from \/data\/misc\/keystore\/omk\/injector.toml/)
-  expect(lines).toMatch(/Applied runtime security_patch change/)
   expect(lines).not.toMatch(/failed to parse config|moved invalid config/)
   await device.screenshot("oh-my-keymint")
 })
