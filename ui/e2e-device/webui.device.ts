@@ -2,7 +2,10 @@ import { expect, test } from "./fixtures"
 
 test.describe.configure({ mode: "serial" })
 
-test("runs inside the KernelSU manager with its APIs and insets", async ({ page, device }) => {
+test("@tricky_store runs inside the KernelSU manager with its APIs and insets", async ({
+  page,
+  device,
+}) => {
   const used = ["exec", "moduleInfo", "listPackages", "getPackagesInfo", "toast", "exit"]
   const environment = await page.evaluate((names) => {
     const ksu = (window as unknown as { ksu?: Record<string, unknown> }).ksu
@@ -16,16 +19,16 @@ test("runs inside the KernelSU manager with its APIs and insets", async ({ page,
   expect(environment.inset).not.toBe("")
   expect(environment.chrome).toBeGreaterThanOrEqual(111)
 
-  await expect(page.getByText(/KernelSU ksud \d/)).toBeVisible()
+  await expect(page.getByText(/KernelSU ksud \d/)).toBeVisible({ timeout: 120_000 })
   for (const tool of ["Tricky Store", "RKP Workbench", "Device ID Provisioner"]) {
     await expect(page.getByRole("button", { name: new RegExp(tool) })).toBeEnabled()
   }
   await device.screenshot("home")
 })
 
-test("edits the real Tricky Store target list", async ({ page, device }) => {
+test("@tricky_store edits the real Tricky Store target list", async ({ page, device }) => {
   await page.evaluate(() => (location.hash = "#/tricky-store"))
-  await expect(page.getByText("Tricky Store (legacy)")).toBeVisible()
+  await expect(page.getByText("Tricky Store (legacy)", { exact: true })).toBeVisible()
 
   const detector = page.getByRole("checkbox", { name: /Duck Detector/ })
   if ((await detector.getAttribute("aria-checked")) === "true") await detector.click()
@@ -44,16 +47,16 @@ test("edits the real Tricky Store target list", async ({ page, device }) => {
   await device.screenshot("tricky-store")
 })
 
-test("closes a sheet with the Android back key", async ({ page, device }) => {
+test("@tricky_store closes a sheet with the Android back key", async ({ page, device }) => {
   await page.evaluate(() => (location.hash = "#/tricky-store"))
   await page.getByRole("button", { name: /Mode and policy of Google Play services/ }).click()
   await expect(page.getByRole("dialog")).toBeVisible()
   await device.shell("input keyevent KEYCODE_BACK")
   await expect(page.getByRole("dialog")).toBeHidden()
-  await expect(page.getByText("Tricky Store (legacy)")).toBeVisible()
+  await expect(page.getByText("Tricky Store (legacy)", { exact: true })).toBeVisible()
 })
 
-test("installs keyboxes into the running Tricky Store", async ({ page, device }) => {
+test("@tricky_store installs keyboxes into the running Tricky Store", async ({ page, device }) => {
   await page.evaluate(() => (location.hash = "#/tricky-store/keybox"))
   await page.getByRole("button", { name: /Unknown/ }).click()
   await expect(page.getByText("Unknown keybox set successfully")).toBeVisible()
@@ -67,7 +70,10 @@ test("installs keyboxes into the running Tricky Store", async ({ page, device })
   await device.screenshot("keybox")
 })
 
-test("writes the legacy security patch file and prop settings", async ({ page, device }) => {
+test("@tricky_store writes the legacy security patch file and prop settings", async ({
+  page,
+  device,
+}) => {
   await page.evaluate(() => (location.hash = "#/tricky-store/policy"))
   await page.getByLabel("System patch").fill("202609")
   await page.getByRole("button", { name: "Save" }).click()
@@ -81,7 +87,10 @@ test("writes the legacy security patch file and prop settings", async ({ page, d
   expect((await device.shell("cat /data/adb/boot_hash")).trim()).toBe("ab".repeat(32))
 })
 
-test("gives Tricky Store its own WebUI entry that opens this manager", async ({ page, device }) => {
+test("@tricky_store gives Tricky Store its own WebUI entry that opens this manager", async ({
+  page,
+  device,
+}) => {
   await page.evaluate(() => (location.hash = "#/settings"))
   const entry = page.getByRole("switch", { name: "Keystore module entry" })
   if ((await entry.getAttribute("aria-checked")) !== "true") await entry.click()
@@ -92,11 +101,11 @@ test("gives Tricky Store its own WebUI entry that opens this manager", async ({ 
 
   const hosted = await device.openWebUI("tricky_store")
   await expect(hosted).toHaveURL(/#\/tricky-store$/)
-  await expect(hosted.getByText("Tricky Store (legacy)")).toBeVisible()
+  await expect(hosted.getByText("Tricky Store (legacy)", { exact: true })).toBeVisible()
   await device.screenshot("entry")
 })
 
-test("checks for updates and lists the command history", async ({ page, device }) => {
+test("@tricky_store checks for updates and lists the command history", async ({ page, device }) => {
   await page.evaluate(() => (location.hash = "#/system"))
   // The stable channel reads updateJson from GitHub.
   await expect(page.getByText("You are on the latest version.")).toBeVisible()

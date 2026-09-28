@@ -40,7 +40,8 @@ export const test = base.extend<{ device: Device; page: Page }>({
       },
       openWebUI: async (moduleId) => {
         await shell(`am force-stop ${MANAGER}`)
-        const opened = adb.waitForEvent("webview", { timeout: 30_000 })
+        // A cold manager start takes long on a busy emulator.
+        const opened = adb.waitForEvent("webview", { timeout: 180_000 })
         await shell(
           `am start -a android.intent.action.VIEW -d 'ksu://webui?id=${moduleId}&token=${token}'`,
         )

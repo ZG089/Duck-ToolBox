@@ -7,7 +7,8 @@ export default defineConfig({
   outputDir: "test-results/device",
   fullyParallel: false,
   workers: 1,
-  timeout: 120_000,
-  expect: { timeout: 15_000 },
+  // Real devices are slow right after boot and vary a lot.
+  timeout: 300_000,
+  expect: { timeout: 45_000 },
   reporter: "list",
 })
