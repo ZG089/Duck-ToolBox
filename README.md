@@ -1,127 +1,118 @@
 # Duck ToolBox
 
-Duck ToolBox is a KernelSU module scaffold for modular Android utilities.
+Duck ToolBox is a KernelSU module that hosts several Android security-tooling utilities
+behind one WebUI. It is built for modularity: the backend is a Cargo workspace of small,
+single-purpose crates, the WebUI is a feature registry, and every feature is decoupled from
+the others through a shared JSON contract.
 
-Current tool set:
+## Tools
 
-- `RKP Workbench`: profile persistence, CSR generation, certificate fetch, `keybox.xml` export, and CSR verification
-- `Device ID Provisioner`: Rust-based Qualcomm Keymaster device ID workbench with default auto-fill, advanced overrides, and provisioning reports
+- **RKP Workbench** — Remote Key Provisioning. Persists a device profile, builds an
+  `AuthenticatedRequest` CSR (DICE + COSE per the AOSP `IRemotelyProvisionedComponent` HAL),
+  talks to the RKP server, verifies the CSR offline, and exports a `keybox.xml`.
+- **Tricky Store Manager** — a full port of
+  [Tricky Addon: Update Target List](https://github.com/KOWX712/Tricky-Addon-Update-Target-List).
+  Detects and manages whichever keystore-spoofing backend is installed:
+  - **Tricky Store** (`config.ini`, with per-app modes and policy) and the legacy
+    `target.txt` + `security_patch.txt` layout.
+  - **TEESimulator** (`config.json` profiles).
+  - **OhMyKeymint** (`config.toml` + `injector.toml`).
 
-Core layout:
+  It edits the target list and attestation policy, installs keyboxes (bundled AOSP software
+  key, a generated "unknown" self-signed key, a local file, or a URL/custom provider),
+  manages the sensitive-prop handler and Verified Boot hash, adds system apps, auto-adds
+  newly installed apps, and offers bulk selection (Xposed modules, Magisk DenyList, and the
+  "unnecessary apps" list).
+- **Device ID Provisioner** — provisions Qualcomm Keymaster attestation device IDs through
+  `libQSEEComAPI.so`.
 
-- `duckd/`: Rust backend
-- `duckd/src/runtime/`: shared runtime concerns such as paths, profile storage, JSON envelopes, errors
-- `duckd/src/features/rkp/`: RKP-specific feature modules
-- `duckd/src/features/device_ids/`: built-in Device ID Provisioner feature, including default detection and Qualcomm Keymaster provisioning logic
-- `duckd/src/shared/`: reusable parsing helpers such as Android XML decoding
-- `ui/`: WebUI source
-- `module/`: KernelSU module payload, including scripts, binaries, and built WebUI assets
-- `module/webroot/`: built KernelSU WebUI assets
-- `module/bin/duckctl.sh`: thin wrapper that forwards WebUI requests to `duckd`
-- `module/service.sh`: boot-time repair for runtime directories and backend permissions
+## Architecture
 
-CLI shape:
-
-- `duckd rkp profile show --json`
-- `duckd rkp profile save --stdin-json --json`
-- `duckd rkp profile clear --json`
-- `duckd rkp info --json`
-- `duckd rkp provision --json`
-- `duckd rkp keybox --json`
-- `duckd rkp verify <csr-file> --json`
-- `duckd device-ids defaults --json`
-- `duckd device-ids provision --stdin-json --json`
-- `duckd artifacts list --json`
-
-Runtime paths:
-
-- Android module runtime data: `/data/adb/duck-toolbox/var/`
-- Saved profile: `/data/adb/duck-toolbox/var/profile.toml`
-- Saved secrets: `/data/adb/duck-toolbox/var/profile.secrets.toml`
-- Outputs: `/data/adb/duck-toolbox/var/outputs/`
-- Temporary files: `/data/adb/duck-toolbox/var/tmp/`
-- Logs: `/data/adb/duck-toolbox/var/logs/`
-
-Runtime robustness notes:
-
-- `module/customize.sh` and `module/service.sh` repair runtime directories and sensitive file permissions at install time and on boot.
-- Existing `var/` data is migrated out of the module directory into `/data/adb/duck-toolbox/var/`, so module updates no longer wipe saved profiles and generated files.
-- Relative `var/...` paths now resolve inside the shared Duck ToolBox data directory on Android, while other relative paths still stay under the module root.
-- RKP requests now validate required device fields before any network call, which makes profile mistakes fail early with clearer errors.
-- Device ID provisioning now lives fully in `duckd/src/features/device_ids/`; the WebUI auto-fills common fields from the current Android runtime and keeps uncommon options under an advanced section.
-
-Windows environment setup:
-
-- PowerShell 7+
-- Rust stable via `rustup`
-- Rust target `aarch64-linux-android`
-- `cargo-ndk`
-- Node.js 22+
-- `pnpm` 10+
-- Android NDK r29 at `C:\Development\Android\NDK\android-ndk-r29`
-
-Recommended one-time setup:
-
-```powershell
-rustup target add aarch64-linux-android
-cargo install cargo-ndk --locked
-npm install --global pnpm
+```txt
+crates/
+  duck-core/          Runtime shared by every feature: paths, JSON envelope, command result,
+                      file helpers, and a Sysroot abstraction so features are testable off-device.
+  duck-platform/      Android/root-manager adapters: getprop/resetprop, pm, module directory,
+                      HTTP client, root-manager detection.
+  duck-rkp/           RKP workbench (CBOR/COSE/DICE, RKP client, keybox export, CSR verify).
+  duck-device-ids/    Qualcomm Keymaster device ID provisioning.
+  duck-tricky-store/  Multi-backend keystore manager (the Tricky Addon port).
+  duckd/              The binary: wires features into one JSON CLI.
+xtask/                Repository automation (the 600-line source gate).
+ui/                   Vue 3 + Vite WebUI (a feature registry + typed API client).
+module/               KernelSU module payload (scripts + built WebUI + backend binary).
 ```
 
-Set the Android NDK location for the current PowerShell session:
+Design rules that keep the project modular and resistant to breaking changes:
 
-```powershell
-$env:ANDROID_NDK_ROOT = "C:\Development\Android\NDK\android-ndk-r29"
-$env:ANDROID_NDK_HOME = $env:ANDROID_NDK_ROOT
-$env:ANDROID_NDK = $env:ANDROID_NDK_ROOT
+- **Features never depend on each other.** They depend only on `duck-core` and
+  `duck-platform`, and communicate through the versioned JSON envelope.
+- **One JSON envelope, one version.** Every command prints `{ ok, api, command, data, error, ts }`.
+  The WebUI checks `api` and refuses to misread a newer backend.
+- **New keystore backends are one file.** Add an adapter implementing `ConfigAdapter` and one
+  line in `adapters::for_backend`; the shared logic, WebUI and policy editor need no changes.
+- **The WebUI renders policies from a schema.** Each backend describes its editable fields, so
+  a new field or backend appears in the UI automatically.
+- **No source file exceeds 600 lines** — enforced by `cargo xtask line-limit` in CI.
+
+### Adding a tool
+
+1. Create a crate under `crates/` that depends on `duck-core` (and `duck-platform` if it
+   touches the device). Expose a `clap` subcommand and a `run` entry point returning
+   `duck_core::CommandResult`.
+2. Add one match arm in `crates/duckd/src/cli.rs` and `main.rs`.
+3. Add a feature entry in `ui/src/lib/features.ts` and a workbench component. The launcher,
+   lazy loading and command log pick it up automatically.
+
+## JSON CLI
+
+```txt
+duckd rkp profile show|save|clear
+duckd rkp info|provision|keybox|verify <file>
+duckd device-ids defaults|provision
+duckd tricky-store status|save|auto-apply
+duckd tricky-store keybox install <file>|set-aosp|generate|fetch --url <u> --decode <steps>
+duckd tricky-store keybox providers list|save|reset|import <file>|export
+duckd tricky-store apps xposed|denylist|unnecessary [--refresh]
+duckd tricky-store props        # prop handler + boot hash (stdin JSON)
+duckd tricky-store files --path <dir> --extension xml
+duckd artifacts list
 ```
 
-Recommended local build flow:
+Commands that take input read JSON from stdin with `--stdin-json`. Every command prints one
+JSON envelope on stdout.
 
-```powershell
-cd duckd
-cargo test --target x86_64-pc-windows-msvc
+## Runtime layout
 
-cargo ndk -t arm64-v8a build --release
+- Module root: `/data/adb/modules/duck-toolbox/`
+- Shared data: `/data/adb/duck-toolbox/var/` (profiles, outputs, logs, feature state)
 
-cd ..\ui
-pnpm install --frozen-lockfile
-pnpm build
+Saved data lives outside the module directory, so module updates never wipe it.
 
-cd ..
-# Package a local module zip after the Android backend build
-pwsh .\scripts\package-module.ps1
+## Building
+
+Requirements: Rust (stable), the `aarch64-linux-android` target, Android NDK r28+, Node 22+,
+and pnpm 10+.
+
+```bash
+# Backend (host checks)
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo xtask line-limit
+
+# Backend (device binary)
+export ANDROID_NDK_HOME=/path/to/ndk
+cargo build --release --package duckd --target aarch64-linux-android   # via cargo-ndk or NDK env
+
+# WebUI (into module/webroot)
+cd ui && pnpm install --frozen-lockfile && pnpm build
 ```
 
-Windows one-step build script:
+On Windows, `pwsh ./scripts/build.ps1 [-PackageModule]` runs the whole flow with `cargo-ndk`.
 
-```powershell
-pwsh ./scripts/build.ps1
-```
+## Acknowledgements
 
-The script:
-
-- uses `C:\Development\Android\NDK\android-ndk-r29` by default
-- builds the Rust Android backend with `cargo ndk -t arm64-v8a build --release`
-- installs WebUI dependencies with `pnpm install --frozen-lockfile`
-- builds the WebUI into `module/webroot/`
-
-Optional module packaging in the same run:
-
-```powershell
-pwsh ./scripts/build.ps1 -PackageModule
-```
-
-Build outputs:
-
-- Rust Android binary: `duckd/target/aarch64-linux-android/release/duckd`
-- WebUI bundle: `module/webroot/`
-- Optional module archive: `dist/duck-toolbox-<version>.zip`
-
-RKP note:
-
-- The WebUI now opens in `HW Key + KDF Label` mode by default. A blank profile still stays logically unset until you provide real key material.
-
-Release note:
-
-- `update.json` intentionally ships with empty URLs. Fill in real release endpoints before publishing updates through KernelSU.
+The Tricky Store Manager is a port of KOWX712's
+[Tricky Addon: Update Target List](https://github.com/KOWX712/Tricky-Addon-Update-Target-List)
+(Apache-2.0). The bundled AOSP software keybox is the reference attestation key from
+`system/keymaster` in AOSP.

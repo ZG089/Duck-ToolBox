@@ -1,3 +1,5 @@
+export type { BridgeStatus, Envelope, JsonError } from "@/lib/api/client"
+
 export type KeySource =
   | { kind: "unset" }
   | { kind: "seed"; seed_hex: string }
@@ -52,20 +54,6 @@ export interface PathsInfo {
   binary_path: string
 }
 
-export interface JsonError {
-  code: string
-  message: string
-  details?: unknown
-}
-
-export interface Envelope<T> {
-  ok: boolean
-  command: string
-  data: T | null
-  error: JsonError | null
-  ts?: number
-}
-
 export interface ProfileEnvelopeData {
   profile: ProfileData
   paths: PathsInfo
@@ -84,13 +72,15 @@ export interface InfoData {
   output_path: string
 }
 
+export interface ChainSummary {
+  certificates: number
+  subjects: string[]
+}
+
 export interface ProvisionChain {
   index: number
   path: string
-  summary: {
-    certificates: number
-    subjects: string[]
-  }
+  summary: ChainSummary
 }
 
 export interface VerifyReport {
@@ -127,96 +117,7 @@ export interface KeyboxData {
   keybox_path: string
   keybox_xml: string
   device_id: string
-  chain_summary: {
-    certificates: number
-    subjects: string[]
-  }
-}
-
-export interface TrickyStoreKeyboxInstallData {
-  source_path: string
-  target_path: string
-  backup_path: string | null
-}
-
-export type TrickyStoreTargetMode = "auto" | "generate" | "hack"
-
-export interface TrickyStoreModuleDetection {
-  installed: boolean
-  module_dir: string
-  name?: string | null
-  variant?: string | null
-  version?: string | null
-  version_code?: number | null
-}
-
-export interface TrickyStoreTargetEntry {
-  package_name: string
-  mode: TrickyStoreTargetMode
-}
-
-export interface TrickyStorePackageEntry {
-  package_name: string
-  app_label: string
-  system: boolean
-  selected: boolean
-  mode: TrickyStoreTargetMode
-  tracked_system: boolean
-}
-
-export interface TrickyStoreAutoConfig {
-  enabled: boolean
-}
-
-export interface TrickyStoreKeyboxStatus {
-  path: string
-  exists: boolean
-  size: number
-  modified_unix: number
-}
-
-export interface TrickyStoreStatusData {
-  tricky_store: TrickyStoreModuleDetection
-  target_path: string
-  system_app_path: string
-  keybox: TrickyStoreKeyboxStatus
-  auto_config: TrickyStoreAutoConfig
-  targets: TrickyStoreTargetEntry[]
-  system_apps: string[]
-  packages: TrickyStorePackageEntry[]
-}
-
-export interface TrickyStoreTargetSaveRequest {
-  targets: TrickyStoreTargetEntry[]
-  system_apps: string[]
-  auto_add_new_apps: boolean
-}
-
-export interface TrickyStoreTargetSaveData {
-  target_path: string
-  system_app_path: string
-  auto_config: TrickyStoreAutoConfig
-  target_count: number
-  system_app_count: number
-}
-
-export interface TrickyStoreAutoApplyData {
-  enabled: boolean
-  added_count: number
-  target_path: string
-}
-
-export interface TrickyStoreFileEntry {
-  name: string
-  path: string
-  directory: boolean
-  size: number
-}
-
-export interface TrickyStoreFileListData {
-  path: string
-  parent?: string | null
-  entries: TrickyStoreFileEntry[]
+  chain_summary: ChainSummary
 }
 
 export interface VerifyData {
@@ -269,15 +170,6 @@ export interface ArtifactsData {
   profile_path: string
   profile_secrets_path: string
   log_path: string
-}
-
-export interface BridgeStatus {
-  mode: "kernelsu" | "unavailable"
-  moduleRoot: string
-  dataRoot: string
-  packageName: string | null
-  versionName: string | null
-  versionCode: number | null
 }
 
 export interface CommandHistoryEntry {

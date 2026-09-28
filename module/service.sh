@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Runs in late_start service mode (non-blocking). Repairs the runtime directory and permissions
+# on every boot so module updates never wipe saved data.
 
 umask 077
 
@@ -17,5 +19,3 @@ VAR_DIR="$DATA_ROOT/var"
 . "$MODPATH/util_functions.sh"
 
 repair_runtime
-
-"$MODPATH/bin/duckctl.sh" tricky-store auto-apply --json >/dev/null 2>&1 || true

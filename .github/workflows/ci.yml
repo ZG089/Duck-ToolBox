@@ -10,92 +10,152 @@ permissions:
 
 env:
   MODULE_ID: duck-toolbox
-  ANDROID_API_LEVEL: 21
+  ANDROID_API_LEVEL: 26
   TARGET: aarch64-linux-android
+  NDK_VERSION: r28
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  ci:
-    name: CI
+  line-limit:
+    name: Source line-limit gate
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-    environment: ${{ github.event_name == 'push' && 'Telegram' || '' }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Fail if any source file exceeds 600 lines
+        run: cargo run --quiet --package xtask -- line-limit
 
+  rust:
+    name: Rust checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: ${{ env.TARGET }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Format
+        run: cargo fmt --all --check
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Test
+        run: cargo test --workspace --locked
+
+  android-backend:
+    name: Android backend build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
       - name: Setup Android NDK
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r29
+          ndk-version: ${{ env.NDK_VERSION }}
           add-to-path: false
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ env.TARGET }}
-
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
-
-      - name: Build Android backend binary
-        working-directory: duckd
+      - uses: Swatinem/rust-cache@v2
+      - name: Build backend binary
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
           CC_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang
           CXX_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang++
           AR_aarch64_linux_android: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar
-        run: CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$CC_aarch64_linux_android cargo build --locked --release --target ${{ env.TARGET }}
+          CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin/${{ env.TARGET }}${{ env.ANDROID_API_LEVEL }}-clang
+        run: cargo build --locked --release --package duckd --target ${{ env.TARGET }}
+      - name: Upload backend binary
+        uses: actions/upload-artifact@v7
+        with:
+          name: duckd
+          path: target/${{ env.TARGET }}/release/duckd
+          if-no-files-found: error
 
+  webui:
+    name: WebUI build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           version: 10
           run_install: false
-
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
           cache-dependency-path: ui/pnpm-lock.yaml
-
-      - name: Install frontend dependencies
+      - name: Install dependencies
         working-directory: ui
         run: pnpm install --frozen-lockfile
-
-      - name: Build WebUI
+      - name: Build WebUI (type-check + bundle)
         working-directory: ui
         run: pnpm build
+      - name: Upload WebUI bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: webroot
+          path: module/webroot
+          if-no-files-found: error
 
-      - name: Verify module file line endings
+  module:
+    name: Module scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        env:
+          SHELLCHECK_OPTS: -s sh
+        with:
+          scandir: module
+      - name: Verify LF line endings
         working-directory: module
         run: |
-          if grep -n $'\r' module.prop customize.sh service.sh bin/duckctl.sh >/dev/null; then
+          if grep -rlIU $'\r' module.prop ./*.sh bin/*.sh >/dev/null 2>&1; then
             echo "KernelSU module metadata and shell scripts must use LF line endings." >&2
             exit 1
           fi
 
+  package:
+    name: Package module
+    runs-on: ubuntu-latest
+    needs: [line-limit, rust, android-backend, webui, module]
+    environment: ${{ github.event_name == 'push' && 'Telegram' || '' }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download backend binary
+        uses: actions/download-artifact@v8
+        with:
+          name: duckd
+          path: artifact/bin
+      - name: Download WebUI bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: webroot
+          path: module/webroot
       - name: Assemble module archive
         run: |
           version="$(grep '^version=' module/module.prop | cut -d= -f2)"
-
+          install -m 0755 artifact/bin/duckd module/bin/duckd
           cp README.md module/
-          cp duckd/target/${{ env.TARGET }}/release/duckd module/bin/duckd
-
-          archive="dist/${{ env.MODULE_ID }}-${version}.zip"
-          echo "MODULE_PATH=$archive" >> $GITHUB_ENV
+          archive="dist/${MODULE_ID}-${version}.zip"
+          echo "MODULE_PATH=$archive" >> "$GITHUB_ENV"
           mkdir -p dist
-          cd module
-          zip -r "../$archive" .
-
+          (cd module && zip -r "../$archive" .)
+      - name: Upload module archive
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.MODULE_ID }}-module
+          path: ${{ env.MODULE_PATH }}
+          if-no-files-found: error
       - name: Push module zip to Telegram
         if: github.event_name == 'push'
         env:
@@ -108,24 +168,20 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ -z "${TELEGRAM_BOT_TOKEN}" ] || [ -z "${TELEGRAM_CHAT_ID}" ]; then
-            echo "Missing Telegram secrets. Configure TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in the Telegram Env environment." >&2
-            exit 1
+            echo "Missing Telegram secrets; skipping upload." >&2
+            exit 0
           fi
-
-          caption="$(python3 .github/workflows/scripts/telegram.py build-caption --artifact-path "${{ env.MODULE_PATH }}")"
-
+          caption="$(python3 .github/workflows/scripts/telegram.py build-caption --artifact-path "${MODULE_PATH}")"
           response_file="$(mktemp)"
           http_code=$(curl --silent --show-error --output "${response_file}" --write-out "%{http_code}" \
             -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
             -F "chat_id=${TELEGRAM_CHAT_ID}" \
-            -F "document=@${{ env.MODULE_PATH }}" \
+            -F "document=@${MODULE_PATH}" \
             -F "parse_mode=HTML" \
             --form-string "caption=${caption}")
-
           if [ "${http_code}" != "200" ]; then
             echo "Telegram API returned HTTP ${http_code}." >&2
             cat "${response_file}" >&2
             exit 1
           fi
-
           python3 .github/workflows/scripts/telegram.py validate-response --response-file "${response_file}"

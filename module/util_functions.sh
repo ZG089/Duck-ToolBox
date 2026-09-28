@@ -63,6 +63,9 @@ repair_runtime() {
   prepare_data_root
   maybe_migrate_legacy_var
 
+  for script in customize service post-fs-data boot-completed uninstall action prop; do
+    [ -f "$MODPATH/$script.sh" ] && set_perm "$MODPATH/$script.sh" 0 0 0755
+  done
   set_perm "$MODPATH/bin/duckctl.sh" 0 0 0755
   set_perm "$MODPATH/bin/duckd" 0 0 0755
   set_perm "$DATA_ROOT" 0 0 0700

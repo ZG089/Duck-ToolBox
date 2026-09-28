@@ -8,9 +8,9 @@ import type {
   KeyboxData,
   PathsInfo,
   ProvisionData,
-  TrickyStoreKeyboxInstallData,
   VerifyData,
 } from "@/lib/types"
+import type { KeyboxInstallResult } from "@/features/tricky-store/types"
 
 export type UiMode = "seed" | "hw-key"
 export type RkpWorkspaceId =
@@ -68,7 +68,7 @@ export interface RkpWorkbenchState {
   errorDialogOpen: boolean
   keyboxPreviewOpen: boolean
   trickyStorePromptOpen: boolean
-  trickyStoreInstallResult: TrickyStoreKeyboxInstallData | null
+  trickyStoreInstallResult: KeyboxInstallResult | null
   activeWorkspace: RkpWorkspaceId
 }
 

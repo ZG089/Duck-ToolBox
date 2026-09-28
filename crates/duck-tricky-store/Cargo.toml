@@ -1,0 +1,34 @@
+[package]
+name = "duck-tricky-store"
+description = "Multi-backend keystore-spoofing manager (Tricky Store, TEESimulator, OhMyKeymint)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+base64ct.workspace = true
+clap.workspace = true
+duck-core.workspace = true
+duck-platform.workspace = true
+hex.workspace = true
+p256 = { workspace = true, features = ["pem", "pkcs8"] }
+quick-xml.workspace = true
+rcgen = { version = "0.14.10", default-features = false, features = ["aws_lc_rs", "crypto", "pem"] }
+reqwest.workspace = true
+rsa = { version = "0.9.10", features = ["pem"] }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+time = "0.3.37"
+toml.workspace = true
+zip = { version = "8", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[lints]
+workspace = true

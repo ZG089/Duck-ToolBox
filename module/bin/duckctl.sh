@@ -8,8 +8,8 @@ if [ -z "${DUCK_TOOLBOX_BUSYBOX_REEXEC:-}" ] && [ -x /data/adb/ksu/bin/busybox ]
   exec /data/adb/ksu/bin/busybox sh "$0" "$@"
 fi
 
-SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-MODULE_ROOT="${DUCK_TOOLBOX_ROOT:-$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)}"
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+MODULE_ROOT="${DUCK_TOOLBOX_ROOT:-$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)}"
 case "$MODULE_ROOT" in
   /data/adb/modules/*|/data/adb/modules_update/*)
     DEFAULT_DATA_ROOT="/data/adb/duck-toolbox"

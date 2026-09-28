@@ -1,0 +1,23 @@
+[package]
+name = "duck-device-ids"
+description = "Qualcomm Keymaster attestation device ID provisioning"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+ciborium.workspace = true
+clap.workspace = true
+duck-core.workspace = true
+duck-platform.workspace = true
+hex.workspace = true
+libloading.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

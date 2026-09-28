@@ -1,0 +1,19 @@
+[package]
+name = "duck-platform"
+description = "Android and root-manager adapters (props, packages, modules, network) for Duck ToolBox"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+duck-core.workspace = true
+reqwest.workspace = true
+rustls.workspace = true
+serde.workspace = true
+webpki-roots.workspace = true
+
+[lints]
+workspace = true

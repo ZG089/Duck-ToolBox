@@ -13,11 +13,10 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$duckdDir = Join-Path $repoRoot "duckd"
 $uiDir = Join-Path $repoRoot "ui"
 $packageScript = Join-Path $PSScriptRoot "package-module.ps1"
 $toolchainBin = Join-Path $NdkRoot "toolchains\llvm\prebuilt\windows-x86_64\bin"
-$binaryRelativePath = "duckd\target\aarch64-linux-android\$Profile\duckd"
+$binaryRelativePath = "target\aarch64-linux-android\$Profile\duckd"
 $binaryPath = Join-Path $repoRoot $binaryRelativePath
 
 function Write-Step([string]$Message) {
@@ -79,9 +78,9 @@ if (-not $SkipRust) {
   }
 
   Invoke-Step "Building Rust backend with cargo-ndk ($AndroidAbi, $Profile)" {
-    Push-Location $duckdDir
+    Push-Location $repoRoot
     try {
-      $cargoArgs = @("ndk", "-t", $AndroidAbi, "build")
+      $cargoArgs = @("ndk", "-t", $AndroidAbi, "build", "--package", "duckd")
       if ($Profile -eq "release") {
         $cargoArgs += "--release"
       }

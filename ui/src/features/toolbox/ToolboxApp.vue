@@ -3,89 +3,55 @@ import { computed, onMounted, ref } from "vue"
 import { Boxes, HardDrive, MoonStar, ShieldCheck, SunMedium } from "@lucide/vue"
 
 import AboutCard from "@/features/shared/AboutCard.vue"
-import NoticeDialog from "@/features/shared/NoticeDialog.vue"
-import { useI18n } from "@/i18n"
-import { APP_META } from "@/lib/meta"
-import { useTheme } from "@/lib/theme"
 import CommandLogPanel from "@/features/shared/CommandLogPanel.vue"
+import NoticeDialog from "@/features/shared/NoticeDialog.vue"
 import TextPreviewDialog from "@/features/shared/TextPreviewDialog.vue"
 import DeviceIdsWorkbench from "@/features/device-ids/DeviceIdsWorkbench.vue"
 import RkpWorkbench from "@/features/rkp/RkpWorkbench.vue"
 import TrickyStoreWorkbench from "@/features/tricky-store/TrickyStoreWorkbench.vue"
 import { useDeviceIdsWorkbench } from "@/features/device-ids/useDeviceIdsWorkbench"
 import { useRkpWorkbench } from "@/features/rkp/useRkpWorkbench"
-import { useTrickyStoreWorkbench } from "@/features/tricky-store/useTrickyStoreWorkbench"
+import { useI18n } from "@/i18n"
+import { FEATURES } from "@/lib/features"
+import { APP_META } from "@/lib/meta"
+import { useTheme } from "@/lib/theme"
 
 import ToolboxHome from "./ToolboxHome.vue"
 import ToolLibrary from "./ToolLibrary.vue"
 
 const OPEN_SOURCE_NOTICE_KEY = `duck-toolbox/open-source-notice/${APP_META.version}`
 const activeTool = ref("home")
-const deviceIdsWarningOpen = ref(false)
+const warningTool = ref<string | null>(null)
 const openSourceNoticeOpen = ref(false)
+
 const rkp = useRkpWorkbench()
 const deviceIds = useDeviceIdsWorkbench()
-const trickyStore = useTrickyStoreWorkbench()
 const { locale, locales, t } = useI18n()
 const { theme } = useTheme()
-const historyCount = computed(() => rkp.historyCount.value)
+
 const moduleRoot = computed(() => rkp.moduleRoot.value)
 const outputDirectory = computed(() => rkp.outputDirectory.value)
-const secretPath = computed(() => rkp.secretPath.value)
-const bridgeUnavailable = computed(() => rkp.state.bridge.mode === "unavailable")
 const bridgeAvailable = computed(() => rkp.state.bridge.mode === "kernelsu")
+const bridgeUnavailable = computed(() => !bridgeAvailable.value)
 const projectAddress = computed(() => rkp.state.paths?.root ?? moduleRoot.value)
+
 const themeOptions = computed(() => [
-  {
-    value: "light" as const,
-    label: t("shell.themeLight"),
-    icon: SunMedium,
-  },
-  {
-    value: "dark" as const,
-    label: t("shell.themeDark"),
-    icon: MoonStar,
-  },
+  { value: "light" as const, label: t("shell.themeLight"), icon: SunMedium },
+  { value: "dark" as const, label: t("shell.themeDark"), icon: MoonStar },
 ])
 
-const tools = computed(() => [
-  {
-    id: "rkp",
-    name: t("tool.rkpName"),
-    category: t("tool.rkpCategory"),
-    summary: t("tool.rkpSummary"),
-    capabilities: [
-      t("workspace.profile"),
-      t("workspace.provision"),
-      t("workspace.verify"),
-    ],
-  },
-  {
-    id: "device-ids",
-    name: t("tool.deviceIdsName"),
-    category: t("tool.deviceIdsCategory"),
-    summary: t("tool.deviceIdsSummary"),
-    capabilities: [
-      t("deviceIds.capabilityAutofill"),
-      t("deviceIds.capabilityProvision"),
-      t("deviceIds.capabilityReport"),
-    ],
-  },
-  {
-    id: "tricky-store",
-    name: t("tool.trickyStoreName"),
-    category: t("tool.trickyStoreCategory"),
-    summary: t("tool.trickyStoreSummary"),
-    capabilities: [
-      t("trickyStore.capabilityDetect"),
-      t("trickyStore.capabilityTargets"),
-      t("trickyStore.capabilityKeybox"),
-    ],
-  },
-])
+const tools = computed(() =>
+  FEATURES.map((feature) => ({
+    id: feature.id,
+    name: t(feature.nameKey),
+    category: t(feature.categoryKey),
+    summary: t(feature.summaryKey),
+    capabilities: feature.capabilityKeys.map((key) => t(key)),
+  })),
+)
 
 const combinedHistory = computed(() =>
-  [...rkp.state.history, ...deviceIds.state.history, ...trickyStore.state.history]
+  [...rkp.state.history, ...deviceIds.state.history]
     .sort((left, right) => right.at.localeCompare(left.at))
     .slice(0, 10),
 )
@@ -94,18 +60,11 @@ const combinedLastError = computed(() => {
   if (activeTool.value === "device-ids") {
     return deviceIds.state.lastError || rkp.state.lastError
   }
-
-  if (activeTool.value === "tricky-store") {
-    return trickyStore.state.lastError || rkp.state.lastError
-  }
-
-  return rkp.state.lastError || deviceIds.state.lastError || trickyStore.state.lastError
+  return rkp.state.lastError || deviceIds.state.lastError
 })
 
 const runtimeStatusLabel = computed(() =>
-  bridgeAvailable.value
-    ? t("shell.runtimeAvailable")
-    : t("shell.runtimeUnavailable"),
+  bridgeAvailable.value ? t("shell.runtimeAvailable") : t("shell.runtimeUnavailable"),
 )
 
 const summaryCards = computed(() => [
@@ -135,30 +94,34 @@ const summaryCards = computed(() => [
   },
 ])
 
+const warningBody = computed(() => {
+  const feature = FEATURES.find((entry) => entry.id === warningTool.value)
+  return feature?.warningKey ? t(feature.warningKey) : ""
+})
+
 function toggleTool(toolId: string) {
   const nextTool = activeTool.value === toolId ? "home" : toolId
   activeTool.value = nextTool
-  deviceIdsWarningOpen.value = nextTool === "device-ids"
+  const feature = FEATURES.find((entry) => entry.id === nextTool)
+  warningTool.value = feature?.warningKey ? nextTool : null
 }
 
-function dismissDeviceIdsWarning() {
-  deviceIdsWarningOpen.value = false
+function dismissWarning() {
+  warningTool.value = null
 }
 
 function dismissOpenSourceNotice() {
   openSourceNoticeOpen.value = false
-
   try {
     globalThis.localStorage?.setItem(OPEN_SOURCE_NOTICE_KEY, "1")
   } catch {
-    // Ignore localStorage failures and fall back to per-load prompting.
+    // Ignore storage failures; the notice simply reappears next load.
   }
 }
 
 onMounted(() => {
   try {
-    openSourceNoticeOpen.value =
-      globalThis.localStorage?.getItem(OPEN_SOURCE_NOTICE_KEY) !== "1"
+    openSourceNoticeOpen.value = globalThis.localStorage?.getItem(OPEN_SOURCE_NOTICE_KEY) !== "1"
   } catch {
     openSourceNoticeOpen.value = true
   }
@@ -181,17 +144,8 @@ onMounted(() => {
               <div class="preference-switch language-switch">
                 <span class="summary-label">{{ t("shell.language") }}</span>
                 <div class="mode-picker">
-                  <label
-                    v-for="entry in locales"
-                    :key="entry.value"
-                    class="mode-option"
-                  >
-                    <input
-                      v-model="locale"
-                      class="sr-only"
-                      type="radio"
-                      :value="entry.value"
-                    >
+                  <label v-for="entry in locales" :key="entry.value" class="mode-option">
+                    <input v-model="locale" class="sr-only" type="radio" :value="entry.value">
                     {{ entry.label }}
                   </label>
                 </div>
@@ -199,17 +153,8 @@ onMounted(() => {
               <div class="preference-switch theme-switch">
                 <span class="summary-label">{{ t("shell.theme") }}</span>
                 <div class="mode-picker">
-                  <label
-                    v-for="entry in themeOptions"
-                    :key="entry.value"
-                    class="mode-option"
-                  >
-                    <input
-                      v-model="theme"
-                      class="sr-only"
-                      type="radio"
-                      :value="entry.value"
-                    >
+                  <label v-for="entry in themeOptions" :key="entry.value" class="mode-option">
+                    <input v-model="theme" class="sr-only" type="radio" :value="entry.value">
                     <component :is="entry.icon" class="size-4" />
                     {{ entry.label }}
                   </label>
@@ -223,11 +168,7 @@ onMounted(() => {
           </div>
 
           <div class="summary-grid">
-            <article
-              v-for="card in summaryCards"
-              :key="card.label"
-              class="summary-tile"
-            >
+            <article v-for="card in summaryCards" :key="card.label" class="summary-tile">
               <div class="panel-heading compact">
                 <span class="summary-label">{{ card.label }}</span>
                 <component :is="card.icon" :class="['icon-muted', card.iconClass]" />
@@ -241,11 +182,7 @@ onMounted(() => {
 
       <section class="shell-grid">
         <aside class="stack">
-          <ToolLibrary
-            :active-tool="activeTool"
-            :tools="tools"
-            @select="toggleTool"
-          />
+          <ToolLibrary :active-tool="activeTool" :tools="tools" @select="toggleTool" />
         </aside>
 
         <section class="stack">
@@ -262,37 +199,21 @@ onMounted(() => {
           <RkpWorkbench
             v-else-if="activeTool === 'rkp'"
             :actions="rkp.actions"
-            :history-count="historyCount"
+            :history-count="rkp.historyCount.value"
             :module-root="moduleRoot"
             :output-directory="outputDirectory"
-            :secret-path="secretPath"
+            :secret-path="rkp.secretPath.value"
             :state="rkp.state"
           />
+          <TrickyStoreWorkbench v-else-if="activeTool === 'tricky-store'" />
           <DeviceIdsWorkbench
             v-else-if="activeTool === 'device-ids'"
             :actions="deviceIds.actions"
             :state="deviceIds.state"
           />
-          <TrickyStoreWorkbench
-            v-else-if="activeTool === 'tricky-store'"
-            :actions="trickyStore.actions"
-            :state="trickyStore.state"
-          />
-          <RkpWorkbench
-            v-else
-            :actions="rkp.actions"
-            :history-count="historyCount"
-            :module-root="moduleRoot"
-            :output-directory="outputDirectory"
-            :secret-path="secretPath"
-            :state="rkp.state"
-          />
         </section>
 
-        <CommandLogPanel
-          :history="combinedHistory"
-          :last-error="combinedLastError"
-        />
+        <CommandLogPanel :history="combinedHistory" :last-error="combinedLastError" />
       </section>
 
       <section class="stack mt-4">
@@ -327,24 +248,13 @@ onMounted(() => {
       @copy="deviceIds.actions.copyText(deviceIds.state.errorDialogText)"
     />
 
-    <TextPreviewDialog
-      :content="trickyStore.state.errorDialogText"
-      :copy-label="t('actions.copyError')"
-      :close-label="t('dialog.close')"
-      :description="t('dialog.errorDescription')"
-      :open="trickyStore.state.errorDialogOpen"
-      :title="t('dialog.errorTitle')"
-      @close="trickyStore.actions.dismissErrorDialog()"
-      @copy="trickyStore.actions.copyText(trickyStore.state.errorDialogText)"
-    />
-
     <NoticeDialog
-      :body="t('deviceIds.warningBody')"
+      :body="warningBody"
       :close-label="t('actions.acknowledgeRisk')"
       :description="t('deviceIds.warningDescription')"
-      :open="deviceIdsWarningOpen"
+      :open="Boolean(warningTool)"
       :title="t('deviceIds.warningTitle')"
-      @close="dismissDeviceIdsWarning()"
+      @close="dismissWarning()"
     />
 
     <NoticeDialog

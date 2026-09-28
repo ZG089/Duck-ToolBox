@@ -1,5 +1,5 @@
 # Build outputs
-/duckd/target/
+/target/
 /ui/node_modules/
 /ui/.vite/
 /webroot/

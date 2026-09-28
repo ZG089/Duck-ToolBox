@@ -1,5 +1,5 @@
 param(
-  [string]$BinaryPath = "duckd\target\aarch64-linux-android\release\duckd",
+  [string]$BinaryPath = "target\aarch64-linux-android\release\duckd",
   [string]$DistDir = "dist"
 )
 
