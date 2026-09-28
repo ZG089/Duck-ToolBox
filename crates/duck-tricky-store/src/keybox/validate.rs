@@ -13,8 +13,11 @@ pub struct KeyboxSummary {
     pub keyboxes: usize,
     pub has_ecdsa: bool,
     pub has_rsa: bool,
-    /// Certificate count of each `<Key>` chain, in document order.
+    /// Certificate count of each `<Key>`, in document order; 0 when a key has no chain.
     pub chain_lengths: Vec<usize>,
+    /// Every `<NumberOfCertificates>` matches the certificates that follow it.
+    #[serde(skip)]
+    pub counts_declared_correctly: bool,
 }
 
 /// Removes comments, a UTF-8 BOM and zero-width characters. Watermarks hidden in comments
@@ -54,11 +57,15 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
     let mut reader = Reader::from_str(trimmed);
     reader.config_mut().trim_text(true);
 
-    let mut summary = KeyboxSummary::default();
+    let mut summary = KeyboxSummary {
+        counts_declared_correctly: true,
+        ..KeyboxSummary::default()
+    };
     let mut stack: Vec<String> = Vec::new();
     let mut root_closed = false;
     let mut key_has_private = false;
-    let mut current_chain: Option<usize> = None;
+    let mut key_certificates = 0usize;
+    let mut declared: Option<usize> = None;
 
     loop {
         let event = reader.read_event().map_err(|error| {
@@ -82,6 +89,7 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
                 match name.as_str() {
                     "Key" => {
                         key_has_private = false;
+                        key_certificates = 0;
                         let algorithm = tag
                             .try_get_attribute("algorithm")
                             .ok()
@@ -99,12 +107,8 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
                         }
                     }
                     "PrivateKey" => key_has_private = true,
-                    "CertificateChain" => current_chain = Some(0),
-                    "Certificate" => {
-                        if let Some(count) = current_chain.as_mut() {
-                            *count += 1;
-                        }
-                    }
+                    "CertificateChain" => declared = None,
+                    "Certificate" => key_certificates += 1,
                     _ => {}
                 }
 
@@ -121,18 +125,33 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
                 }
                 match name.as_str() {
                     "CertificateChain" => {
-                        summary
-                            .chain_lengths
-                            .push(current_chain.take().unwrap_or(0));
+                        if declared
+                            .take()
+                            .is_some_and(|count| count != key_certificates)
+                        {
+                            summary.counts_declared_correctly = false;
+                        }
                     }
                     "Key" if !key_has_private => {
                         return Err(invalid("a Key is missing its PrivateKey"));
                     }
+                    "Key" => summary.chain_lengths.push(key_certificates),
                     _ => {}
                 }
                 if stack.is_empty() {
                     root_closed = true;
                 }
+            }
+            Event::Text(ref text)
+                if stack
+                    .last()
+                    .is_some_and(|tag| tag == "NumberOfCertificates") =>
+            {
+                declared = text
+                    .xml_content(XmlVersion::Implicit1_0)
+                    .trim()
+                    .parse()
+                    .ok();
             }
             Event::Eof => break,
             _ => {}
@@ -148,8 +167,10 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
     if !summary.has_ecdsa && !summary.has_rsa {
         return Err(invalid("no ecdsa or rsa Key found"));
     }
-    if summary.chain_lengths.contains(&0) {
-        return Err(invalid("a CertificateChain has no Certificate"));
+    // Keys without a chain are allowed (Tricky Addon's generator writes an RSA key without
+    // one); each daemon's own rules are checked when installing.
+    if summary.chain_lengths.iter().all(|count| *count == 0) {
+        return Err(invalid("no Key has a certificate"));
     }
 
     Ok(summary)
@@ -198,6 +219,25 @@ mod tests {
                 .is_err()
         );
         assert!(validate("").is_err());
+    }
+
+    #[test]
+    fn counts_certificates_per_key_including_keys_without_a_chain() {
+        let rsa = r#"<Key algorithm="rsa"><PrivateKey format="pem">r</PrivateKey></Key>
+  </Keybox>"#;
+        let summary = validate(&MINIMAL.replace("  </Keybox>", rsa)).unwrap();
+        assert!(summary.has_rsa);
+        assert_eq!(summary.chain_lengths, vec![1, 0]);
+        assert!(summary.counts_declared_correctly);
+    }
+
+    #[test]
+    fn notices_a_wrong_certificate_count() {
+        let wrong = MINIMAL.replace(
+            "<NumberOfCertificates>1</NumberOfCertificates>",
+            "<NumberOfCertificates>2</NumberOfCertificates>",
+        );
+        assert!(!validate(&wrong).unwrap().counts_declared_correctly);
     }
 
     #[test]

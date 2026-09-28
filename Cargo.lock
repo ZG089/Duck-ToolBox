@@ -689,6 +689,7 @@ dependencies = [
  "time",
  "toml",
  "toml_edit",
+ "x509-cert",
  "zip",
 ]
 

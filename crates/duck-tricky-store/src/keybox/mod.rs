@@ -74,25 +74,30 @@ pub fn install(ctx: &Context, content: &str, source: &str) -> Result<KeyboxInsta
     })
 }
 
-/// TEESimulator and OhMyKeymint refuse keyboxes that lack either algorithm; TEESimulator
-/// also needs full chains (leaf + issuer). Rejecting here avoids leaving the daemon on an
-/// unusable file.
+/// What each daemon's own keybox loader accepts, so an unusable file never replaces a
+/// working one:
+/// - OhMyKeymint (`src/keybox.rs`, `KeyBox::from_xml_str`) needs an EC and an RSA key, each
+///   with a non-empty chain whose `NumberOfCertificates` is right.
+/// - TEESimulator (`rust/teesim-km/src/attest.rs`, `parse_algo`) takes either key or both,
+///   but every key needs a chain of at least two certificates.
+/// - Tricky Store takes any keybox with a certified key.
 fn check_backend_rules(backend: Backend, summary: &KeyboxSummary) -> Result<()> {
-    let needs_both = matches!(backend, Backend::TeeSimulator | Backend::OhMyKeymint);
-    if needs_both && !(summary.has_ecdsa && summary.has_rsa) {
-        return Err(TrickyError::BackendRule(format!(
-            "{} requires a keybox with both an ECDSA and an RSA key",
-            backend.identity()
-        ))
-        .into());
+    let rule = |reason: &str| Err(TrickyError::BackendRule(reason.into()).into());
+    match backend {
+        Backend::OhMyKeymint if !(summary.has_ecdsa && summary.has_rsa) => {
+            rule("OhMyKeymint requires a keybox with both an ECDSA and an RSA key")
+        }
+        Backend::OhMyKeymint if summary.chain_lengths.contains(&0) => {
+            rule("OhMyKeymint requires a certificate chain for every key")
+        }
+        Backend::OhMyKeymint if !summary.counts_declared_correctly => {
+            rule("OhMyKeymint requires NumberOfCertificates to match each chain")
+        }
+        Backend::TeeSimulator if summary.chain_lengths.iter().any(|len| *len < 2) => {
+            rule("TEESimulator requires certificate chains with at least two certificates")
+        }
+        _ => Ok(()),
     }
-    if backend == Backend::TeeSimulator && summary.chain_lengths.iter().any(|len| *len < 2) {
-        return Err(TrickyError::BackendRule(
-            "TEESimulator requires certificate chains with at least two certificates".into(),
-        )
-        .into());
-    }
-    Ok(())
 }
 
 /// Keyboxes are a few KiB; anything larger is not a keybox.
@@ -140,16 +145,42 @@ mod tests {
         }
     }
 
-    #[test]
-    fn ecdsa_only_keybox_is_rejected_for_tee_simulator() {
-        let summary = validate::KeyboxSummary {
+    fn summary(
+        has_ecdsa: bool,
+        has_rsa: bool,
+        chain_lengths: Vec<usize>,
+    ) -> validate::KeyboxSummary {
+        validate::KeyboxSummary {
             keyboxes: 1,
-            has_ecdsa: true,
-            has_rsa: false,
-            chain_lengths: vec![3],
-        };
-        check_backend_rules(Backend::TrickyStore, &summary).unwrap();
-        assert!(check_backend_rules(Backend::TeeSimulator, &summary).is_err());
-        assert!(check_backend_rules(Backend::OhMyKeymint, &summary).is_err());
+            has_ecdsa,
+            has_rsa,
+            chain_lengths,
+            counts_declared_correctly: true,
+        }
+    }
+
+    #[test]
+    fn rkp_ecdsa_only_keybox_suits_tee_simulator_but_not_oh_my_keymint() {
+        let ec_only = summary(true, false, vec![3]);
+        check_backend_rules(Backend::TrickyStore, &ec_only).unwrap();
+        check_backend_rules(Backend::TeeSimulator, &ec_only).unwrap();
+        assert!(check_backend_rules(Backend::OhMyKeymint, &ec_only).is_err());
+    }
+
+    #[test]
+    fn tricky_addon_unknown_keybox_only_suits_tricky_store() {
+        // One self-signed EC certificate and an RSA key without a chain.
+        let upstream = summary(true, true, vec![1, 0]);
+        check_backend_rules(Backend::TrickyStore, &upstream).unwrap();
+        assert!(check_backend_rules(Backend::TeeSimulator, &upstream).is_err());
+        assert!(check_backend_rules(Backend::OhMyKeymint, &upstream).is_err());
+    }
+
+    #[test]
+    fn oh_my_keymint_needs_correct_certificate_counts() {
+        let mut miscounted = summary(true, true, vec![2, 2]);
+        miscounted.counts_declared_correctly = false;
+        check_backend_rules(Backend::TeeSimulator, &miscounted).unwrap();
+        assert!(check_backend_rules(Backend::OhMyKeymint, &miscounted).is_err());
     }
 }
