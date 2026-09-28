@@ -27,14 +27,16 @@ const copy = useCopy()
     >
       <dt class="text-muted-foreground shrink-0 text-sm">{{ row.label }}</dt>
       <dd class="flex min-w-0 items-start gap-1 text-end">
-        <span
+        <!-- Paths, hashes and versions are left-to-right even in right-to-left layouts. -->
+        <bdi
+          :dir="row.mono ? 'ltr' : undefined"
           :class="[
             'min-w-0 text-sm break-all',
             row.mono ? 'font-mono text-xs leading-5' : 'font-medium',
           ]"
         >
           {{ row.value === null || row.value === undefined || row.value === "" ? "—" : row.value }}
-        </span>
+        </bdi>
         <Button
           v-if="row.copy && row.value"
           size="icon"

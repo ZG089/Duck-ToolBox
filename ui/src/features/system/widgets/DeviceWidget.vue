@@ -37,15 +37,17 @@ const manager = computed(() => {
               {{ t("device.android", { release: device.android_release, sdk: device.sdk }) }}
             </p>
           </div>
-          <Badge variant="secondary" class="shrink-0">{{ info.data.value?.module.version }}</Badge>
+          <Badge variant="secondary" class="shrink-0"
+            ><bdi>{{ info.data.value?.module.version }}</bdi></Badge
+          >
         </div>
         <div class="flex flex-wrap gap-2">
           <Badge variant="outline"><ShieldCheck /> {{ manager }}</Badge>
           <Badge v-if="device.security_patch" variant="outline">
-            {{ t("device.patch") }} {{ device.security_patch }}
+            {{ t("device.patch") }} <bdi>{{ device.security_patch }}</bdi>
           </Badge>
           <Badge v-if="device.kernel_release" variant="outline" class="max-w-full">
-            <Cpu /> <span class="truncate">{{ device.kernel_release }}</span>
+            <Cpu /> <bdi class="truncate">{{ device.kernel_release }}</bdi>
           </Badge>
           <Badge v-if="device.selinux" variant="outline">
             SELinux · {{ dynamic(`selinux.${device.selinux}`, device.selinux) }}
