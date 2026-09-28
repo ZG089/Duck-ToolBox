@@ -99,7 +99,7 @@ if (-not $SkipRust) {
 }
 
 if (-not $SkipWeb) {
-  Assert-Command "pnpm" "Install pnpm 11 (run corepack enable) before running this script."
+  Assert-Command "pnpm" "Install pnpm 12 (run corepack enable) before running this script."
 
   Invoke-Step "Installing WebUI dependencies" {
     Push-Location $uiDir

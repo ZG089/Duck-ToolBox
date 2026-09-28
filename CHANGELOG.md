@@ -50,6 +50,6 @@
 
 ### Tooling
 - CI fails when any source file in any language exceeds 600 lines.
-- CI: NDK r30, Node 24, pnpm 11, WebUI lint/format/unit/E2E, per-feature builds.
+- CI: NDK r30, Node 24, pnpm 12, WebUI lint/format/unit/E2E, per-feature builds.
 - Canary artifacts are the installable module directory.
 - Dependabot opens one pull request per major update.

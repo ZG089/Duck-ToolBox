@@ -137,7 +137,7 @@ Commands that take input read JSON from stdin with `--stdin-json`.
 Requirements:
 - Rust stable with the `aarch64-linux-android` target (`rust-toolchain.toml` installs it).
 - Android NDK r30.
-- Node.js 24 and pnpm 11 (`corepack enable` picks the version from `ui/package.json`).
+- Node.js 24 and pnpm 12 (`corepack enable` picks the version from `ui/package.json`).
 
 ```bash
 cargo xtask line-limit
