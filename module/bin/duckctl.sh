@@ -2,10 +2,16 @@
 set -eu
 umask 077
 
-if [ -z "${DUCK_TOOLBOX_BUSYBOX_REEXEC:-}" ] && [ -x /data/adb/ksu/bin/busybox ]; then
-  export DUCK_TOOLBOX_BUSYBOX_REEXEC=1
-  export ASH_STANDALONE=1
-  exec /data/adb/ksu/bin/busybox sh "$0" "$@"
+# WebUI hosts run commands through the system shell; boot scripts already run in BusyBox
+# ash standalone mode (KernelSU module guide). Use the manager's BusyBox either way.
+if [ -z "${DUCK_TOOLBOX_BUSYBOX_REEXEC:-}" ]; then
+  for busybox in /data/adb/ksu/bin/busybox /data/adb/ap/bin/busybox /data/adb/magisk/busybox; do
+    if [ -x "$busybox" ]; then
+      export DUCK_TOOLBOX_BUSYBOX_REEXEC=1
+      export ASH_STANDALONE=1
+      exec "$busybox" sh "$0" "$@"
+    fi
+  done
 fi
 
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
@@ -19,16 +25,10 @@ case "$MODULE_ROOT" in
     ;;
 esac
 DATA_ROOT="${DUCK_TOOLBOX_DATA_ROOT:-$DEFAULT_DATA_ROOT}"
-WANTS_JSON=0
 SEARCHED_CANDIDATES=""
-
-for arg in "$@"
-do
-  if [ "$arg" = "--json" ]; then
-    WANTS_JSON=1
-    break
-  fi
-done
+# Callers that parse output (the WebUI, boot scripts) never attach a terminal.
+WANTS_JSON=1
+[ -t 1 ] && WANTS_JSON=0
 
 for candidate in \
   "$MODULE_ROOT/bin/duckd" \
@@ -65,7 +65,7 @@ do
 done
 
 if [ "$WANTS_JSON" -eq 1 ]; then
-  printf '%s\n' "{\"ok\":false,\"command\":\"bootstrap.wrapper\",\"data\":null,\"error\":{\"code\":\"binary_not_found\",\"message\":\"Duck ToolBox backend binary is missing or not executable.\",\"details\":{\"module_root\":\"$MODULE_ROOT\",\"searched\":\"$SEARCHED_CANDIDATES\"}}}"
+  printf '%s\n' "{\"ok\":false,\"api\":1,\"command\":\"bootstrap.wrapper\",\"data\":null,\"error\":{\"code\":\"binary_not_found\",\"message\":\"Duck ToolBox backend binary is missing or not executable.\",\"details\":{\"module_root\":\"$MODULE_ROOT\",\"searched\":\"$SEARCHED_CANDIDATES\"}}}"
 else
   echo "Duck ToolBox backend binary is missing or not executable under $MODULE_ROOT" >&2
   echo "searched: $SEARCHED_CANDIDATES" >&2

@@ -59,15 +59,29 @@ maybe_migrate_legacy_var() {
   done
 }
 
+# Runs from the installer and from service.sh on every boot, so it cannot rely on the
+# installer-only set_perm helpers.
 repair_runtime() {
   prepare_data_root
   maybe_migrate_legacy_var
 
-  for script in customize service post-fs-data boot-completed uninstall action prop; do
-    [ -f "$MODPATH/$script.sh" ] && set_perm "$MODPATH/$script.sh" 0 0 0755
+  for binary in "$MODPATH/bin/duckctl.sh" "$MODPATH/bin/duckd"; do
+    [ -f "$binary" ] && chmod 0755 "$binary"
   done
-  set_perm "$MODPATH/bin/duckctl.sh" 0 0 0755
-  set_perm "$MODPATH/bin/duckd" 0 0 0755
-  set_perm "$DATA_ROOT" 0 0 0700
-  set_perm_recursive "$VAR_DIR" 0 0 0700 0600
+  chown -R 0:0 "$DATA_ROOT" 2>/dev/null
+  chmod 0700 "$DATA_ROOT"
+  find "$VAR_DIR" -type d -exec chmod 0700 {} \; 2>/dev/null
+  find "$VAR_DIR" -type f -exec chmod 0600 {} \; 2>/dev/null
+}
+
+# Tricky Addon's boot hash format: one lowercase hex string; an empty file is removed.
+normalize_boot_hash() {
+  file="/data/adb/boot_hash"
+  [ -f "$file" ] || return 0
+  hash_value="$(grep -v '^#' "$file" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+  if [ -n "$hash_value" ]; then
+    printf '%s\n' "$hash_value" >"$file"
+  else
+    rm -f "$file"
+  fi
 }

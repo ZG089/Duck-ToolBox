@@ -107,22 +107,18 @@ impl RootManager {
     /// Replaces the description the KernelSU manager shows for module `id`, through the
     /// documented `override.description` module config key. Other managers have no such
     /// mechanism, so this is a no-op for them.
+    ///
+    /// The value is runtime state, so it goes into the temporary config that KernelSU
+    /// clears on every boot (module-config guide); the manager reads persistent and
+    /// temporary values merged, temporary first.
     pub fn set_module_description(&self, id: &str, description: &str) -> Result<()> {
         if self.kind != RootManagerKind::KernelSu {
             return Ok(());
         }
-        let output = std::process::Command::new(self.cli())
-            .args([
-                "module",
-                "config",
-                "set",
-                "override.description",
-                description,
-            ])
-            .env("KSU_MODULE", id)
-            .stdin(std::process::Stdio::null())
-            .output()
-            .context("run ksud module config")?;
+        // Older releases stored the override persistently; it would outlive a reboot.
+        let _ = self.module_config(id, &["delete", "override.description"]);
+        let output =
+            self.module_config(id, &["set", "--temp", "override.description", description])?;
         if !output.status.success() {
             bail!(
                 "ksud module config set failed: {}",
@@ -130,6 +126,16 @@ impl RootManager {
             );
         }
         Ok(())
+    }
+
+    fn module_config(&self, id: &str, args: &[&str]) -> Result<std::process::Output> {
+        std::process::Command::new(self.cli())
+            .args(["module", "config"])
+            .args(args)
+            .env("KSU_MODULE", id)
+            .stdin(std::process::Stdio::null())
+            .output()
+            .context("run ksud module config")
     }
 }
 

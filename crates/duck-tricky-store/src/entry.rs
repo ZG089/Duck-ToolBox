@@ -3,7 +3,8 @@
 //! Managers show a WebUI button for any module with a `webroot` directory (KernelSU module
 //! guide), so linking Duck ToolBox's `webroot` into the active keystore module gives that
 //! module a button that opens this manager. Modules that ship their own WebUI (TEESimulator)
-//! are left alone. On Magisk, which has no WebUI, `action.sh` is linked instead.
+//! are left alone. Magisk has no WebUI button, so there `action.sh` is linked as well: it
+//! opens the keystore module's (linked) WebUI in a standalone WebUI app.
 
 use std::path::{Path, PathBuf};
 
@@ -34,10 +35,11 @@ pub fn status(ctx: &Context) -> Result<EntryStatus> {
             has_own_webui: false,
         });
     };
+    let webroot = &target.links[0];
     Ok(EntryStatus {
         enabled: state.entry_enabled,
-        linked: is_our_link(&target.link, &target.source),
-        has_own_webui: target.link.exists() && !is_our_link(&target.link, &target.source),
+        linked: target.links.iter().all(Link::is_ours),
+        has_own_webui: webroot.path.exists() && !webroot.is_ours(),
         module_id: Some(target.module_id),
     })
 }
@@ -55,7 +57,7 @@ pub fn set(ctx: &Context, enabled: bool) -> Result<EntryStatus> {
     status(ctx)
 }
 
-/// Re-creates or removes the link to match the saved setting; run on boot, since a
+/// Re-creates or removes the links to match the saved setting; run on boot, since a
 /// keystore module update replaces its directory.
 pub fn apply(ctx: &Context) -> Result<EntryStatus> {
     let state = State::load(&ctx.paths, &ctx.sysroot)?;
@@ -72,68 +74,91 @@ pub fn apply(ctx: &Context) -> Result<EntryStatus> {
 /// Removes every link this feature may have created, on uninstall.
 pub fn remove_all(ctx: &Context) -> Result<()> {
     for detection in detect::detect_all(&ctx.sysroot) {
-        for (name, source) in link_names(ctx) {
-            let link = ctx.sysroot.path(format!("{}/{name}", detection.module_dir));
-            if is_our_link(&link, &source) {
-                std::fs::remove_file(&link)
-                    .with_context(|| format!("remove {}", link.display()))?;
+        for name in LINKED {
+            let link = link(ctx, &detection.module_dir, name);
+            if link.is_ours() {
+                std::fs::remove_file(&link.path)
+                    .with_context(|| format!("remove {}", link.path.display()))?;
             }
         }
     }
     Ok(())
 }
 
-struct Target {
-    module_id: String,
-    link: PathBuf,
+/// Everything that can be linked; the WebUI comes first.
+const LINKED: [&str; 2] = ["webroot", "action.sh"];
+
+struct Link {
+    path: PathBuf,
     source: PathBuf,
 }
 
-fn link_names(ctx: &Context) -> [(&'static str, PathBuf); 2] {
-    [
-        ("webroot", ctx.paths.root.join("webroot")),
-        ("action.sh", ctx.paths.root.join("action.sh")),
-    ]
+impl Link {
+    fn is_ours(&self) -> bool {
+        std::fs::read_link(&self.path).is_ok_and(|points_to| points_to == self.source)
+    }
+}
+
+struct Target {
+    module_id: String,
+    links: Vec<Link>,
+}
+
+fn link(ctx: &Context, module_dir: &str, name: &str) -> Link {
+    Link {
+        path: ctx.sysroot.path(format!("{module_dir}/{name}")),
+        source: ctx.paths.root.join(name),
+    }
 }
 
 fn target(ctx: &Context) -> Option<Target> {
     let detection = detect::detect_active(&ctx.sysroot)?;
     let magisk =
         root::detect(&ctx.sysroot).is_some_and(|manager| manager.kind == RootManagerKind::Magisk);
-    let (name, source) = if magisk {
-        ("action.sh", ctx.paths.root.join("action.sh"))
-    } else {
-        ("webroot", ctx.paths.root.join("webroot"))
-    };
+    let names = if magisk { &LINKED[..] } else { &LINKED[..1] };
     Some(Target {
+        links: names
+            .iter()
+            .map(|name| link(ctx, &detection.module_dir, name))
+            .collect(),
         module_id: detection.module_id,
-        link: ctx.sysroot.path(format!("{}/{name}", detection.module_dir)),
-        source,
     })
 }
 
-fn is_our_link(link: &Path, source: &Path) -> bool {
-    std::fs::read_link(link).is_ok_and(|points_to| points_to == source)
+fn attach(target: &Target) -> Result<()> {
+    let (webroot, extras) = target
+        .links
+        .split_first()
+        .expect("the WebUI is always linked");
+    if !webroot.is_ours() {
+        if webroot.path.exists() || webroot.path.is_symlink() {
+            return Err(TrickyError::BackendRule(format!(
+                "{} already provides its own entry",
+                target.module_id
+            ))
+            .into());
+        }
+        create(webroot)?;
+    }
+    // A keystore module's own action button is never replaced.
+    for extra in extras {
+        if !extra.is_ours() && !extra.path.exists() && !extra.path.is_symlink() {
+            create(extra)?;
+        }
+    }
+    Ok(())
 }
 
-fn attach(target: &Target) -> Result<()> {
-    if is_our_link(&target.link, &target.source) {
-        return Ok(());
-    }
-    if target.link.exists() || target.link.is_symlink() {
-        return Err(TrickyError::BackendRule(format!(
-            "{} already provides its own entry",
-            target.module_id
-        ))
-        .into());
-    }
-    symlink(&target.source, &target.link).with_context(|| format!("link {}", target.link.display()))
+fn create(link: &Link) -> Result<()> {
+    symlink(&link.source, &link.path).with_context(|| format!("link {}", link.path.display()))
 }
 
 fn detach(target: &Target) -> Result<()> {
-    if is_our_link(&target.link, &target.source) {
-        std::fs::remove_file(&target.link)
-            .with_context(|| format!("remove {}", target.link.display()))?;
+    for link in &target.links {
+        if link.is_ours() {
+            std::fs::remove_file(&link.path)
+                .with_context(|| format!("remove {}", link.path.display()))?;
+        }
     }
     Ok(())
 }
@@ -195,6 +220,32 @@ mod tests {
 
         let disabled = set(&ctx, false).unwrap();
         assert!(!disabled.linked && !dir.join("webroot").exists());
+    }
+
+    #[test]
+    fn links_the_action_too_on_magisk_but_keeps_an_existing_one() {
+        let root = tempfile::tempdir().unwrap();
+        let ctx = context(root.path());
+        fs::write(ctx.paths.root.join("action.sh"), "#!/system/bin/sh\n").unwrap();
+        fs::create_dir_all(ctx.sysroot.path("/data/adb/magisk")).unwrap();
+        let dir = install(&ctx, "tricky_store");
+
+        assert!(set(&ctx, true).unwrap().linked);
+        assert_eq!(
+            fs::read_link(dir.join("action.sh")).unwrap(),
+            ctx.paths.root.join("action.sh")
+        );
+        set(&ctx, false).unwrap();
+        assert!(!dir.join("action.sh").exists() && !dir.join("webroot").exists());
+
+        fs::write(dir.join("action.sh"), "own action\n").unwrap();
+        assert!(set(&ctx, true).is_ok());
+        assert_eq!(
+            fs::read_to_string(dir.join("action.sh")).unwrap(),
+            "own action\n"
+        );
+        remove_all(&ctx).unwrap();
+        assert!(dir.join("action.sh").is_file() && !dir.join("webroot").exists());
     }
 
     #[test]

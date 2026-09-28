@@ -1,17 +1,10 @@
 #!/system/bin/sh
-# Runs in late_start service mode (non-blocking). Repairs the runtime directory and permissions
-# on every boot so module updates never wipe saved data.
+# late_start service mode (non-blocking). Repairs the runtime directory so module updates
+# never wipe saved data. Magisk has no boot-completed stage, so there this script waits for
+# boot completion and runs boot-completed.sh itself.
 
 umask 077
-
-[ -z "$MODPATH" ] && MODPATH=${0%/*}
-
-if [ -z "${DUCK_TOOLBOX_BUSYBOX_REEXEC:-}" ] && [ -x /data/adb/ksu/bin/busybox ]; then
-  export DUCK_TOOLBOX_BUSYBOX_REEXEC=1
-  export ASH_STANDALONE=1
-  exec /data/adb/ksu/bin/busybox sh "$0" "$@"
-fi
-
+MODPATH=${0%/*}
 MODULE_ID="duck-toolbox"
 DATA_ROOT="${DUCK_TOOLBOX_DATA_ROOT:-/data/adb/$MODULE_ID}"
 VAR_DIR="$DATA_ROOT/var"
@@ -19,3 +12,12 @@ VAR_DIR="$DATA_ROOT/var"
 . "$MODPATH/util_functions.sh"
 
 repair_runtime
+
+if [ "$KSU" != "true" ] && [ "$APATCH" != "true" ]; then
+  (
+    until [ "$(getprop sys.boot_completed)" = "1" ]; do
+      sleep 2
+    done
+    sh "$MODPATH/boot-completed.sh"
+  ) &
+fi

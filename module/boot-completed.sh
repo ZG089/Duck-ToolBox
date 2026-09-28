@@ -1,13 +1,28 @@
 #!/system/bin/sh
-# Runs after boot completes, when `pm` is available. Applies the Tricky Store auto-target
-# additions if the user enabled them; a failure here never blocks anything.
+# Runs once boot has completed and `pm` works (KernelSU and APatch call it directly; on
+# Magisk service.sh does). Nothing here may block or fail the boot.
 
 MODPATH=${0%/*}
+DUCKCTL="$MODPATH/bin/duckctl.sh"
+TSPA_DIR="/data/adb/modules/tsupport-advance"
+TSPA_FLAG="/storage/emulated/0/stop-tspa-auto-target"
 
-if [ -z "${DUCK_TOOLBOX_BUSYBOX_REEXEC:-}" ] && [ -x /data/adb/ksu/bin/busybox ]; then
-  export DUCK_TOOLBOX_BUSYBOX_REEXEC=1
-  export ASH_STANDALONE=1
-  exec /data/adb/ksu/bin/busybox sh "$0" "$@"
+# Late pass for props the system sets after post-fs-data.
+sh "$MODPATH/prop.sh"
+
+"$DUCKCTL" tricky-store entry apply >/dev/null 2>&1 || true
+"$DUCKCTL" tricky-store auto-apply >/dev/null 2>&1 || true
+"$DUCKCTL" describe >/dev/null 2>&1 || true
+
+# TSupport-Advance rewrites the target list on its own unless this flag exists (as Tricky
+# Addon does). Shared storage appears only after the user unlocks the device.
+tries=0
+until [ -d /storage/emulated/0/Android ] || [ "$tries" -ge 90 ]; do
+  sleep 2
+  tries=$((tries + 1))
+done
+if [ -d "$TSPA_DIR" ]; then
+  touch "$TSPA_FLAG" 2>/dev/null || true
+else
+  rm -f "$TSPA_FLAG"
 fi
-
-"$MODPATH/bin/duckctl.sh" tricky-store auto-apply --json >/dev/null 2>&1 || true

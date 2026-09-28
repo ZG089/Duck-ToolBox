@@ -1,6 +1,6 @@
 #!/system/bin/sh
-# Runs in post-fs-data mode (blocking, before Zygote). Keep it fast and side-effect free
-# beyond the sensitive-prop handler.
+# post-fs-data mode: blocking, before Zygote (KernelSU module guide). Only the early prop
+# pass runs here.
 MODDIR=${0%/*}
 
 sh "$MODDIR/prop.sh"

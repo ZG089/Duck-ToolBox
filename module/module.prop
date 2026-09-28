@@ -3,5 +3,5 @@ name=Duck ToolBox
 version=v0.0.1-beta
 versionCode=1
 author=Eltavine & KOW & MhmRdd
-description=Modular Android security toolbox: RKP workbench, multi-backend Tricky Store manager (Tricky Store / TEESimulator / OhMyKeymint), and Qualcomm device ID provisioning.
+description=Android attestation toolbox: Tricky Store / TEESimulator / OhMyKeymint manager (a full Tricky Addon port), RKP workbench and Qualcomm device ID provisioning, in one WebUI.
 updateJson=https://raw.githubusercontent.com/eltavine/Duck-ToolBox/main/update.json
