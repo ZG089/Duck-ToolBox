@@ -67,6 +67,7 @@
     "none": "The active module has no default policy.",
     "hint": "Leave a field empty to keep the module's own default.",
     "saved": "Default policy saved",
+    "restart": "Reboot to apply the changed Verified Boot and OS settings.",
     "custom": "Custom policy for this app",
     "fields": {
       "os_patch": "System patch",

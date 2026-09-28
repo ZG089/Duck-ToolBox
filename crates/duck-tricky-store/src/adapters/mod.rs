@@ -25,6 +25,10 @@ pub(crate) trait ConfigAdapter {
         format!("{}/keybox.xml", self.config_dir())
     }
     fn policy_schema(&self) -> PolicySchema;
+    /// Policy keys the backend applies only after it restarts.
+    fn restart_keys(&self) -> &'static [&'static str] {
+        &[]
+    }
     fn read(&self, sysroot: &Sysroot) -> Result<ConfigData>;
     fn write(&self, sysroot: &Sysroot, config: &ConfigData) -> Result<()>;
 }

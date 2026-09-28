@@ -46,6 +46,8 @@ pub struct SaveData {
     pub target_count: usize,
     pub system_app_count: usize,
     pub auto_add_new_apps: bool,
+    /// A changed policy key only takes effect once the backend restarts (a reboot).
+    pub restart_required: bool,
 }
 
 pub(crate) fn active_adapter(
@@ -142,6 +144,15 @@ pub fn save(ctx: &Context, request: SaveRequest) -> Result<SaveData> {
         }
     }
     let default_policy = crate::policy::sanitize(&schema, request.default_policy)?;
+    let previous = adapter
+        .read(&ctx.sysroot)
+        .unwrap_or_default()
+        .default_policy;
+    let restart_required = adapter.restart_keys().iter().any(|key| {
+        default_policy
+            .get(*key)
+            .is_some_and(|value| previous.get(*key) != Some(value))
+    });
 
     let target_count = targets.len();
     adapter.write(
@@ -171,6 +182,7 @@ pub fn save(ctx: &Context, request: SaveRequest) -> Result<SaveData> {
         target_count,
         system_app_count: state.system_apps.len(),
         auto_add_new_apps: state.auto.enabled,
+        restart_required,
     })
 }
 

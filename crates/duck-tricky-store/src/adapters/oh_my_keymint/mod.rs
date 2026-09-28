@@ -2,6 +2,8 @@ use anyhow::{Context, Result};
 use duck_core::{Sysroot, fs::write_bytes_preserving};
 use toml_edit::{Array, DocumentMut, Item, Table, Value};
 
+mod injector;
+
 use crate::{
     error::TrickyError,
     model::{Backend, ConfigData, Policy, PolicyField, PolicySchema, TargetEntry, TargetMode},
@@ -23,6 +25,16 @@ const TRUST_FIELDS: &[&str] = &[
     "device_locked",
 ];
 const BOOLEAN_FIELDS: &[&str] = &["verified_boot_state", "device_locked"];
+/// Trust keys OhMyKeymint applies only after a keymint restart (`trust_changed_beyond_patchlevels`
+/// and `boot_patchlevel_changed` in `src/config.rs`); patch levels reload on the fly.
+const RESTART_FIELDS: &[&str] = &[
+    "os_version",
+    "vb_key",
+    "vb_hash",
+    "verified_boot_state",
+    "device_locked",
+    "boot_patchlevel",
+];
 
 /// OhMyKeymint: the `scoop` target list lives in `injector.toml`; the `[trust]` policy
 /// lives in `config.toml`. Neither file has a per-app mode. Both are edited in place with
@@ -83,8 +95,12 @@ impl super::ConfigAdapter for OhMyKeymintAdapter {
         }
     }
 
+    fn restart_keys(&self) -> &'static [&'static str] {
+        RESTART_FIELDS
+    }
+
     fn read(&self, sysroot: &Sysroot) -> Result<ConfigData> {
-        let targets = read_document(sysroot, INJECTOR_FILE)?
+        let targets = read_injector(sysroot)?
             .and_then(|document| document.get("scoop").and_then(Item::as_array).cloned())
             .map(|scoop| {
                 scoop
@@ -118,17 +134,22 @@ impl super::ConfigAdapter for OhMyKeymintAdapter {
     }
 
     fn write(&self, sysroot: &Sysroot, config: &ConfigData) -> Result<()> {
-        let mut injector = read_document(sysroot, INJECTOR_FILE)?.unwrap_or_default();
-        if !injector.contains_key("version") {
-            injector.insert("version", toml_edit::value(1));
-        }
+        let mut injector = read_injector(sysroot)?.unwrap_or_default();
         let names: Vec<&str> = config
             .targets
             .iter()
             .map(|entry| entry.package_name.as_str())
             .collect();
-        injector.insert("scoop", Item::Value(Value::Array(multiline_array(&names))));
-        write_document(sysroot, INJECTOR_FILE, &injector)?;
+        let scoop = Item::Value(Value::Array(multiline_array(&names)));
+        // Replace only the value: the comment above `scoop` belongs to its key.
+        match injector.get_mut("scoop") {
+            Some(item) => *item = scoop,
+            None => {
+                injector.insert("scoop", scoop);
+            }
+        }
+        let path = sysroot.path(format!("{OMK_CONFIG_DIR}/{INJECTOR_FILE}"));
+        write_bytes_preserving(&path, injector::render(&injector).as_bytes())?;
 
         if config.default_policy.is_empty() {
             return Ok(());
@@ -157,6 +178,13 @@ impl super::ConfigAdapter for OhMyKeymintAdapter {
         }
         write_document(sysroot, CONFIG_FILE, &main)
     }
+}
+
+fn read_injector(sysroot: &Sysroot) -> Result<Option<DocumentMut>> {
+    let path = sysroot.path(format!("{OMK_CONFIG_DIR}/{INJECTOR_FILE}"));
+    duck_core::fs::read_optional(&path)?
+        .map(|raw| injector::parse(&raw))
+        .transpose()
 }
 
 fn read_document(sysroot: &Sysroot, file: &str) -> Result<Option<DocumentMut>> {
@@ -242,7 +270,7 @@ mod tests {
         fs::create_dir_all(&dir).unwrap();
         fs::write(
             dir.join("injector.toml"),
-            "# keep me\nversion = 1\n\nscoop = [\"old.app\"]\n\n[filter]\nenabled = true\n",
+            "# keep me\nscoop = [\"old.app\"]\n\n[filter]\nenabled = true\n",
         )
         .unwrap();
         fs::write(
@@ -272,6 +300,10 @@ mod tests {
         assert!(injector.contains("# keep me"));
         assert!(injector.contains("[filter]"));
         assert!(injector.contains("\n  \"com.example.bank\",\n]"));
+        assert!(
+            !injector.contains("version"),
+            "released OhMyKeymint rejects unknown keys"
+        );
         let main = fs::read_to_string(dir.join("config.toml")).unwrap();
         assert!(main.contains("os_version = 16 # comment"));
         assert!(main.contains("device_locked = false"));

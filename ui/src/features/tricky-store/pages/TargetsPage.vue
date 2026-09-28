@@ -61,12 +61,17 @@ function deselectAll() {
 
 const save = useMutation({
   mutationFn: async () => {
-    await store.save()
+    const saved = await store.save()
     const next = await status.refetch()
     if (next.data) store.load(next.data, true)
+    return saved
   },
   meta: { errorTitle: () => t("ta.prompt_save_error") },
-  onSuccess: () => notifySuccess(t("ta.prompt_saved_target")),
+  onSuccess: (saved) =>
+    notifySuccess(
+      t("ta.prompt_saved_target"),
+      saved.restart_required ? t("policy.restart") : undefined,
+    ),
 })
 
 async function refresh() {

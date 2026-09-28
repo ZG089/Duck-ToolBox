@@ -32,11 +32,13 @@ watch(
 
 const save = useMutation({
   mutationFn: async () => {
-    await store.saveOnly({ defaultPolicy: policy.value })
+    const saved = await store.saveOnly({ defaultPolicy: policy.value })
     const next = await status.refetch()
     if (next.data) store.load(next.data)
+    return saved
   },
-  onSuccess: () => notifySuccess(t("policy.saved")),
+  onSuccess: (saved) =>
+    notifySuccess(t("policy.saved"), saved.restart_required ? t("policy.restart") : undefined),
 })
 </script>
 

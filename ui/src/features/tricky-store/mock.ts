@@ -216,8 +216,17 @@ const mock: MockModule = {
           `invalid policy value for \`os_patch\`: expected YYYYMM, prop or no`,
         )
       }
+      const restart_required =
+        backend === "oh-my-keymint" &&
+        request.default_policy.device_locked !== saved.default_policy.device_locked
       saved = request
-      return { written: ["/data/adb/tricky_store/config.ini"] }
+      return {
+        backend,
+        target_count: request.targets.length,
+        system_app_count: request.system_apps.length,
+        auto_add_new_apps: request.auto_add_new_apps,
+        restart_required,
+      }
     },
     "tricky-store.keybox.install": (args) => installed(`local:${args[0]}`),
     "tricky-store.keybox.import": () => installed("local"),

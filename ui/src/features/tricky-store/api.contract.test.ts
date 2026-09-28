@@ -50,8 +50,8 @@ const backends: Record<string, Device> = {
   "oh-my-keymint": {
     files: {
       "/data/adb/modules/oh_my_keymint/module.prop": moduleProp("oh_my_keymint", 90),
-      "/data/misc/keystore/omk/injector.toml":
-        'version = 1\nscoop = ["io.github.vvb2060.keyattestation"]\n',
+      // Released OhMyKeymint (v1.2.0) has no version key here and refuses unknown keys.
+      "/data/misc/keystore/omk/injector.toml": 'scoop = ["io.github.vvb2060.keyattestation"]\n',
       "/data/misc/keystore/omk/config.toml": 'version = 2\n[trust]\nsecurity_patch = "auto"\n',
     },
   },
@@ -108,6 +108,17 @@ describe.skipIf(!hasDuckd)("Tricky Store API against the real duckd", CONTRACT, 
         code: "invalid_keybox",
       })
     })
+  })
+
+  it("tells when OhMyKeymint must restart and keeps its injector format", async () => {
+    host = installHost({ ...backends["oh-my-keymint"], ...packages })
+    const request = toSaveRequest(draftFromStatus(await trickyStoreApi.status()))
+    const patchOnly = { ...request, default_policy: { security_patch: "2026-09-05" } }
+    expect((await trickyStoreApi.save(patchOnly)).restart_required).toBe(false)
+    const locked = { ...request, default_policy: { device_locked: "false" } }
+    expect((await trickyStoreApi.save(locked)).restart_required).toBe(true)
+    const injector = readFileSync(host.path("/data/misc/keystore/omk/injector.toml"), "utf8")
+    expect(injector).not.toContain("version")
   })
 
   it("downloads keyboxes the way providers and the repository hand them over", async () => {

@@ -51,15 +51,16 @@ export const useTrickyStore = defineStore("tricky-store", () => {
     current.systemApps = new Set(checked)
   }
 
-  async function save() {
-    await trickyStoreApi.save(toSaveRequest(draft.value!))
+  function save() {
+    return trickyStoreApi.save(toSaveRequest(draft.value!))
   }
 
   /** Saves one setting on top of the saved config, leaving other pending edits pending. */
   async function saveOnly(patch: Partial<Draft>) {
     const saved = draftFromStatus(status.value!)
-    await trickyStoreApi.save(toSaveRequest({ ...saved, ...patch }))
+    const result = await trickyStoreApi.save(toSaveRequest({ ...saved, ...patch }))
     if (draft.value) Object.assign(draft.value, patch)
+    return result
   }
 
   return {

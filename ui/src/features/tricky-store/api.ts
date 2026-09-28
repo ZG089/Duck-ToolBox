@@ -72,6 +72,13 @@ const statusSchema = z.object({
 export type Status = z.infer<typeof statusSchema>
 export type PackageEntry = Status["packages"][number]
 
+const savedSchema = z.object({
+  target_count: z.number(),
+  /** A changed setting takes effect only after the keystore module restarts. */
+  restart_required: z.boolean(),
+})
+export type Saved = z.infer<typeof savedSchema>
+
 export interface SaveRequest {
   targets: Target[]
   default_policy: Policy
@@ -121,7 +128,7 @@ const keybox = (...args: string[]) => ts("keybox", ...args)
 
 export const trickyStoreApi = {
   status: () => duckd(ts("status"), { schema: statusSchema }),
-  save: (request: SaveRequest) => duckd(ts("save"), { input: request }),
+  save: (request: SaveRequest) => duckd(ts("save"), { input: request, schema: savedSchema }),
 
   keyboxInstall: (path: string) => duckd(keybox("install", path), { schema: installSchema }),
   keyboxImport: (content: string) =>
