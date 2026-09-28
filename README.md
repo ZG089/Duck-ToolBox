@@ -138,6 +138,8 @@ Requirements:
 - Rust stable with the `aarch64-linux-android` target (`rust-toolchain.toml` installs it).
 - Android NDK r30.
 - Node.js 24 and pnpm 12 (`corepack enable` picks the version from `ui/package.json`).
+  Type checking runs the TypeScript 7 engine through typescript-native-bridge, because
+  stock TypeScript 7 no longer has the API vue-tsc needs.
 
 ```bash
 cargo xtask line-limit
@@ -163,9 +165,12 @@ and writes the module zip to `dist/`.
 **On a real KernelSU.** `scripts/device-test.sh <module zip>` prepares a disposable
 userdebug emulator (or any device with root adbd) and runs `ui/e2e-device` there:
 - KernelSU is late-loaded with `ksud late-load`, so no boot image is patched.
-- The module and the Tricky Store release are installed with `ksud module install`.
+- The module and the Tricky Store, TEESimulator and OhMyKeymint releases are installed
+  with `ksud module install`.
+- For each keystore module, only that one is enabled and the device reboots.
 - The tests drive the WebUI inside the KernelSU manager through Playwright's Android
-  support, and read the device's files back over adb.
+  support. They read the files back over adb, and check each daemon's own log to confirm
+  it accepted what the WebUI wrote.
 
 ## Acknowledgements
 

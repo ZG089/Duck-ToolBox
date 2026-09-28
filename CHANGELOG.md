@@ -16,6 +16,16 @@
   - Unknown sections, comments and keys are preserved.
 - Optional WebUI entry on the keystore module (plus the action button on Magisk), and the
   TSupport-Advance auto-target stop flag.
+- Tricky Addon's in-app translation update, translation guide and Telegram link.
+- Checked against the real modules on a KernelSU device, which found and fixed:
+  - OhMyKeymint v1.2.0 rejected our `injector.toml` (an unknown `version` key) while the
+    WebUI reported success. `[scoop.<package>]` tables are now read and written like
+    OhMyKeymint's own parser does.
+  - The "unknown" keybox now gives each key a two-certificate chain. Tricky Addon's
+    single-certificate keybox only loads on Tricky Store: TEESimulator and OhMyKeymint
+    refuse it.
+  - TEESimulator accepts EC-only keyboxes, such as the RKP workbench exports.
+  - Saving tells when OhMyKeymint needs a restart to apply a change.
 
 ### WebUI
 - Rebuilt on Vue 3.5, Vite 8, Tailwind CSS 4 and shadcn-vue.
@@ -28,6 +38,13 @@
   instead of misreading data.
 - Unit tests (Vitest) and end-to-end tests (Playwright against a mock KernelSU host) with
   light, dark, right-to-left and Chinese screenshots.
+- Contract tests run every API call through `duckctl.sh` and a real `duckd` build and
+  parse the results with the WebUI's schemas.
+- Device tests (`scripts/device-test.sh`) drive the WebUI inside the real KernelSU manager
+  with each keystore module installed.
+- Loads as seven files instead of about eighty. The KernelSU manager reads each request
+  through a root shell, so this halved the load time on a slow device.
+- Type-checked on the TypeScript 7 engine through typescript-native-bridge.
 
 ### Backend
 - `duckd` builds its CLI from a feature registry. `duckd features` reports the compiled-in
