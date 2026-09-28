@@ -32,12 +32,12 @@ done
 
 for candidate in \
   "$MODULE_ROOT/bin/duckd" \
-  "$MODULE_ROOT/duckd/target/aarch64-linux-android/release/duckd" \
-  "$MODULE_ROOT/duckd/target/aarch64-linux-android/debug/duckd" \
-  "$MODULE_ROOT/duckd/target/release/duckd" \
-  "$MODULE_ROOT/duckd/target/debug/duckd" \
-  "$MODULE_ROOT"/duckd/target/*-linux-android/release/duckd \
-  "$MODULE_ROOT"/duckd/target/*-linux-android/debug/duckd
+  "$MODULE_ROOT/target/aarch64-linux-android/release/duckd" \
+  "$MODULE_ROOT/target/aarch64-linux-android/debug/duckd" \
+  "$MODULE_ROOT/target/release/duckd" \
+  "$MODULE_ROOT/target/debug/duckd" \
+  "$MODULE_ROOT"/target/*-linux-android/release/duckd \
+  "$MODULE_ROOT"/target/*-linux-android/debug/duckd
 do
   if [ -n "$SEARCHED_CANDIDATES" ]; then
     SEARCHED_CANDIDATES="$SEARCHED_CANDIDATES, "
