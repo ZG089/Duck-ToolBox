@@ -1,4 +1,4 @@
-//! Directory listing for the WebUI file picker (keybox / provider import).
+//! Directory listing for the WebUI file picker, shared by every tool that imports files.
 
 use anyhow::{Context as _, Result};
 use duck_core::{Context, fs::modified_unix};

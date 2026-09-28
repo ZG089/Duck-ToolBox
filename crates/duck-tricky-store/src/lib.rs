@@ -12,7 +12,6 @@ mod detect;
 pub mod entry;
 pub mod error;
 pub mod exclude;
-pub mod files;
 pub mod keybox;
 pub mod model;
 mod policy;

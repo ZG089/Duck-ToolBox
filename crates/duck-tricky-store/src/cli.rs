@@ -6,8 +6,8 @@ use duck_core::{BoxFuture, ClapFeature, CommandResult, Context, FeatureInfo, Int
 use serde::de::DeserializeOwned;
 
 use crate::{
-    auto, entry, error::code_of, exclude, files, keybox, model::SaveRequest, props, providers,
-    service, state::KeyboxProvider, xposed,
+    auto, entry, error::code_of, exclude, keybox, model::SaveRequest, props, providers, service,
+    state::KeyboxProvider, xposed,
 };
 
 pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
@@ -44,8 +44,6 @@ pub enum Command {
     Props(StdinArgs),
     /// Apply auto-target additions (run on boot).
     AutoApply,
-    /// List a directory for the WebUI file picker.
-    Files(FilesArgs),
     /// WebUI entry on the keystore module itself.
     Entry {
         #[command(subcommand)]
@@ -68,6 +66,8 @@ pub enum EntryCommand {
 pub enum KeyboxCommand {
     /// Install a keybox from a local file path.
     Install(SourceArgs),
+    /// Install keybox XML sent on stdin as `{ "content": "..." }` (browser file picker).
+    Import(StdinArgs),
     /// Install the bundled AOSP software keybox.
     SetAosp,
     /// Generate and install a self-signed "unknown" keybox.
@@ -87,6 +87,8 @@ pub enum ProviderCommand {
     Save(StdinArgs),
     Reset,
     Import(SourceArgs),
+    /// Merge an export file sent on stdin as `{ "content": "..." }`.
+    ImportContent(StdinArgs),
     Export(ExportArgs),
 }
 
@@ -131,12 +133,10 @@ pub struct RefreshArgs {
     pub refresh: bool,
 }
 
-#[derive(Debug, Args, Clone)]
-pub struct FilesArgs {
-    #[arg(long, default_value = "/storage/emulated/0/Download")]
-    pub path: String,
-    #[arg(long, default_value = "xml")]
-    pub extension: String,
+/// File contents chosen in the WebView's own file picker, which exposes no path.
+#[derive(Debug, serde::Deserialize)]
+struct ContentRequest {
+    content: String,
 }
 
 pub async fn run(command: Command, ctx: &Context) -> CommandResult {
@@ -157,8 +157,6 @@ pub async fn run(command: Command, ctx: &Context) -> CommandResult {
                 .into_command("tricky-store.props", code_of)
         }
         Command::AutoApply => auto::apply(ctx).into_command("tricky-store.auto-apply", code_of),
-        Command::Files(args) => files::list(ctx, &args.path, &args.extension)
-            .into_command("tricky-store.files", code_of),
         Command::Entry { command } => match command {
             EntryCommand::Status => entry::status(ctx),
             EntryCommand::Enable => entry::set(ctx, true),
@@ -175,6 +173,9 @@ async fn keybox_command(command: KeyboxCommand, ctx: &Context) -> CommandResult 
         KeyboxCommand::Install(args) => {
             install_local(ctx, &args.source).into_command("tricky-store.keybox.install", code_of)
         }
+        KeyboxCommand::Import(args) => read_stdin_json::<ContentRequest>(args.stdin_json)
+            .and_then(|request| keybox::install(ctx, &request.content, "local"))
+            .into_command("tricky-store.keybox.import", code_of),
         KeyboxCommand::SetAosp => keybox::install(ctx, keybox::AOSP_KEYBOX, "aosp")
             .into_command("tricky-store.keybox.set-aosp", code_of),
         KeyboxCommand::Generate => {
@@ -199,6 +200,9 @@ fn provider_command(command: ProviderCommand, ctx: &Context) -> CommandResult {
             providers::reset(ctx).into_command("tricky-store.keybox.providers.reset", code_of)
         }
         ProviderCommand::Import(args) => providers::import(ctx, &args.source)
+            .into_command("tricky-store.keybox.providers.import", code_of),
+        ProviderCommand::ImportContent(args) => read_stdin_json::<ContentRequest>(args.stdin_json)
+            .and_then(|request| providers::import_content(ctx, &request.content))
             .into_command("tricky-store.keybox.providers.import", code_of),
         ProviderCommand::Export(args) => providers::export(ctx, args.path.as_deref())
             .map(|path| serde_json::json!({ "path": path }))

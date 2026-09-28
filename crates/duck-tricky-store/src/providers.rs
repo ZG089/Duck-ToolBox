@@ -50,7 +50,11 @@ pub fn reset(ctx: &Context) -> Result<Vec<KeyboxProvider>> {
 pub fn import(ctx: &Context, device_path: &str) -> Result<Vec<KeyboxProvider>> {
     let host = ctx.sysroot.path(device_path);
     let raw = std::fs::read_to_string(&host).with_context(|| format!("read {device_path}"))?;
-    let file: ExportFile = serde_json::from_str(&raw).context("parse provider export")?;
+    import_content(ctx, &raw)
+}
+
+pub fn import_content(ctx: &Context, raw: &str) -> Result<Vec<KeyboxProvider>> {
+    let file: ExportFile = serde_json::from_str(raw).context("parse provider export")?;
     if file.metadata != EXPORT_METADATA {
         return Err(TrickyError::BackendRule("not a keybox provider export file".into()).into());
     }

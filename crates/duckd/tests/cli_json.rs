@@ -380,7 +380,33 @@ fn tricky_store_set_aosp_installs_bundled_keybox() {
 }
 
 #[test]
-fn tricky_store_files_lists_xml_only() {
+fn tricky_store_keybox_import_accepts_picked_content() {
+    let env = env("ts-import");
+    install_backend(&env, "tricky_store", 246);
+    let aosp = fs::read_to_string(
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../duck-tricky-store/assets/aosp-keybox.xml"),
+    )
+    .unwrap();
+
+    let output = run_json(
+        &env,
+        &["tricky-store", "keybox", "import", "--stdin-json"],
+        &serde_json::json!({ "content": aosp }),
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+    assert!(
+        env.sysroot
+            .join("data/adb/tricky_store/keybox.xml")
+            .is_file()
+    );
+}
+
+#[test]
+fn system_files_lists_matching_files() {
     let env = env("ts-files");
     let dir = env.sysroot.join("storage/emulated/0/Download");
     fs::create_dir_all(dir.join("nested")).unwrap();
@@ -390,13 +416,12 @@ fn tricky_store_files_lists_xml_only() {
     let payload = run(
         &env,
         &[
-            "tricky-store",
+            "system",
             "files",
             "--path",
             "/storage/emulated/0/Download",
             "--extension",
             "xml",
-            "--json",
         ],
     );
     let names: Vec<&str> = payload["data"]["entries"]

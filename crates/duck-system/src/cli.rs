@@ -9,7 +9,7 @@ use serde_json::json;
 use crate::{
     SystemError, artifacts,
     error::code_of,
-    info,
+    files, info,
     update::{self, Channel},
 };
 
@@ -37,6 +37,8 @@ pub enum Command {
     },
     /// Generated output files and runtime paths.
     Artifacts,
+    /// List a directory for the WebUI file picker.
+    Files(FilesArgs),
     /// The most recent command log entries.
     Log(LogArgs),
     /// Open an http(s) link in the system browser.
@@ -57,6 +59,15 @@ pub enum UpdateCommand {
 pub struct ChannelArgs {
     #[arg(long, value_enum, default_value = "stable")]
     pub channel: Channel,
+}
+
+#[derive(Debug, Args, Clone)]
+pub struct FilesArgs {
+    #[arg(long, default_value = "/storage/emulated/0/Download")]
+    pub path: String,
+    /// Only list files with this extension (directories are always listed).
+    #[arg(long, default_value = "")]
+    pub extension: String,
 }
 
 #[derive(Debug, Args, Clone)]
@@ -84,6 +95,9 @@ pub async fn run(command: Command, ctx: &Context) -> CommandResult {
                 .into_command("system.update.install", code_of),
         },
         Command::Artifacts => artifacts::list(&ctx.paths).into_command("system.artifacts", code_of),
+        Command::Files(args) => {
+            files::list(ctx, &args.path, &args.extension).into_command("system.files", code_of)
+        }
         Command::Log(args) => log::tail(&ctx.paths, args.limit)
             .map(|entries| json!({ "entries": entries }))
             .into_command("system.log", code_of),

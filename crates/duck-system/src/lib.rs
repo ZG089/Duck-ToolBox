@@ -6,6 +6,7 @@
 mod artifacts;
 mod cli;
 mod error;
+mod files;
 mod info;
 mod update;
 
