@@ -1,19 +1,32 @@
-import path from 'node:path'
-import tailwindcss from '@tailwindcss/vite'
-import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from "node:url"
 
-// https://vite.dev/config/
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
+import tailwindcss from "@tailwindcss/vite"
+import vue from "@vitejs/plugin-vue"
+import { defineConfig } from "vite"
+
 export default defineConfig({
-  base: './',
-  plugins: [vue(), tailwindcss()],
+  // KernelSU serves webroot/ through WebViewAssetLoader, so assets must resolve relative
+  // to index.html.
+  base: "./",
+  plugins: [
+    vue(),
+    tailwindcss(),
+    VueI18nPlugin({
+      include: [fileURLToPath(new URL("./src/**/locales/*.json", import.meta.url))],
+      strictMessage: false,
+      escapeHtml: false,
+    }),
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
   build: {
-    outDir: '../module/webroot',
+    outDir: "../module/webroot",
     emptyOutDir: true,
+    // Tailwind CSS v4 needs Chrome 111+; index.html blocks older WebViews with a notice.
+    target: "chrome111",
   },
 })

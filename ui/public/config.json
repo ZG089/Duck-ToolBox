@@ -1,0 +1,8 @@
+{
+  "title": "Duck ToolBox",
+  "icon": "duck-logo.svg",
+  "windowResize": false,
+  "exitConfirm": false,
+  "backHandler": true,
+  "backInterceptor": "native"
+}

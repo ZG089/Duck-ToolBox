@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "types": ["node", "vite/client", "@intlify/unplugin-vue-i18n/messages"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.json"],
+  "exclude": []
+}

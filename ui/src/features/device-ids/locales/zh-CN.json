@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "设备标识写入",
+    "description": "把证明用的设备标识写入 Qualcomm Keymaster 可信应用。",
+    "warning": "目前只在部分一加高通设备上测试过，其他设备的结果不作担保；实际写入会改变 Keymaster TA 证明的设备标识。"
+  },
+  "form": {
+    "main": "标识",
+    "mainHint": "已从本机读取。只有需要对齐其他设备时才修改。",
+    "advanced": "高级",
+    "advancedHint": "IMEI、MEID 以及可信应用位置。",
+    "brand": "品牌",
+    "device": "设备代号",
+    "product": "产品名",
+    "serial": "序列号",
+    "manufacturer": "厂商",
+    "model": "型号",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA 名称",
+    "taPath": "TA 路径",
+    "dryRun": "试运行",
+    "dryRunHint": "只构造并验证命令，不实际发送到 Keymaster。",
+    "reload": "重新从设备读取",
+    "provision": "写入设备标识",
+    "provisionDry": "开始试运行",
+    "confirm": "现在把这些标识写入 Keymaster 吗？Duck ToolBox 无法撤销此操作。"
+  },
+  "result": {
+    "title": "结果",
+    "done": "设备标识写入完成",
+    "mode": "模式",
+    "dry": "试运行",
+    "live": "实际写入",
+    "count": "写入条目",
+    "taVersion": "TA 版本",
+    "library": "库",
+    "report": "报告",
+    "notAvailable": "不可用"
+  },
+  "errors": {
+    "missing_device_field": "有必填的标识为空。"
+  }
+}

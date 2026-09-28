@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Module & updates",
+    "description": "Versions, updates, output files, command history and maintenance."
+  },
+  "device": {
+    "title": "This device",
+    "android": "Android {release} · API {sdk}",
+    "patch": "Security patch",
+    "kernel": "Kernel",
+    "selinux": "SELinux",
+    "rootManager": "Root manager",
+    "module": "Duck ToolBox",
+    "notDetected": "Not detected"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "Enforcing",
+    "permissive": "Permissive"
+  },
+  "module": {
+    "title": "Module",
+    "id": "Module ID",
+    "version": "Module version",
+    "binary": "Backend version",
+    "author": "Author"
+  },
+  "update": {
+    "title": "Updates",
+    "channel": "Update channel",
+    "stable": "Stable",
+    "canary": "Canary (CI builds)",
+    "off": "Off",
+    "check": "Check for updates",
+    "upToDate": "You are on the latest version.",
+    "available": "Version {version} is available",
+    "install": "Install update",
+    "installed": "Update installed. Reboot to apply it.",
+    "reboot": "Reboot now",
+    "changelog": "What's new",
+    "banner": "Duck ToolBox {version} is available",
+    "view": "View"
+  },
+  "files": {
+    "title": "Output files",
+    "empty": "The tools have not written any files yet.",
+    "folder": "Saved in {path}"
+  },
+  "activity": {
+    "title": "Command history",
+    "empty": "No commands have run yet.",
+    "all": "Show all",
+    "failed": "Failed"
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "reboot": "Reboot device",
+    "rebootConfirm": "Reboot the device now?",
+    "uninstall": "Uninstall Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox is removed on the next reboot. Saved profiles and outputs under /data/adb/duck-toolbox stay in place.",
+    "uninstalled": "Duck ToolBox will be removed after the next reboot."
+  },
+  "errors": {
+    "no_root_manager": "No supported root manager was found.",
+    "invalid_url": "Only http(s) links can be opened.",
+    "no_update": "No update is available.",
+    "invalid_package": "The downloaded file is not a Duck ToolBox module.",
+    "download_failed": "The download failed."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ta": {
+    "help_help_instructions": "Mga Tagubilin",
+    "help_select_denylist": "Piliin mula sa DenyList",
+    "help_select_denylist_description": "Available lang sa Magisk, piliin ang mga app na nasa DenyList. Inirerekomenda.",
+    "help_deselect_unnecessary": "Huwag Pumili ng Hindi Kinakailangan",
+    "help_add_system_app": "Magdagdag ng System App",
+    "help_add_system_app_description": "Magdagdag ng tiyak na system app sa listahan ng apps.",
+    "search_bar_search_placeholder": "Maghanap",
+    "functional_button_save": "I-save",
+    "functional_button_reset": "I-reset",
+    "menu_select_denylist": "Piliin mula sa DenyList",
+    "menu_deselect_unnecessary": "Huwag Pumili ng Hindi Kinakailangan",
+    "menu_add_system_app": "Magdagdag ng System App",
+    "menu_keybox_local": "Lokal",
+    "boot_hash_title": "Boot Hash",
+    "about_disclaimer": "Ang WebUI na ito ay hindi bahagi ng Tricky Store, HUWAG i-report sa may-akda ng Tricky Store kung makaranas ka ng anumang isyu.",
+    "prompt_aosp_key_set": "Matagumpay na na-set ang AOSP Keybox",
+    "prompt_key_set_error": "Nabigong i-update ang keybox",
+    "prompt_unknown_key_set": "Matagumpay na na-set ang Hindi Kilalang Keybox",
+    "prompt_boot_hash_set": "Matagumpay na na-save ang Verified Boot Hash",
+    "prompt_boot_hash_set_error": "Nabigong i-update ang Verified Boot Hash",
+    "prompt_save_error": "Nabigong i-save ang config",
+    "prompt_custom_key_set": "Matagumpay na na-set ang Custom Keybox",
+    "prompt_custom_key_set_error": "Nabigong i-set ang Custom Keybox",
+    "security_patch_invalid_all": "Invalid format",
+    "add_system_app_title": "Magdagdag ng System App",
+    "customkb_remove_title": "Підтвердити видалення?"
+  }
+}

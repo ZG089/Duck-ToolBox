@@ -1,0 +1,33 @@
+{
+  "ta": {
+    "help_help_instructions": "คำแนะนำการใช้งาน",
+    "help_select_denylist": "เลือกจาก DenyList",
+    "help_select_denylist_description": "ใช้งานได้เฉพาะใน Magisk เท่านั้น โดยเลือกแอปที่อยู่ใน DenyList (แนะนำ)",
+    "help_deselect_unnecessary": "ยกเลิกการเลือกที่ไม่จำเป็น",
+    "help_add_system_app": "เพิ่มแอประบบ (System App)",
+    "help_add_system_app_description": "เพิ่มแอปพลิเคชันระบบที่ระบุลงในรายการแอป",
+    "search_bar_search_placeholder": "ค้นหา",
+    "functional_button_save": "บันทึก",
+    "functional_button_reset": "รีเซ็ต",
+    "menu_select_denylist": "เลือกจาก DenyList",
+    "menu_deselect_unnecessary": "ยกเลิกการเลือกที่ไม่จำเป็น",
+    "menu_add_system_app": "เพิ่มแอประบบ (System App)",
+    "menu_keybox_unknown": "ไม่รู้จัก (Unknown)",
+    "menu_keybox_local": "ในเครื่อง",
+    "menu_help": "ช่วยเหลือ",
+    "about_disclaimer": "โมดูลนี้ไม่ได้เป็นส่วนหนึ่งของโมดูล Tricky Store กรุณาอย่ารายงานปัญหาใดๆ ไปยัง Tricky Store หากพบข้อผิดพลาด",
+    "prompt_aosp_key_set": "ตั้งค่า AOSP keybox สำเร็จแล้ว",
+    "prompt_key_set_error": "อัปเดต keybox ไม่สำเร็จ",
+    "prompt_unknown_key_set": "ตั้งค่า Unknown keybox สำเร็จแล้ว",
+    "prompt_boot_hash_set": "บันทึก Verified Boot Hash สำเร็จแล้ว",
+    "prompt_boot_hash_set_error": "อัปเดต Verified Boot Hash ไม่สำเร็จ",
+    "prompt_save_error": "บันทึกการตั้งค่าไม่สำเร็จ",
+    "prompt_custom_key_set": "ตั้งค่า Custom keybox สำเร็จแล้ว",
+    "prompt_custom_key_set_error": "ตั้งค่า Custom keybox ไม่สำเร็จ",
+    "security_patch_invalid_all": "รูปแบบไม่ถูกต้อง",
+    "add_system_app_title": "เพิ่มแอประบบ",
+    "customkb_remove_title": "ยืนยันการลบ",
+    "mode_dialog_title": "โหมด",
+    "mode_auto": "อัตโนมัติ"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "面向 KernelSU、APatch 与 Magisk 的安全工具箱"
+  },
+  "nav": {
+    "home": "首页",
+    "settings": "设置",
+    "back": "返回",
+    "more": "更多选项",
+    "notFound": "页面不存在。"
+  },
+  "actions": {
+    "save": "保存",
+    "cancel": "取消",
+    "close": "关闭",
+    "confirm": "确认",
+    "copy": "复制",
+    "copied": "已复制到剪贴板",
+    "copyFailed": "当前环境无法复制",
+    "retry": "重试",
+    "refresh": "刷新",
+    "reset": "重置",
+    "remove": "移除",
+    "edit": "编辑",
+    "add": "添加",
+    "open": "打开",
+    "continue": "继续",
+    "details": "详情",
+    "browse": "浏览",
+    "import": "导入",
+    "export": "导出",
+    "install": "安装",
+    "search": "搜索",
+    "clear": "清除",
+    "done": "完成"
+  },
+  "home": {
+    "tools": "工具",
+    "system": "系统",
+    "missing": "当前构建未包含",
+    "outdated": "请更新模块",
+    "checking": "检测中…",
+    "noHost": "请从 KernelSU、APatch 或 WebUI 应用中打开 Duck ToolBox 来运行工具。",
+    "confirmTitle": "继续之前"
+  },
+  "settings": {
+    "appearance": "外观",
+    "theme": "主题",
+    "themeSystem": "跟随系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "language": "语言",
+    "languageSystem": "跟随系统",
+    "about": "关于",
+    "version": "版本",
+    "authors": "作者",
+    "repository": "源代码",
+    "license": "许可证",
+    "acknowledgements": "致谢",
+    "trickyAddon": "Tricky Store 管理功能移植自 KOWX712 的 Tricky Addon。",
+    "aospKeybox": "内置的 AOSP keybox 是 AOSP system/keymaster 中的参考证明密钥。"
+  },
+  "files": {
+    "title": "选择文件",
+    "empty": "此文件夹中没有匹配的文件。",
+    "up": "上一级",
+    "system": "系统文件选择器",
+    "loadFailed": "无法读取此文件夹。"
+  },
+  "errors": {
+    "title": "出错了",
+    "command": "命令",
+    "code": "代码",
+    "message": "信息",
+    "details": "详情",
+    "host_unavailable": "当前环境没有可用的 root WebUI 宿主。",
+    "api_mismatch": "已安装的后端协议版本不同，请重新安装模块。",
+    "contract_mismatch": "后端返回了此 WebUI 无法理解的数据，请重新安装模块。",
+    "no_envelope": "后端没有响应。",
+    "binary_not_found": "模块中缺少后端程序。",
+    "usage_error": "后端拒绝了该请求。",
+    "internal_error": "后端报告了错误。"
+  }
+}

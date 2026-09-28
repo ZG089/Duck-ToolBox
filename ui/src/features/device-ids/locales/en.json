@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Device ID Provisioner",
+    "description": "Write attestation device IDs into the Qualcomm Keymaster trusted app.",
+    "warning": "This has only been tested on some Qualcomm-based OnePlus devices. Results on other devices are not guaranteed, and a live write changes the IDs the Keymaster TA attests."
+  },
+  "form": {
+    "main": "Identifiers",
+    "mainHint": "Filled in from this device. Change them only to match the device you are aligning with.",
+    "advanced": "Advanced",
+    "advancedHint": "IMEI, MEID and the trusted app location.",
+    "brand": "Brand",
+    "device": "Device code",
+    "product": "Product",
+    "serial": "Serial",
+    "manufacturer": "Manufacturer",
+    "model": "Model",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA name",
+    "taPath": "TA path",
+    "dryRun": "Dry run",
+    "dryRunHint": "Build and validate the command without sending it to Keymaster.",
+    "reload": "Reload from device",
+    "provision": "Provision device IDs",
+    "provisionDry": "Run dry run",
+    "confirm": "Write these IDs into Keymaster now? This cannot be undone from Duck ToolBox."
+  },
+  "result": {
+    "title": "Result",
+    "done": "Device ID provisioning finished",
+    "mode": "Mode",
+    "dry": "Dry run",
+    "live": "Live write",
+    "count": "Written entries",
+    "taVersion": "TA version",
+    "library": "Library",
+    "report": "Report",
+    "notAvailable": "Not available"
+  },
+  "errors": {
+    "missing_device_field": "A required identifier is empty."
+  }
+}

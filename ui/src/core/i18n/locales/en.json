@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Security tools for KernelSU, APatch and Magisk"
+  },
+  "nav": {
+    "home": "Home",
+    "settings": "Settings",
+    "back": "Back",
+    "more": "More options",
+    "notFound": "This page does not exist."
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "copyFailed": "Copying is not available here",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "reset": "Reset",
+    "remove": "Remove",
+    "edit": "Edit",
+    "add": "Add",
+    "open": "Open",
+    "continue": "Continue",
+    "details": "Details",
+    "browse": "Browse",
+    "import": "Import",
+    "export": "Export",
+    "install": "Install",
+    "search": "Search",
+    "clear": "Clear",
+    "done": "Done"
+  },
+  "home": {
+    "tools": "Tools",
+    "system": "System",
+    "missing": "Not in this build",
+    "outdated": "Update the module",
+    "checking": "Checking…",
+    "noHost": "Open Duck ToolBox from KernelSU, APatch or a WebUI app to run the tools.",
+    "confirmTitle": "Before you continue"
+  },
+  "settings": {
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "language": "Language",
+    "languageSystem": "System default",
+    "about": "About",
+    "version": "Version",
+    "authors": "Authors",
+    "repository": "Source code",
+    "license": "License",
+    "acknowledgements": "Acknowledgements",
+    "trickyAddon": "The Tricky Store manager is a port of Tricky Addon by KOWX712.",
+    "aospKeybox": "The bundled AOSP keybox is the reference attestation key from AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Choose a file",
+    "empty": "No matching files in this folder.",
+    "up": "Up one level",
+    "system": "System file picker",
+    "loadFailed": "This folder cannot be read."
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "command": "Command",
+    "code": "Code",
+    "message": "Message",
+    "details": "Details",
+    "host_unavailable": "No root WebUI host is available here.",
+    "api_mismatch": "The installed backend speaks a different protocol. Reinstall the module.",
+    "contract_mismatch": "The backend returned data this WebUI does not understand. Reinstall the module.",
+    "no_envelope": "The backend did not answer.",
+    "binary_not_found": "The backend binary is missing from the module.",
+    "usage_error": "The backend rejected the request.",
+    "internal_error": "The backend reported an error."
+  }
+}

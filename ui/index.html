@@ -2,12 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/duck-logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="./duck-logo.svg" />
     <title>Duck ToolBox</title>
+    <script>
+      // The KernelSU manager serves its safe-area insets and Monet palette from /internal/
+      // (manager/app/.../webui/SuFilePathHandler.java). Requesting insets.css also turns on
+      // edge-to-edge drawing. Other WebUI hosts have no such files, so only ask KernelSU.
+      if (window.ksu) {
+        ["insets", "colors"].forEach(function (name) {
+          var link = document.createElement("link")
+          link.rel = "stylesheet"
+          link.href = "/internal/" + name + ".css"
+          document.head.appendChild(link)
+        })
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // Written in ES5 on purpose: it must run on WebViews too old to parse the app bundle.
+      ;(function () {
+        var MIN_CHROME = 111
+        var UPDATE_URL = "https://play.google.com/store/apps/details?id=com.google.android.webview"
+        var match = /Chrome\/(\d+)/.exec(navigator.userAgent)
+        if (!match || Number(match[1]) >= MIN_CHROME) return
+        window.__duckBlocked = true
+        var root = document.getElementById("app")
+        root.innerHTML =
+          '<div style="font-family:sans-serif;padding:32px 24px;text-align:center;line-height:1.5">' +
+          "<h2>Android System WebView " + match[1] + " is too old</h2>" +
+          "<p>Duck ToolBox needs WebView " + MIN_CHROME + " or newer.<br>WebView 版本过低，请升级到 " +
+          MIN_CHROME + " 或更高版本。</p>" +
+          '<button id="update-webview" style="padding:10px 20px;font-size:16px">Update WebView</button></div>'
+        document.getElementById("update-webview").onclick = function () {
+          var command = "am start -a android.intent.action.VIEW -d '" + UPDATE_URL + "'"
+          if (window.ksu && window.ksu.exec) {
+            window.ksu.exec(command)
+          } else {
+            window.open(UPDATE_URL, "_blank")
+          }
+        }
+      })()
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

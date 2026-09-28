@@ -1,0 +1,6 @@
+export { commandLabel, duckd, moduleDir, MODULE_ID } from "./client"
+export type { DuckdOptions } from "./client"
+export { DuckError, ENVELOPE_API, isDuckError, parseEnvelope } from "./envelope"
+export type { Envelope } from "./envelope"
+export { featureManifest, fileListSchema, listFiles } from "./system"
+export type { FeatureManifest, FileEntry, FileList } from "./system"

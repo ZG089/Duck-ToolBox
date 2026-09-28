@@ -1,0 +1,30 @@
+{
+  "ta": {
+    "help_help_instructions": "Təlimatlar",
+    "help_select_denylist": "DenyList-dən seç",
+    "help_select_denylist_description": "Yalnız Magisk-də mövcuddur, DenyList-də olan tətbiqləri seçin. Tövsiyə olunur.",
+    "help_deselect_unnecessary": "Lazımsızları seçmə",
+    "help_add_system_app": "Sistem Tətbiqi Əlavə et",
+    "help_add_system_app_description": "Müəyyən bir sistem tətbiqini tətbiq siyahısına əlavə et.",
+    "search_bar_search_placeholder": "Axtar",
+    "functional_button_save": "Yadda saxla",
+    "functional_button_reset": "Sıfırla",
+    "menu_select_denylist": "DenyList-dən seç",
+    "menu_deselect_unnecessary": "Lazımsızları seçmə",
+    "menu_add_system_app": "Sistem Tətbiqi Əlavə et",
+    "menu_keybox_local": "Lokal",
+    "boot_hash_title": "Boot Hash",
+    "about_disclaimer": "Bu mod, Tricky Store modulunun bir hissəsi deyil. Qarşılaşılan hər hansı bir problemi Tricky Store-a bildirməyin.",
+    "prompt_aosp_key_set": "AOSP keybox uğurla təyin olundu",
+    "prompt_key_set_error": "Keybox-u yeniləmək mümkün olmadı",
+    "prompt_unknown_key_set": "Naməlum keybox uğurla təyin olundu",
+    "prompt_boot_hash_set": "Təsdiqlənmiş Boot Hash uğurla yadda saxlanıldı",
+    "prompt_boot_hash_set_error": "Təsdiqlənmiş Boot Hash yenilənə bilmədi",
+    "prompt_save_error": "Konfiqurasiyanı yadda saxlamaq mümkün olmadı",
+    "prompt_custom_key_set": "Özəl keybox uğurla təyin olundu",
+    "prompt_custom_key_set_error": "Özəl keybox təyin oluna bilmədi",
+    "security_patch_invalid_all": "Yanlış format",
+    "add_system_app_title": "Sistem Tətbiqi Əlavə et",
+    "customkb_remove_title": "Çıxarılmanı Təsdiqlə"
+  }
+}

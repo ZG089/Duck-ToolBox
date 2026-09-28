@@ -1,0 +1,30 @@
+{
+  "ta": {
+    "help_help_instructions": "Οδηγίες",
+    "help_select_denylist": "Επίλεξε από DenyList",
+    "help_select_denylist_description": "Διαθέσιμο μόνο στο Magisk, επίλεξε εφαρμογές που είναι στη DenyList. Συνιστάται.",
+    "help_deselect_unnecessary": "Αποεπίλεξε άχρηστα",
+    "help_add_system_app": "Πρόσθεσε Εφαρμογή Συστήματος",
+    "help_add_system_app_description": "Πρόσθεσε συγκεκριμένη εφαρμογή συστήματος στη λίστα εφαρμογών.",
+    "search_bar_search_placeholder": "Αναζήτηση",
+    "functional_button_save": "Αποθήκευση",
+    "functional_button_reset": "Επαναφορά",
+    "menu_select_denylist": "Επίλεξε από DenyList",
+    "menu_deselect_unnecessary": "Αποεπίλεξε Άχρηστα",
+    "menu_add_system_app": "Πρόσθεσε Εφαρμογή Συστήματος",
+    "menu_keybox_local": "Τοπικά",
+    "boot_hash_title": "Boot Hash",
+    "about_disclaimer": "Αυτό το module δεν είναι μέρος του Tricky Store module. ΜΗΝ αναφέρετε προβλήματα στο Tricky Store αν προκύψουν.",
+    "prompt_aosp_key_set": "Το AOSP keybox ορίστηκε με επιτυχία",
+    "prompt_key_set_error": "Αποτυχία ενημέρωσης keybox",
+    "prompt_unknown_key_set": "Το Unknown keybox ορίστηκε με επιτυχία",
+    "prompt_boot_hash_set": "Το Verified Boot Hash αποθηκεύτηκε με επιτυχία",
+    "prompt_boot_hash_set_error": "Αποτυχία ενημέρωσης Verified Boot Hash",
+    "prompt_save_error": "Αποτυχία αποθήκευσης ρύθμισης",
+    "prompt_custom_key_set": "Το Custom keybox ορίστηκε με επιτυχία",
+    "prompt_custom_key_set_error": "Αποτυχία ορισμού custom keybox",
+    "security_patch_invalid_all": "Μη έγκυρη μορφή",
+    "add_system_app_title": "Πρόσθεσε Εφαρμογή Συστήματος",
+    "customkb_remove_title": "Επιβεβαίωση Αφαίρεσης?"
+  }
+}

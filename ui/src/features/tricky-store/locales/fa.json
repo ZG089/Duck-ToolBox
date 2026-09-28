@@ -1,0 +1,29 @@
+{
+  "ta": {
+    "help_help_instructions": "راهنما",
+    "help_select_denylist": "انتخاب از DenyList",
+    "help_select_denylist_description": "فقط در Magisk موجود است، برنامه‌هایی که در DenyList هستند را انتخاب کنید. توصیه شده.",
+    "help_deselect_unnecessary": "لغو انتخاب غیرضروری",
+    "help_add_system_app": "افزودن برنامه سیستمی",
+    "help_add_system_app_description": "برنامه سیستمی خاص را به لیست برنامه‌ها اضافه کنید.",
+    "search_bar_search_placeholder": "جُستجو",
+    "functional_button_save": "ذخیره",
+    "functional_button_reset": "بازنشانی",
+    "menu_select_denylist": "انتخاب از DenyList",
+    "menu_deselect_unnecessary": "لغو انتخاب غیرضروری",
+    "menu_add_system_app": "افزودن برنامه سیستمی",
+    "menu_keybox_local": "محلی",
+    "about_disclaimer": "این ماژول بخشی از ماژول Tricky Store نیست. در صورت بروز مشکل، به Tricky Store گزارش ندهید.",
+    "prompt_aosp_key_set": "AOSP keybox با موفقیت تنظیم شد",
+    "prompt_key_set_error": "به‌روزرسانی keybox ناموفق بود",
+    "prompt_unknown_key_set": "Unknown keybox با موفقیت تنظیم شد",
+    "prompt_boot_hash_set": "Verified Boot Hash با موفقیت ذخیره شد",
+    "prompt_boot_hash_set_error": "به‌روزرسانی Verified Boot Hash ناموفق بود",
+    "prompt_save_error": "ذخیره پیکربندی ناموفق بود",
+    "prompt_custom_key_set": "Custom keybox با موفقیت تنظیم شد",
+    "prompt_custom_key_set_error": "تنظیم Custom keybox ناموفق بود",
+    "security_patch_invalid_all": "قالب نامعتبر",
+    "add_system_app_title": "افزودن برنامه سیستمی",
+    "customkb_remove_title": "تایید حذف"
+  }
+}
