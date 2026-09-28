@@ -29,7 +29,9 @@
 
 ### WebUI
 - Rebuilt on Vue 3.5, Vite 8, Tailwind CSS 4 and shadcn-vue.
-  - Follows the KernelSU manager's Monet colors and window insets.
+  - A black and white theme, light or dark, where color only marks errors, success and
+    warnings.
+  - Follows the KernelSU manager's window insets.
   - The Android back gesture closes dialogs and sheets.
 - Every tool is a self-contained feature folder, discovered automatically.
   - Features plug into each other only through extension points.

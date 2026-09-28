@@ -7,16 +7,14 @@
     <link rel="icon" type="image/svg+xml" href="./duck-logo.svg" />
     <title>Duck ToolBox</title>
     <script>
-      // The KernelSU manager serves its safe-area insets and Monet palette from /internal/
-      // (manager/app/.../webui/SuFilePathHandler.java). Requesting insets.css also turns on
-      // edge-to-edge drawing. Other WebUI hosts have no such files, so only ask KernelSU.
+      // The KernelSU manager serves its safe-area insets from /internal/insets.css
+      // (manager/app/.../webui/SuFilePathHandler.java), and requesting it also turns on
+      // edge-to-edge drawing. Other WebUI hosts have no such file, so only ask KernelSU.
       if (window.ksu) {
-        ["insets", "colors"].forEach(function (name) {
-          var link = document.createElement("link")
-          link.rel = "stylesheet"
-          link.href = "/internal/" + name + ".css"
-          document.head.appendChild(link)
-        })
+        var link = document.createElement("link")
+        link.rel = "stylesheet"
+        link.href = "/internal/insets.css"
+        document.head.appendChild(link)
       }
     </script>
   </head>

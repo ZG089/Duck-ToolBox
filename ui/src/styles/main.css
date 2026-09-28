@@ -5,40 +5,31 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design tokens.
- *
- * The KernelSU manager serves `/internal/colors.css` with its Monet palette as camelCase
- * variables (`--primary`, `--onPrimary`, `--surfaceContainer`, ...; see
- * manager/app/.../webui/MonetColorsProvider.kt). Every semantic color below prefers the
- * manager's value and falls back to Duck ToolBox's own palette, so the WebUI follows the
- * manager theme without depending on it. Our fallbacks use the `--duck-` prefix because
- * redefining `--primary` here would shadow the manager's value.
+ * Black and white on purpose: hue is reserved for status, which is the destructive red here
+ * and the toaster's green and yellow.
  */
 :root {
   color-scheme: light;
   --radius: 0.875rem;
 
-  --duck-background: oklch(0.985 0.003 90);
-  --duck-on-background: oklch(0.2 0.012 80);
-  --duck-surface: oklch(0.965 0.006 85);
-  --duck-surface-high: oklch(0.94 0.008 85);
-  --duck-surface-highest: oklch(0.915 0.01 85);
-  --duck-on-surface: oklch(0.21 0.012 80);
-  --duck-on-surface-variant: oklch(0.45 0.015 80);
-  --duck-primary: oklch(0.56 0.13 62);
-  --duck-on-primary: oklch(0.99 0 0);
-  --duck-secondary-container: oklch(0.92 0.045 80);
-  --duck-on-secondary-container: oklch(0.3 0.05 70);
-  --duck-error: oklch(0.55 0.2 27);
-  --duck-on-error: oklch(0.99 0 0);
-  --duck-outline: oklch(0.72 0.01 80);
-  --duck-outline-variant: oklch(0.88 0.008 85);
-
-  /* Plain shadcn names referenced directly by generated components (the Sonner toaster).
-     None of them collide with the manager's variable names. */
-  --popover: var(--surfaceContainerHigh, var(--duck-surface-high));
-  --popover-foreground: var(--onSurface, var(--duck-on-surface));
-  --border: var(--outlineVariant, var(--duck-outline-variant));
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
 
   /* KernelSU `internal/insets.css` defines --window-inset-*; plain browsers use env(). */
   --inset-top: var(--window-inset-top, env(safe-area-inset-top, 0px));
@@ -49,46 +40,48 @@
 
 .dark {
   color-scheme: dark;
-  --duck-background: oklch(0.17 0.006 80);
-  --duck-on-background: oklch(0.93 0.008 85);
-  --duck-surface: oklch(0.21 0.008 80);
-  --duck-surface-high: oklch(0.25 0.01 80);
-  --duck-surface-highest: oklch(0.29 0.012 80);
-  --duck-on-surface: oklch(0.93 0.008 85);
-  --duck-on-surface-variant: oklch(0.75 0.012 85);
-  --duck-primary: oklch(0.8 0.13 75);
-  --duck-on-primary: oklch(0.25 0.05 65);
-  --duck-secondary-container: oklch(0.33 0.04 75);
-  --duck-on-secondary-container: oklch(0.9 0.04 85);
-  --duck-error: oklch(0.72 0.17 25);
-  --duck-on-error: oklch(0.25 0.08 25);
-  --duck-outline: oklch(0.55 0.012 80);
-  --duck-outline-variant: oklch(0.34 0.01 80);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
 }
 
 @theme inline {
   --font-sans: system-ui, Roboto, "Noto Sans", "Noto Sans CJK SC", "PingFang SC", sans-serif;
   --font-mono: ui-monospace, "Roboto Mono", "JetBrains Mono", Menlo, monospace;
 
-  --color-background: var(--background, var(--duck-background));
-  --color-foreground: var(--onBackground, var(--duck-on-background));
-  --color-card: var(--surfaceContainerLow, var(--duck-surface));
-  --color-card-foreground: var(--onSurface, var(--duck-on-surface));
-  --color-popover: var(--surfaceContainerHigh, var(--duck-surface-high));
-  --color-popover-foreground: var(--onSurface, var(--duck-on-surface));
-  --color-primary: var(--primary, var(--duck-primary));
-  --color-primary-foreground: var(--onPrimary, var(--duck-on-primary));
-  --color-secondary: var(--secondaryContainer, var(--duck-secondary-container));
-  --color-secondary-foreground: var(--onSecondaryContainer, var(--duck-on-secondary-container));
-  --color-muted: var(--surfaceContainerHighest, var(--duck-surface-highest));
-  --color-muted-foreground: var(--onSurfaceVariant, var(--duck-on-surface-variant));
-  --color-accent: var(--surfaceContainerHigh, var(--duck-surface-high));
-  --color-accent-foreground: var(--onSurface, var(--duck-on-surface));
-  --color-destructive: var(--error, var(--duck-error));
-  --color-destructive-foreground: var(--onError, var(--duck-on-error));
-  --color-border: var(--outlineVariant, var(--duck-outline-variant));
-  --color-input: var(--outline, var(--duck-outline));
-  --color-ring: var(--primary, var(--duck-primary));
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

@@ -3,8 +3,11 @@ import "vue-sonner/style.css"
 
 import { Toaster } from "@/components/ui/sonner"
 import ErrorDetailsDialog from "@/core/components/ErrorDetailsDialog.vue"
+import { useDarkTheme } from "@/core/theme"
 
 import AppBar from "./components/AppBar.vue"
+
+const dark = useDarkTheme()
 </script>
 
 <template>
@@ -16,6 +19,7 @@ import AppBar from "./components/AppBar.vue"
       </RouterView>
     </main>
     <Toaster
+      :theme="dark ? 'dark' : 'light'"
       position="top-center"
       rich-colors
       close-button
