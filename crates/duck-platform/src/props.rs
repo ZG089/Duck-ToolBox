@@ -42,6 +42,16 @@ pub fn resetprop() -> String {
     exec::find_tool("resetprop", RESETPROP_CANDIDATES)
 }
 
+/// Rebuilds the property area holding `name` after it was changed, so the edit leaves no
+/// trace in the area's layout (`resetprop -c -Z NAME` in KernelSU's resetprop). Older
+/// resetprop builds only know `-c`, which rebuilds every abnormal area. Best effort.
+pub fn rebuild_area(name: &str) {
+    let resetprop = resetprop();
+    if exec::stdout(&resetprop, &["-c", "-Z", name]).is_err() {
+        let _ = exec::stdout(&resetprop, &["-c"]);
+    }
+}
+
 /// Parses `getprop` output lines of the form `[name]: [value]`.
 pub fn parse_listing(output: &str) -> BTreeMap<String, String> {
     output

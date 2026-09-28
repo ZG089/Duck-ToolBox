@@ -130,6 +130,9 @@ fn legacy_tricky_store_uses_target_txt() {
 fn tee_simulator_writes_profiles_json() {
     let fixture = fixture("tees");
     install_backend(&fixture.ctx.sysroot, "teesim", 400);
+    let keybox = config_path(&fixture, "/data/adb/teesim/keybox.xml");
+    fs::create_dir_all(keybox.parent().unwrap()).unwrap();
+    fs::write(&keybox, crate::keybox::AOSP_KEYBOX).unwrap();
 
     save(
         &fixture.ctx,
@@ -162,6 +165,13 @@ fn tee_simulator_writes_profiles_json() {
 fn oh_my_keymint_splits_scoop_and_trust() {
     let fixture = fixture("omk");
     install_backend(&fixture.ctx.sysroot, "oh_my_keymint", 100);
+    let seeded = config_path(&fixture, "/data/misc/keystore/omk/config.toml");
+    fs::create_dir_all(seeded.parent().unwrap()).unwrap();
+    fs::write(
+        &seeded,
+        "version = 2\n\n[trust]\nos_version = \"auto\"\nsecurity_patch = \"latest\"\nverified_boot_state = true\ndevice_locked = true\n",
+    )
+    .unwrap();
 
     save(
         &fixture.ctx,

@@ -1,13 +1,14 @@
 //! `duckd`: every feature crate registered in [`FEATURES`] becomes `duckd <id> ...`, and every
 //! invocation prints exactly one JSON envelope on stdout.
 
+mod builtin;
+
 use clap::{Arg, ArgAction, error::ErrorKind};
 use duck_core::{
-    Context, Feature, FeatureInfo, Sysroot,
-    command::{CommandFailure, CommandOutput, CommandResult},
+    Context, Feature, Sysroot,
+    command::{CommandFailure, CommandResult},
     envelope,
 };
-use serde::Serialize;
 
 static FEATURES: &[&dyn Feature] = &[
     #[cfg(feature = "rkp")]
@@ -19,15 +20,6 @@ static FEATURES: &[&dyn Feature] = &[
     #[cfg(feature = "system")]
     &duck_system::FEATURE,
 ];
-
-const MANIFEST_COMMAND: &str = "features";
-
-#[derive(Debug, Serialize)]
-struct Manifest {
-    binary_version: &'static str,
-    api: u32,
-    features: Vec<FeatureInfo>,
-}
 
 fn cli() -> clap::Command {
     clap::Command::new("duckd")
@@ -42,10 +34,7 @@ fn cli() -> clap::Command {
         )
         .subcommand_required(true)
         .arg_required_else_help(true)
-        .subcommand(
-            clap::Command::new(MANIFEST_COMMAND)
-                .about("List the features compiled into this binary"),
-        )
+        .subcommands(builtin::subcommands())
         .subcommands(FEATURES.iter().map(|feature| feature.command()))
 }
 
@@ -87,7 +76,8 @@ async fn main() {
     };
 
     let result = match matches.subcommand() {
-        Some((MANIFEST_COMMAND, _)) => manifest(),
+        Some((builtin::MANIFEST, _)) => builtin::manifest(FEATURES),
+        Some((builtin::DESCRIBE, _)) => builtin::describe(FEATURES, &ctx),
         Some((id, sub)) => match FEATURES.iter().find(|feature| feature.info().id == id) {
             Some(feature) => feature.run(sub, &ctx).await,
             None => unreachable!("clap only accepts registered subcommands"),
@@ -95,17 +85,6 @@ async fn main() {
         None => unreachable!("a subcommand is required"),
     };
     emit(&ctx, result);
-}
-
-fn manifest() -> CommandResult {
-    CommandOutput::new(
-        "features",
-        Manifest {
-            binary_version: env!("CARGO_PKG_VERSION"),
-            api: envelope::API_VERSION,
-            features: FEATURES.iter().map(|feature| feature.info()).collect(),
-        },
-    )
 }
 
 fn emit(ctx: &Context, result: CommandResult) {
@@ -124,7 +103,7 @@ fn emit(ctx: &Context, result: CommandResult) {
 
 #[cfg(test)]
 mod tests {
-    use super::{FEATURES, cli};
+    use super::{FEATURES, builtin, cli};
 
     #[test]
     fn cli_is_consistent() {
@@ -132,10 +111,12 @@ mod tests {
     }
 
     #[test]
-    fn feature_ids_are_unique() {
+    fn feature_ids_are_unique_and_do_not_shadow_builtins() {
         let mut ids: Vec<_> = FEATURES.iter().map(|feature| feature.info().id).collect();
+        ids.extend([builtin::MANIFEST, builtin::DESCRIBE]);
         ids.sort_unstable();
+        let before = ids.len();
         ids.dedup();
-        assert_eq!(ids.len(), FEATURES.len());
+        assert_eq!(ids.len(), before);
     }
 }

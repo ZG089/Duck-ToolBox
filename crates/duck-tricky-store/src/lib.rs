@@ -9,6 +9,7 @@
 mod adapters;
 pub mod auto;
 mod detect;
+pub mod entry;
 pub mod error;
 pub mod exclude;
 pub mod files;

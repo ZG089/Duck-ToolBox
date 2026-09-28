@@ -95,29 +95,17 @@ fn check_backend_rules(backend: Backend, summary: &KeyboxSummary) -> Result<()> 
     Ok(())
 }
 
+/// Keyboxes are a few KiB; anything larger is not a keybox.
+const MAX_KEYBOX_BYTES: usize = 1024 * 1024;
+
 pub async fn fetch(url: &str, decode_steps: &str) -> Result<String> {
     decode::check(decode_steps)?;
-    let parsed = reqwest::Url::parse(url)
-        .map_err(|error| TrickyError::Download(format!("invalid URL `{url}`: {error}")))?;
-    if !matches!(parsed.scheme(), "https" | "http") {
-        return Err(
-            TrickyError::Download(format!("unsupported URL scheme `{}`", parsed.scheme())).into(),
-        );
+    if !duck_platform::net::is_web_url(url) {
+        return Err(TrickyError::Download(format!("not an http(s) URL: `{url}`")).into());
     }
-
-    let response = duck_platform::net::http_client()?
-        .get(parsed)
-        .send()
+    let body = duck_platform::net::fetch_bytes(url, MAX_KEYBOX_BYTES)
         .await
-        .map_err(|error| TrickyError::Download(error.to_string()))?;
-    let status = response.status();
-    if !status.is_success() {
-        return Err(TrickyError::Download(format!("HTTP {}", status.as_u16())).into());
-    }
-    let body = response
-        .bytes()
-        .await
-        .map_err(|error| TrickyError::Download(error.to_string()))?;
+        .map_err(|error| TrickyError::Download(format!("{error:#}")))?;
 
     let decoded = decode::apply(decode_steps, &body)?;
     String::from_utf8(decoded).map_err(|_| {

@@ -32,14 +32,22 @@ pub trait Feature: Sync {
 
     fn run<'a>(&'a self, matches: &'a ArgMatches, ctx: &'a Context)
     -> BoxFuture<'a, CommandResult>;
+
+    /// A short, cheap-to-compute state summary for the root manager's module list, or
+    /// `None` when the feature has nothing worth showing there.
+    fn status_line(&self, _ctx: &Context) -> Option<String> {
+        None
+    }
 }
 
 pub type Handler<C> = for<'a> fn(C, &'a Context) -> BoxFuture<'a, CommandResult>;
+pub type StatusLine = fn(&Context) -> Option<String>;
 
 /// Adapts a clap-derived [`Subcommand`] enum and its handler into a [`Feature`].
 pub struct ClapFeature<C> {
     info: FeatureInfo,
     handler: Handler<C>,
+    status: Option<StatusLine>,
     _command: PhantomData<fn() -> C>,
 }
 
@@ -48,14 +56,24 @@ impl<C> ClapFeature<C> {
         Self {
             info,
             handler,
+            status: None,
             _command: PhantomData,
         }
+    }
+
+    pub const fn with_status(mut self, status: StatusLine) -> Self {
+        self.status = Some(status);
+        self
     }
 }
 
 impl<C: Subcommand> Feature for ClapFeature<C> {
     fn info(&self) -> FeatureInfo {
         self.info
+    }
+
+    fn status_line(&self, ctx: &Context) -> Option<String> {
+        self.status.and_then(|status| status(ctx))
     }
 
     fn command(&self) -> clap::Command {

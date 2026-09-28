@@ -54,6 +54,9 @@ pub struct State {
     pub auto: AutoTargetState,
     #[serde(default = "default_providers")]
     pub providers: Vec<KeyboxProvider>,
+    /// Whether the keystore module should carry a WebUI entry for this manager.
+    #[serde(default)]
+    pub entry_enabled: bool,
 }
 
 impl Default for State {
@@ -66,6 +69,7 @@ impl Default for State {
                 .collect(),
             auto: AutoTargetState::default(),
             providers: default_providers(),
+            entry_enabled: false,
         }
     }
 }

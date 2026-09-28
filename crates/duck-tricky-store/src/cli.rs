@@ -6,8 +6,8 @@ use duck_core::{BoxFuture, ClapFeature, CommandResult, Context, FeatureInfo, Int
 use serde::de::DeserializeOwned;
 
 use crate::{
-    auto, error::code_of, exclude, files, keybox, model::SaveRequest, props, providers, service,
-    state::KeyboxProvider, xposed,
+    auto, entry, error::code_of, exclude, files, keybox, model::SaveRequest, props, providers,
+    service, state::KeyboxProvider, xposed,
 };
 
 pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
@@ -17,7 +17,8 @@ pub static FEATURE: ClapFeature<Command> = ClapFeature::new(
         contract: 1,
     },
     dispatch,
-);
+)
+.with_status(service::status_line);
 
 fn dispatch<'a>(command: Command, ctx: &'a Context) -> BoxFuture<'a, CommandResult> {
     Box::pin(run(command, ctx))
@@ -45,6 +46,22 @@ pub enum Command {
     AutoApply,
     /// List a directory for the WebUI file picker.
     Files(FilesArgs),
+    /// WebUI entry on the keystore module itself.
+    Entry {
+        #[command(subcommand)]
+        command: EntryCommand,
+    },
+}
+
+#[derive(Debug, Subcommand)]
+pub enum EntryCommand {
+    Status,
+    Enable,
+    Disable,
+    /// Restore the saved setting (run on boot).
+    Apply,
+    /// Remove every link this feature created (run on uninstall).
+    Remove,
 }
 
 #[derive(Debug, Subcommand)]
@@ -142,6 +159,14 @@ pub async fn run(command: Command, ctx: &Context) -> CommandResult {
         Command::AutoApply => auto::apply(ctx).into_command("tricky-store.auto-apply", code_of),
         Command::Files(args) => files::list(ctx, &args.path, &args.extension)
             .into_command("tricky-store.files", code_of),
+        Command::Entry { command } => match command {
+            EntryCommand::Status => entry::status(ctx),
+            EntryCommand::Enable => entry::set(ctx, true),
+            EntryCommand::Disable => entry::set(ctx, false),
+            EntryCommand::Apply => entry::apply(ctx),
+            EntryCommand::Remove => entry::remove_all(ctx).and_then(|()| entry::status(ctx)),
+        }
+        .into_command("tricky-store.entry", code_of),
     }
 }
 

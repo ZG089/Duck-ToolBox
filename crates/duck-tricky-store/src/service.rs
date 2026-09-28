@@ -91,6 +91,35 @@ pub fn status(ctx: &Context) -> Result<StatusData> {
     })
 }
 
+/// e.g. `Tricky Store (TS): 23 targets, keybox installed`. Skips the package manager, so it
+/// stays fast enough to run from a boot script.
+pub fn status_line(ctx: &Context) -> Option<String> {
+    let Some(detection) = detect::detect_active(&ctx.sysroot) else {
+        return Some("Keystore: no Tricky Store, TEESimulator or OhMyKeymint found".into());
+    };
+    let adapter = for_backend(detection.backend);
+    let name = detection
+        .name
+        .as_deref()
+        .unwrap_or(detection.module_id.as_str());
+    let targets = adapter
+        .read(&ctx.sysroot)
+        .map(|config| config.targets.len())
+        .unwrap_or(0);
+    let keybox = keybox::status(&ctx.sysroot, &adapter.keybox_path(&ctx.sysroot));
+    let state = if !detection.active {
+        ", module disabled"
+    } else if keybox.exists {
+        ", keybox installed"
+    } else {
+        ", no keybox"
+    };
+    Some(format!(
+        "{name} ({}): {targets} targets{state}",
+        detection.identity
+    ))
+}
+
 pub fn save(ctx: &Context, request: SaveRequest) -> Result<SaveData> {
     let (_detection, adapter) = active_adapter(&ctx.sysroot)?;
     let schema = adapter.policy_schema();
@@ -100,15 +129,18 @@ pub fn save(ctx: &Context, request: SaveRequest) -> Result<SaveData> {
         .iter()
         .map(|entry| entry.package_name.as_str())
         .collect();
-    let per_app_policy = if schema.supports_per_app_policy {
-        request
-            .per_app_policy
-            .into_iter()
-            .filter(|(package, policy)| targeted.contains(package.as_str()) && !policy.is_empty())
-            .collect()
-    } else {
-        BTreeMap::new()
-    };
+    let mut per_app_policy = BTreeMap::new();
+    if schema.supports_per_app_policy {
+        for (package, policy) in request.per_app_policy {
+            if !targeted.contains(package.as_str()) {
+                continue;
+            }
+            let policy = crate::policy::sanitize(&schema, policy)?;
+            if !policy.is_empty() {
+                per_app_policy.insert(package, policy);
+            }
+        }
+    }
     let default_policy = crate::policy::sanitize(&schema, request.default_policy)?;
 
     let target_count = targets.len();

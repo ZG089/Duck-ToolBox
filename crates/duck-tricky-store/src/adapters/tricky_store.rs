@@ -38,8 +38,48 @@ impl super::ConfigAdapter for TrickyStoreAdapter {
 
     fn write(&self, sysroot: &Sysroot, config: &ConfigData) -> Result<()> {
         let path = sysroot.path(format!("{TS_CONFIG_DIR}/config.ini"));
-        write_bytes_preserving(&path, serialize_ini(config).as_bytes())
+        let mut body = serialize_ini(config);
+        if let Some(existing) = duck_core::fs::read_optional(&path)? {
+            for section in unknown_sections(&existing) {
+                body.push('\n');
+                body.push_str(&section);
+                body.push('\n');
+            }
+        }
+        write_bytes_preserving(&path, body.as_bytes())
     }
+}
+
+/// Per-app sections are named after packages, which always contain a dot. Any other
+/// section belongs to a Tricky Store feature this adapter does not know yet, so it is kept
+/// verbatim instead of being dropped on save.
+fn is_known_section(name: &str) -> bool {
+    matches!(name, "target" | "default_policy") || name.contains('.')
+}
+
+fn unknown_sections(raw: &str) -> Vec<String> {
+    let mut sections = Vec::new();
+    let mut current: Option<Vec<&str>> = None;
+    for line in raw.lines() {
+        let trimmed = line.trim();
+        if let Some(name) = trimmed
+            .strip_prefix('[')
+            .and_then(|rest| rest.strip_suffix(']'))
+        {
+            if let Some(lines) = current.take() {
+                sections.push(lines.join("\n").trim_end().to_owned());
+            }
+            if !is_known_section(name.trim()) {
+                current = Some(vec![trimmed]);
+            }
+        } else if let Some(lines) = current.as_mut() {
+            lines.push(line);
+        }
+    }
+    if let Some(lines) = current {
+        sections.push(lines.join("\n").trim_end().to_owned());
+    }
+    sections
 }
 
 pub(crate) fn patch_fields() -> Vec<PolicyField> {
@@ -91,11 +131,11 @@ fn parse_ini(raw: &str) -> ConfigData {
                 }
             }
             Some("default_policy") => insert_kv(&mut config.default_policy, trimmed),
-            Some(pkg) => {
+            Some(pkg) if is_known_section(pkg) => {
                 let entry = config.per_app_policy.entry(pkg.to_owned()).or_default();
                 insert_kv(entry, trimmed);
             }
-            None => {}
+            Some(_) | None => {}
         }
     }
 
@@ -142,8 +182,32 @@ fn serialize_section(name: &str, policy: &Policy) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_ini, serialize_ini};
-    use crate::model::TargetMode;
+    use duck_core::Sysroot;
+
+    use super::{TrickyStoreAdapter, parse_ini, serialize_ini};
+    use crate::{adapters::ConfigAdapter, model::TargetMode};
+
+    #[test]
+    fn unknown_sections_survive_a_save() {
+        let root = tempfile::tempdir().unwrap();
+        let sysroot = Sysroot::new(root.path());
+        let path = sysroot.path("/data/adb/tricky_store/config.ini");
+        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        std::fs::write(
+            &path,
+            "[future_feature]\n# tuned by hand\nflag = 1\n\n[target]\ncom.a\n",
+        )
+        .unwrap();
+
+        let adapter = TrickyStoreAdapter;
+        let config = adapter.read(&sysroot).unwrap();
+        assert!(config.per_app_policy.is_empty());
+        adapter.write(&sysroot, &config).unwrap();
+
+        let written = std::fs::read_to_string(&path).unwrap();
+        assert!(written.contains("[future_feature]\n# tuned by hand\nflag = 1"));
+        assert!(written.contains("[target]\ncom.a"));
+    }
 
     #[test]
     fn round_trips_targets_modes_and_policies() {

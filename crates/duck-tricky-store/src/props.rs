@@ -9,11 +9,13 @@ use duck_core::{Context, Sysroot, fs::write_string_atomic};
 use duck_platform::props;
 use serde::{Deserialize, Serialize};
 
-use crate::{error::TrickyError, model::PropStatus};
+use crate::{error::TrickyError, model::PropStatus, service::active_adapter};
 
 pub const BOOT_HASH_FILE: &str = "/data/adb/boot_hash";
 pub const DISABLE_PROP_HANDLER_FILE: &str = "/data/adb/disable_prop_handler";
 const VBMETA_DIGEST: &str = "ro.boot.vbmeta.digest";
+/// OhMyKeymint signs with its own `vb_hash`, so the boot hash is mirrored into its policy.
+const VB_HASH_FIELD: &str = "vb_hash";
 
 #[derive(Debug, Deserialize)]
 pub struct PropRequest {
@@ -27,6 +29,8 @@ pub struct PropData {
     pub prop_handler_enabled: bool,
     pub boot_hash: Option<String>,
     pub applied_boot_hash: bool,
+    /// Whether the active backend's `vb_hash` policy was updated to the new hash.
+    pub synced_backend_policy: bool,
 }
 
 pub fn status(sysroot: &Sysroot) -> PropStatus {
@@ -46,6 +50,7 @@ pub fn save(ctx: &Context, request: PropRequest) -> Result<PropData> {
     }
 
     let mut applied_boot_hash = false;
+    let mut synced_backend_policy = false;
     let boot_hash = match request.boot_hash.as_deref().map(str::trim) {
         Some(hash) if !hash.is_empty() => {
             let hash = normalize_boot_hash(hash)?;
@@ -53,8 +58,10 @@ pub fn save(ctx: &Context, request: PropRequest) -> Result<PropData> {
             // Only touch live properties when managing the running system, not a test sysroot.
             if sysroot.root() == std::path::Path::new("/") {
                 props::reset(VBMETA_DIGEST, &hash)?;
+                props::rebuild_area(VBMETA_DIGEST);
                 applied_boot_hash = true;
             }
+            synced_backend_policy = sync_backend_vb_hash(sysroot, &hash)?;
             Some(hash)
         }
         _ => {
@@ -67,7 +74,28 @@ pub fn save(ctx: &Context, request: PropRequest) -> Result<PropData> {
         prop_handler_enabled: request.prop_handler_enabled,
         boot_hash,
         applied_boot_hash,
+        synced_backend_policy,
     })
+}
+
+fn sync_backend_vb_hash(sysroot: &Sysroot, hash: &str) -> Result<bool> {
+    let Ok((_, adapter)) = active_adapter(sysroot) else {
+        return Ok(false);
+    };
+    let has_field = adapter
+        .policy_schema()
+        .default_policy
+        .iter()
+        .any(|field| field.key == VB_HASH_FIELD);
+    if !has_field {
+        return Ok(false);
+    }
+    let mut config = adapter.read(sysroot)?;
+    config
+        .default_policy
+        .insert(VB_HASH_FIELD.to_owned(), hash.to_owned());
+    adapter.write(sysroot, &config)?;
+    Ok(true)
 }
 
 fn read_boot_hash(sysroot: &Sysroot) -> Option<String> {

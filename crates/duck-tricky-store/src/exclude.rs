@@ -71,19 +71,14 @@ pub async fn load(ctx: &Context, refresh: bool) -> Result<(Vec<String>, ListSour
 }
 
 async fn fetch_remote() -> Result<String> {
-    let client = duck_platform::net::http_client()?;
-    for url in [
+    let urls = [
         REMOTE_URL.to_owned(),
         format!("{MIRROR_PREFIX}{REMOTE_URL}"),
-    ] {
-        if let Ok(response) = client.get(&url).send().await
-            && response.status().is_success()
-            && let Ok(body) = response.text().await
-        {
-            return Ok(body);
-        }
-    }
-    Err(TrickyError::Download("could not reach the unnecessary-apps list".into()).into())
+    ];
+    duck_platform::net::fetch_text_first(&urls, 1024 * 1024)
+        .await
+        .map(|(body, _)| body)
+        .map_err(|error| TrickyError::Download(format!("{error:#}")).into())
 }
 
 /// Magisk's DenyList; empty on managers without one.

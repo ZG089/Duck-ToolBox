@@ -78,11 +78,21 @@ pub struct TargetEntry {
 
 pub type Policy = BTreeMap<String, String>;
 
+/// How the WebUI renders a policy field. Boolean values travel as `"true"`/`"false"`.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FieldKind {
+    #[default]
+    Text,
+    Boolean,
+}
+
 /// One editable policy field, rendered generically by the WebUI.
 #[derive(Debug, Clone, Serialize)]
 pub struct PolicyField {
     pub key: String,
     pub label: String,
+    pub kind: FieldKind,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
     /// Suggested values offered as quick-fill chips (e.g. `auto`, `prop`, `no`).
@@ -105,6 +115,7 @@ impl PolicyField {
         Self {
             key: key.to_owned(),
             label: label.to_owned(),
+            kind: FieldKind::Text,
             placeholder: None,
             options: Vec::new(),
             max_length: None,
@@ -136,6 +147,13 @@ impl PolicyField {
 
     pub fn multiline(mut self) -> Self {
         self.multiline = true;
+        self
+    }
+
+    pub fn boolean(mut self) -> Self {
+        self.kind = FieldKind::Boolean;
+        self.validator = Some(crate::policy::boolean);
+        self.hint = Some("true | false".to_owned());
         self
     }
 

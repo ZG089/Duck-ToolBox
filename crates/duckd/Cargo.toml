@@ -23,6 +23,7 @@ system = ["dep:duck-system"]
 anyhow.workspace = true
 clap.workspace = true
 duck-core.workspace = true
+duck-platform.workspace = true
 duck-device-ids = { workspace = true, optional = true }
 duck-rkp = { workspace = true, optional = true }
 duck-system = { workspace = true, optional = true }

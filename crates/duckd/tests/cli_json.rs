@@ -293,6 +293,34 @@ fn system_open_url_rejects_non_web_schemes() {
 }
 
 #[test]
+fn describe_summarizes_feature_status() {
+    let env = env("describe");
+    install_backend(&env, "tricky_store", 246);
+    let payload = run(&env, &["describe"]);
+    let description = payload["data"]["description"].as_str().unwrap();
+    assert!(
+        description.contains("(TS): 0 targets, no keybox"),
+        "{description}"
+    );
+    assert_eq!(payload["data"]["applied"], false);
+}
+
+#[test]
+fn tricky_store_entry_links_the_webroot() {
+    let env = env("entry");
+    fs::create_dir_all(env.root.join("webroot")).unwrap();
+    install_backend(&env, "tricky_store", 246);
+
+    let payload = run(&env, &["tricky-store", "entry", "enable"]);
+    assert_eq!(payload["data"]["linked"], true);
+    let link = env.sysroot.join("data/adb/modules/tricky_store/webroot");
+    assert_eq!(fs::read_link(&link).unwrap(), env.root.join("webroot"));
+
+    run(&env, &["tricky-store", "entry", "remove"]);
+    assert!(!link.exists());
+}
+
+#[test]
 fn command_log_keeps_outcomes_only() {
     let env = env("log");
     run(&env, &["rkp", "profile", "show"]);
