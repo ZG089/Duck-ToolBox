@@ -9,6 +9,7 @@
     "title": "Keystore modules",
     "active": "Active",
     "inactive": "Disabled",
+    "disabled": "{name} is disabled in your root manager. Changes are saved, and apply once you enable it and reboot.",
     "configError": "The current config could not be read, so saving will replace it: {error}",
     "names": {
       "tricky-store": "Tricky Store",

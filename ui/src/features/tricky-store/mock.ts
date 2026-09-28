@@ -3,8 +3,13 @@ import { MOCK_PACKAGES, MockFailure } from "@/core/mock"
 
 import type { Provider, SaveRequest } from "./api"
 
-/** `?backend=tee-simulator|oh-my-keymint|tricky-store-legacy|none` picks the mocked module. */
-const backend = new URLSearchParams(location.search).get("backend") ?? "tricky-store"
+/**
+ * `?backend=tee-simulator|oh-my-keymint|tricky-store-legacy|none` picks the mocked module;
+ * `?disabled=1` mocks it disabled in the root manager.
+ */
+const query = new URLSearchParams(location.search)
+const backend = query.get("backend") ?? "tricky-store"
+const disabled = query.get("disabled") === "1"
 
 const modules: Record<string, { id: string; name: string; identity: string; version: string }> = {
   "tricky-store": {
@@ -142,7 +147,7 @@ function active() {
     name: module.name,
     version: module.version,
     version_code: 100,
-    active: true,
+    active: !disabled,
   }
 }
 

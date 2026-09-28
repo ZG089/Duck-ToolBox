@@ -9,6 +9,7 @@
     "title": "密钥库模块",
     "active": "使用中",
     "inactive": "已停用",
+    "disabled": "{name} 已在 Root 管理器中被禁用。修改会被保存，启用它并重启后才会生效。",
     "configError": "无法读取当前配置，保存时会覆盖它：{error}",
     "names": {
       "tricky-store": "Tricky Store",

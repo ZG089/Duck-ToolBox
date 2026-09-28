@@ -14,7 +14,9 @@ const { t, dynamic } = useTrickyI18n()
 
 const name = (backend: BackendDetection) =>
   dynamic(`backend.names.${backend.backend}`, backend.name ?? backend.module_id)
-const others = computed(() => props.status.backends.filter((backend) => !backend.active))
+const others = computed(() =>
+  props.status.backends.filter((backend) => backend.module_id !== props.status.active?.module_id),
+)
 </script>
 
 <template>
@@ -45,6 +47,12 @@ const others = computed(() => props.status.backends.filter((backend) => !backend
         {{ name(backend) }} · {{ t("backend.inactive") }}
       </Badge>
     </div>
+    <Alert v-if="!status.active.active">
+      <TriangleAlert />
+      <AlertDescription class="text-xs">
+        {{ t("backend.disabled", { name: name(status.active) }) }}
+      </AlertDescription>
+    </Alert>
     <Alert v-if="status.config_error" variant="destructive">
       <TriangleAlert />
       <AlertDescription class="text-xs break-all">

@@ -149,6 +149,12 @@ test.describe("backends", () => {
     await expect(page.getByRole("switch", { name: "Bootloader locked" })).toBeVisible()
   })
 
+  test("says when the module in use is disabled", async ({ page, open }) => {
+    await open("/tricky-store", { query: { disabled: "1" } })
+    await expect(page.getByText(/is disabled in your root manager/)).toBeVisible()
+    await expect(page.locator("main").getByText("Tricky Store", { exact: true })).toHaveCount(1)
+  })
+
   test("explains what to install when no keystore module exists", async ({ page, open }) => {
     await open("/tricky-store", { query: { backend: "none" } })
     await expect(page.getByText("No keystore module found")).toBeVisible()
