@@ -5,6 +5,7 @@ use std::collections::BTreeMap;
 use anyhow::{Context as _, Result};
 use duck_core::{AppPaths, Sysroot};
 use duck_platform::{
+    exec,
     modules::parse_module_prop,
     props,
     root::{self, RootManagerKind},
@@ -95,15 +96,32 @@ fn device_summary(sysroot: &Sysroot, props: &BTreeMap<String, String>) -> Device
         security_patch: get("ro.build.version.security_patch"),
         fingerprint: get("ro.build.fingerprint"),
         abi: get("ro.product.cpu.abi"),
-        kernel_release: read_trimmed(sysroot, "/proc/sys/kernel/osrelease"),
-        selinux: read_trimmed(sysroot, "/sys/fs/selinux/enforce").map(|value| {
-            if value == "0" {
-                "permissive"
-            } else {
-                "enforcing"
-            }
-        }),
+        kernel_release: kernel_release(sysroot),
+        selinux: selinux_mode(sysroot),
     }
+}
+
+fn selinux_mode(sysroot: &Sysroot) -> Option<&'static str> {
+    let enforcing = match read_trimmed(sysroot, "/sys/fs/selinux/enforce") {
+        Some(value) => value != "0",
+        // Unreadable from some domains, like osrelease; toybox getenforce asks the kernel.
+        None => match exec::stdout_or_empty("getenforce", &[]).trim() {
+            "Enforcing" => true,
+            "Permissive" => false,
+            _ => return None,
+        },
+    };
+    Some(if enforcing { "enforcing" } else { "permissive" })
+}
+
+/// SELinux keeps some domains (e.g. `shell`) from reading `/proc/sys/kernel/osrelease`,
+/// while uname(2) is always allowed.
+fn kernel_release(sysroot: &Sysroot) -> Option<String> {
+    read_trimmed(sysroot, "/proc/sys/kernel/osrelease").or_else(|| {
+        let release = exec::stdout_or_empty("uname", &["-r"]);
+        let release = release.trim();
+        (!release.is_empty()).then(|| release.to_owned())
+    })
 }
 
 fn read_trimmed(sysroot: &Sysroot, device_path: &str) -> Option<String> {
