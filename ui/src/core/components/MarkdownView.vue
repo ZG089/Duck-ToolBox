@@ -23,6 +23,11 @@ function onClick(event: MouseEvent) {
 </script>
 
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -- sanitized by DOMPurify above -->
-  <div class="prose prose-sm prose-neutral dark:prose-invert max-w-none" @click="onClick" v-html="html" />
+  <!-- eslint-disable vue/no-v-html -- sanitized by DOMPurify above -->
+  <div
+    class="prose prose-sm prose-neutral dark:prose-invert max-w-none"
+    @click="onClick"
+    v-html="html"
+  />
+  <!-- eslint-enable vue/no-v-html -->
 </template>
