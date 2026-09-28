@@ -143,7 +143,7 @@ test.describe("keybox repository", () => {
 test.describe("backends", () => {
   test("OhMyKeymint has no per-app modes but a boolean policy", async ({ page, open }) => {
     await open("/tricky-store", { query: { backend: "oh-my-keymint" } })
-    await expect(page.getByText("config.toml")).toBeVisible()
+    await expect(page.getByText("OMK", { exact: true })).toBeVisible()
     await expect(page.getByRole("button", { name: /Mode and policy of/ })).toHaveCount(0)
     await open("/tricky-store/policy", { query: { backend: "oh-my-keymint" } })
     await expect(page.getByRole("switch", { name: "Bootloader locked" })).toBeVisible()

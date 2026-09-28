@@ -15,5 +15,5 @@
     "noUncheckedIndexedAccess": true
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.json"],
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": ["src/**/*.test.ts", "src/core/testing/**"]
 }

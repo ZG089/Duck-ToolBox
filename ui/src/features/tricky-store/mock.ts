@@ -10,20 +10,20 @@ const modules: Record<string, { id: string; name: string; identity: string; vers
   "tricky-store": {
     id: "tricky_store",
     name: "Tricky Store",
-    identity: "config.ini",
+    identity: "TS",
     version: "v1.4.1",
   },
   "tricky-store-legacy": {
     id: "tricky_store",
     name: "Tricky Store",
-    identity: "target.txt",
+    identity: "TS-L",
     version: "v1.2.1",
   },
-  "tee-simulator": { id: "teesim", name: "TEESimulator", identity: "config.json", version: "v3.1" },
+  "tee-simulator": { id: "teesim", name: "TEESimulator", identity: "TEES", version: "v3.1" },
   "oh-my-keymint": {
     id: "oh_my_keymint",
     name: "OhMyKeymint",
-    identity: "config.toml",
+    identity: "OMK",
     version: "v0.9.0",
   },
 }

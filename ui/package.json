@@ -16,6 +16,7 @@
     "format": "prettier --write src e2e scripts",
     "format:check": "prettier --check src e2e scripts",
     "test": "vitest run",
+    "test:contract": "vitest run api.contract",
     "test:e2e": "playwright test",
     "locales:import": "node scripts/import-tricky-addon-locales.mjs"
   },

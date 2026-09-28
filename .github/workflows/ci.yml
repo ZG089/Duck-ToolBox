@@ -119,6 +119,33 @@ jobs:
           path: module/webroot
           if-no-files-found: error
 
+  contract:
+    name: WebUI contracts against the real backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build the host backend
+        run: cargo build --locked --package duckd
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: ui/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: ui
+      # Every WebUI API call runs through duckctl.sh and duckd and is parsed with the
+      # feature's zod schemas, so a changed backend shape fails here.
+      - name: Contract tests
+        working-directory: ui
+        env:
+          DUCKD_REQUIRED: "1"
+        run: pnpm test:contract
+
   e2e:
     name: WebUI end-to-end
     runs-on: ubuntu-latest
@@ -170,7 +197,7 @@ jobs:
   package:
     name: Package module
     runs-on: ubuntu-latest
-    needs: [line-limit, rust, android-backend, webui, e2e, module]
+    needs: [line-limit, rust, android-backend, webui, contract, e2e, module]
     environment: ${{ github.event_name == 'push' && 'Telegram' || '' }}
     steps:
       - uses: actions/checkout@v7
