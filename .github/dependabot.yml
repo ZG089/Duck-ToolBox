@@ -19,8 +19,9 @@ updates:
       webui-minor:
         update-types: [minor, patch]
     ignore:
-      # vue-tsc 3 drives the classic TypeScript compiler API, which TypeScript 7 (the Go
-      # port) no longer exposes. Revisit once vue-tsc supports it.
+      # Stock TypeScript 7 has no classic compiler API for vue-tsc and typescript-eslint;
+      # the WebUI gets the TS 7 engine through typescript-native-bridge (see
+      # ui/pnpm-workspace.yaml), which is bumped by hand with the tsgo version it wraps.
       - dependency-name: typescript
         versions: [">=7"]
 
