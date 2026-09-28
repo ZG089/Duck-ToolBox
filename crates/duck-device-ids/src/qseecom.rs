@@ -15,6 +15,10 @@ use duck_platform::props;
 use libloading::Library;
 
 const SHARED_BUF_SIZE: usize = 0xA000;
+/// `QSEECOM_ALIGN_SIZE` from the kernel's `qseecom_kernel.h`. AOSP's Qualcomm keymaster HAL
+/// (`hardware/qcom/keymaster`) places the response at `QSEECOM_ALIGN(command length)` so
+/// command and response never share a cache line of the shared buffer.
+const QSEECOM_ALIGN_SIZE: usize = 0x40;
 const DEFAULT_LIB_PATH: &str = "/vendor/lib64/libQSEEComAPI.so";
 const DEFAULT_LIB_PATH_ALT: &str = "/vendor/lib64/hw/libQSEEComAPI.so";
 const FALLBACK_TA_NAME: &str = "keymaster";
@@ -207,7 +211,7 @@ impl QseecomSession<'_> {
     }
 
     fn send(&self, request: &[u8]) -> Result<Vec<u8>> {
-        let rsp_offset = align4(request.len());
+        let rsp_offset = qseecom_align(request.len());
         if rsp_offset >= SHARED_BUF_SIZE {
             bail!("request is too large for QSEECom shared buffer");
         }
@@ -249,8 +253,9 @@ impl Drop for QseecomSession<'_> {
     }
 }
 
-fn align4(value: usize) -> usize {
-    (value + 3) & !3
+/// The kernel's `QSEECOM_ALIGN(x)`: round up to the next multiple of 64.
+fn qseecom_align(value: usize) -> usize {
+    (value + QSEECOM_ALIGN_SIZE - 1) & !(QSEECOM_ALIGN_SIZE - 1)
 }
 
 fn read_u32(bytes: &[u8], offset: usize) -> Result<u32> {
@@ -269,4 +274,27 @@ fn read_i32(bytes: &[u8], offset: usize) -> Result<i32> {
     Ok(i32::from_le_bytes(
         chunk.try_into().expect("slice is 4 bytes"),
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{SHARED_BUF_SIZE, qseecom_align};
+
+    #[test]
+    fn aligns_like_the_kernel_macro() {
+        assert_eq!(qseecom_align(0), 0);
+        assert_eq!(qseecom_align(4), 64);
+        assert_eq!(qseecom_align(64), 64);
+        assert_eq!(qseecom_align(65), 128);
+    }
+
+    #[test]
+    fn request_and_response_fit_the_driver_check() {
+        // qseecom rejects cmd_req_len + resp_len > sb_length.
+        for len in [4, 24, 63, 64, 1000] {
+            let offset = qseecom_align(len);
+            assert!(len + (SHARED_BUF_SIZE - offset) <= SHARED_BUF_SIZE);
+            assert_eq!(offset % 64, 0);
+        }
+    }
 }
