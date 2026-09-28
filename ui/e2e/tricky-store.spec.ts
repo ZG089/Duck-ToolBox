@@ -106,6 +106,40 @@ test.describe("keybox", () => {
   })
 })
 
+test.describe("keybox repository", () => {
+  // A stand-in for keybox.kowx712.cc that speaks Tricky Addon's repo-api.md protocol.
+  const site = (reply: string) => `<!doctype html><script>
+    addEventListener("message", (event) => {
+      if (event.data?.type !== "handshake") return
+      event.source.postMessage({ type: "handshake_ack" }, event.origin)
+      setTimeout(() => event.source.postMessage(${reply}, event.origin), 100)
+    })
+  </script>`
+
+  test("installs the keybox the site hands over after the handshake", async ({ page, open }) => {
+    await page.route("https://keybox.kowx712.cc/**", (route) =>
+      route.fulfill({
+        contentType: "text/html",
+        body: site(`{ type: "download", url: "https://keybox.kowx712.cc/api/kb/1" }`),
+      }),
+    )
+    await open("/tricky-store/keybox/repo")
+    await expect(page.getByText("Keybox set from repo successfully")).toBeVisible()
+    await expect(page).toHaveURL(/#\/tricky-store\/keybox$/)
+  })
+
+  test("reports a download the site could not serve", async ({ page, open }) => {
+    await page.route("https://keybox.kowx712.cc/**", (route) =>
+      route.fulfill({
+        contentType: "text/html",
+        body: site(`{ type: "error", error: "download_failed", identity: "Pixel-42" }`),
+      }),
+    )
+    await open("/tricky-store/keybox/repo")
+    await expect(page.getByText("Download failed for Pixel-42")).toBeVisible()
+  })
+})
+
 test.describe("backends", () => {
   test("OhMyKeymint has no per-app modes but a boolean policy", async ({ page, open }) => {
     await open("/tricky-store", { query: { backend: "oh-my-keymint" } })
