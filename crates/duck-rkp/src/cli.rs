@@ -38,6 +38,8 @@ pub enum ProfileCommand {
     Show(ProfileArgs),
     Save(ProfileSaveArgs),
     Clear(ProfileArgs),
+    /// Profile defaults read from this device's build properties (not saved).
+    Detect,
 }
 
 #[derive(Debug, Args, Clone)]
@@ -110,6 +112,9 @@ pub async fn run(command: Command, ctx: &Context) -> CommandResult {
             }
             ProfileCommand::Clear(args) => {
                 handlers::profile::clear(paths, &args).into_command("rkp.profile.clear", code_of)
+            }
+            ProfileCommand::Detect => {
+                handlers::profile::detect().into_command("rkp.profile.detect", code_of)
             }
         },
         Command::Info(args) => {

@@ -6,7 +6,7 @@ use serde_json::{Value, json};
 
 use crate::{
     cli::{ProfileArgs, ProfileSaveArgs},
-    profile::{ProfileData, clear_profile, save_profile, show_profile},
+    profile::{ProfileData, clear_profile, detect, save_profile, show_profile},
 };
 
 pub(crate) fn show(paths: &AppPaths, args: &ProfileArgs) -> Result<Value> {
@@ -32,4 +32,8 @@ pub(crate) fn save(paths: &AppPaths, args: &ProfileSaveArgs) -> Result<Value> {
 pub(crate) fn clear(paths: &AppPaths, args: &ProfileArgs) -> Result<Value> {
     clear_profile(paths, args.profile.as_deref())?;
     Ok(json!({ "cleared": true, "paths": paths }))
+}
+
+pub(crate) fn detect() -> Result<Value> {
+    Ok(json!({ "profile": detect::detect() }))
 }
