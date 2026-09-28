@@ -20,6 +20,8 @@ import AppBar from "./components/AppBar.vue"
       rich-colors
       close-button
       :offset="{ top: 'calc(var(--inset-top) + 16px)' }"
+      :mobile-offset="{ top: 'calc(var(--inset-top) + 8px)' }"
+      :toast-options="{ descriptionClass: 'whitespace-pre-line' }"
     />
     <ErrorDetailsDialog />
   </div>

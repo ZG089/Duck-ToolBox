@@ -151,6 +151,7 @@ cd ui
 pnpm install --frozen-lockfile
 pnpm lint && pnpm format:check && pnpm test
 pnpm build                 # type-check, then bundle into module/webroot
+pnpm test:contract         # every API call through duckctl.sh and a host duckd build
 pnpm test:e2e              # Playwright against a mock KernelSU host, with screenshots
 pnpm dev                   # the same mock host in a desktop browser
 pnpm locales:import <Tricky-Addon>/webui/public/locales/strings   # refresh translations
@@ -158,6 +159,13 @@ pnpm locales:import <Tricky-Addon>/webui/public/locales/strings   # refresh tran
 
 On Windows, `pwsh ./scripts/build.ps1 -PackageModule` builds everything with `cargo-ndk`
 and writes the module zip to `dist/`.
+
+**On a real KernelSU.** `scripts/device-test.sh <module zip>` prepares a disposable
+userdebug emulator (or any device with root adbd) and runs `ui/e2e-device` there:
+- KernelSU is late-loaded with `ksud late-load`, so no boot image is patched.
+- The module and the Tricky Store release are installed with `ksud module install`.
+- The tests drive the WebUI inside the KernelSU manager through Playwright's Android
+  support, and read the device's files back over adb.
 
 ## Acknowledgements
 

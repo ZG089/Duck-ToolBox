@@ -13,11 +13,12 @@
     "preview": "vite preview --host",
     "typecheck": "vue-tsc -b",
     "lint": "eslint . --max-warnings 0",
-    "format": "prettier --write src e2e scripts",
-    "format:check": "prettier --check src e2e scripts",
+    "format": "prettier --write src e2e e2e-device scripts",
+    "format:check": "prettier --check src e2e e2e-device scripts",
     "test": "vitest run",
     "test:contract": "vitest run api.contract",
     "test:e2e": "playwright test",
+    "test:device": "playwright test -c playwright.device.config.ts",
     "locales:import": "node scripts/import-tricky-addon-locales.mjs"
   },
   "dependencies": {
