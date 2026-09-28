@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest"
 
 import { isDuckError } from "@/core/duckd"
 import type { Host } from "@/core/testing/host"
-import { DEVICE_PROPS, hasDuckd, installHost } from "@/core/testing/host"
+import { DEVICE_PROPS, CONTRACT, hasDuckd, installHost } from "@/core/testing/host"
 
 import type { Profile } from "./api"
 import { rkpApi } from "./api"
@@ -23,7 +23,7 @@ async function seededProfile(): Promise<Profile> {
   }
 }
 
-describe.skipIf(!hasDuckd)("RKP API against the real duckd", () => {
+describe.skipIf(!hasDuckd)("RKP API against the real duckd", CONTRACT, () => {
   it("detects device values and keeps a saved profile", async () => {
     host = installHost({ props: DEVICE_PROPS })
     expect((await rkpApi.show()).profile.key_source.kind).toBe("unset")

@@ -15,6 +15,7 @@
     "menu_keybox_local": "Τοπικά",
     "boot_hash_title": "Boot Hash",
     "about_disclaimer": "Αυτό το module δεν είναι μέρος του Tricky Store module. ΜΗΝ αναφέρετε προβλήματα στο Tricky Store αν προκύψουν.",
+    "about_telegram_channel": "Κανάλι Telegram",
     "prompt_aosp_key_set": "Το AOSP keybox ορίστηκε με επιτυχία",
     "prompt_key_set_error": "Αποτυχία ενημέρωσης keybox",
     "prompt_unknown_key_set": "Το Unknown keybox ορίστηκε με επιτυχία",

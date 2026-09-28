@@ -2,14 +2,14 @@
 import { afterEach, describe, expect, it } from "vitest"
 
 import type { Host } from "@/core/testing/host"
-import { DEVICE_PROPS, hasDuckd, installHost } from "@/core/testing/host"
+import { DEVICE_PROPS, CONTRACT, hasDuckd, installHost } from "@/core/testing/host"
 
 import { deviceIdsApi } from "./api"
 
 let host: Host | undefined
 afterEach(() => host?.dispose())
 
-describe.skipIf(!hasDuckd)("Device ID API against the real duckd", () => {
+describe.skipIf(!hasDuckd)("Device ID API against the real duckd", CONTRACT, () => {
   it("reads defaults from the device and runs a dry run", async () => {
     host = installHost({ props: DEVICE_PROPS })
     const defaults = await deviceIdsApi.defaults()

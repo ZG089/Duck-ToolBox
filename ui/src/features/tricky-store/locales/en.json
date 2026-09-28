@@ -106,6 +106,13 @@
     "ownWebui": "{module} ships its own WebUI, so no entry is added.",
     "noModule": "Install a keystore module to add an entry to it."
   },
+  "translations": {
+    "title": "Tricky Addon translations",
+    "version": "Bundle {version}",
+    "help": "Help translate",
+    "telegram": "Tricky Addon on Telegram",
+    "guide": "The Tricky Store manager uses Tricky Addon's translations. Improve them on [Crowdin](https://crowdin.com/project/TA_utl); *Update translations* brings the latest ones here without a module update.\n\nEverything else is translated in Duck ToolBox's `locales/*.json` files. Open a pull request on [GitHub]({repository}) to add or fix a language."
+  },
   "help": {
     "modes": "Modes",
     "modesDescription": "Long-press a selected app (or tap its tune button) to force certificate generating (`!`) or leaf hack (`?`) for it, or to give it its own policy. Only Tricky Store supports this.",
@@ -157,9 +164,12 @@
     "menu_prop_setting": "Prop Settings",
     "menu_set_default_policy": "Set Default Policy",
     "menu_help": "Help",
+    "more_language": "More",
     "prop_handler": "Prop Handler",
     "boot_hash_title": "Boot Hash",
     "about_disclaimer": "This module is not a part of the Tricky Store module. DO NOT report any issues to Tricky Store if encountered.",
+    "about_telegram_channel": "Telegram Channel",
+    "about_translation_update": "Update translation bundle",
     "prompt_aosp_key_set": "AOSP keybox set successfully",
     "prompt_key_set_error": "Failed to update keybox",
     "prompt_unknown_key_set": "Unknown keybox set successfully",
@@ -167,6 +177,9 @@
     "prompt_boot_hash_set_error": "Failed to update Verified Boot Hash",
     "prompt_saved_target": "Config saved",
     "prompt_save_error": "Failed to save config",
+    "prompt_no_update": "There are currently no updates available",
+    "prompt_translation_updated": "Translation bundle updated successfully",
+    "prompt_translation_update_failed": "Failed to update translation bundle",
     "prompt_custom_key_set": "Custom keybox set successfully",
     "prompt_custom_key_set_error": "Failed to set custom keybox",
     "prompt_custom_saved": "Custom keybox entry saved",

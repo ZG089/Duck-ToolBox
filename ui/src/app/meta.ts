@@ -1,5 +1,3 @@
-export const REPOSITORY_URL = "https://github.com/eltavine/Duck-ToolBox"
-
 export const AUTHORS = [
   { name: "Eltavine", url: "https://github.com/eltavine" },
   { name: "KOW", url: "https://github.com/KOWX712" },

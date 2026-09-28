@@ -16,11 +16,11 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import SectionCard from "@/core/components/SectionCard.vue"
 import { contributions } from "@/core/features"
 import { availableLocales, displayName, useLocalePreference } from "@/core/i18n"
-import { openExternal } from "@/core/links"
+import { openExternal, REPOSITORY_URL } from "@/core/links"
 import type { ThemePreference } from "@/core/theme"
 import { useThemePreference } from "@/core/theme"
 
-import { ACKNOWLEDGEMENTS, AUTHORS, REPOSITORY_URL } from "../meta"
+import { ACKNOWLEDGEMENTS, AUTHORS } from "../meta"
 
 const { t } = useI18n()
 const theme = useThemePreference()

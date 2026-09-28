@@ -16,6 +16,8 @@ export default defineConfig({
       include: [fileURLToPath(new URL("./src/**/locales/*.json", import.meta.url))],
       strictMessage: false,
       escapeHtml: false,
+      // Keep the message compiler: translations downloaded at runtime arrive as strings.
+      runtimeOnly: false,
     }),
   ],
   resolve: {

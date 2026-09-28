@@ -5,7 +5,7 @@ import path from "node:path"
 import { afterEach, describe, expect, it } from "vitest"
 
 import type { Device, Host, Server } from "@/core/testing/host"
-import { hasDuckd, installHost, serve } from "@/core/testing/host"
+import { CONTRACT, hasDuckd, installHost, serve } from "@/core/testing/host"
 
 import { trickyStoreApi } from "./api"
 import { draftFromStatus, select, toSaveRequest } from "./selection"
@@ -65,7 +65,7 @@ afterEach(async () => {
   server = undefined
 })
 
-describe.skipIf(!hasDuckd)("Tricky Store API against the real duckd", () => {
+describe.skipIf(!hasDuckd)("Tricky Store API against the real duckd", CONTRACT, () => {
   describe.each(Object.entries(backends))("%s", (backend, device) => {
     it("reads status and saves a changed target list", async () => {
       host = installHost({ ...device, ...packages })

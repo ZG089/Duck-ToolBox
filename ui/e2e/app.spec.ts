@@ -62,6 +62,36 @@ test("follows the saved language", async ({ page, open }) => {
   await expect(page.locator("html")).toHaveAttribute("dir", "ltr")
 })
 
+test("updates Tricky Addon's translations without a module update", async ({ page, open }) => {
+  await page.route("https://raw.githubusercontent.com/**", (route) => {
+    const url = route.request().url()
+    if (url.endsWith("/version")) return route.fulfill({ body: "29991231" })
+    if (url.endsWith("/languages.json")) return route.fulfill({ body: '{"en":"English"}' })
+    if (url.endsWith("/strings/en.xml")) {
+      return route.fulfill({
+        body: '<resources><string name="menu_keybox">Keyboxes (%s)</string></resources>',
+      })
+    }
+    return route.fulfill({ status: 404 })
+  })
+  await open("/settings")
+  await expect(page.getByText("Bundle 20251021")).toBeVisible()
+  await page.getByRole("button", { name: "Update translation bundle" }).click()
+  await expect(page.getByText("Translation bundle updated successfully")).toBeVisible()
+  await page.waitForEvent("load")
+  await expect(page.getByText("Bundle 29991231")).toBeVisible()
+
+  await page.getByRole("button", { name: "Help translate" }).click()
+  await expect(page.getByRole("link", { name: "Crowdin" })).toBeVisible()
+  await page.keyboard.press("Escape")
+
+  await open("/tricky-store")
+  await page.getByRole("button", { name: "More" }).click()
+  // Downloaded strings are compiled at runtime, placeholders included.
+  await expect(page.getByRole("menuitem", { name: "Keyboxes ({0})" })).toBeHidden()
+  await expect(page.getByRole("menuitem", { name: /^Keyboxes \(/ })).toBeVisible()
+})
+
 test("shows the entry toggle contributed by the Tricky Store feature", async ({ page, open }) => {
   await open("/settings")
   await expect(page.getByRole("switch", { name: "Keystore module entry" })).toBeChecked()

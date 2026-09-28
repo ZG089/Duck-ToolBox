@@ -15,6 +15,7 @@
     "menu_keybox_local": "Lokal",
     "boot_hash_title": "Boot Hash",
     "about_disclaimer": "Ang WebUI na ito ay hindi bahagi ng Tricky Store, HUWAG i-report sa may-akda ng Tricky Store kung makaranas ka ng anumang isyu.",
+    "about_telegram_channel": "Telegram Channel",
     "prompt_aosp_key_set": "Matagumpay na na-set ang AOSP Keybox",
     "prompt_key_set_error": "Nabigong i-update ang keybox",
     "prompt_unknown_key_set": "Matagumpay na na-set ang Hindi Kilalang Keybox",

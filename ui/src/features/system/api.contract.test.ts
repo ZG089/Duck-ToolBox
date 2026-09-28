@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest"
 
 import { featureManifest, listFiles } from "@/core/duckd"
 import type { Host, Server } from "@/core/testing/host"
-import { DEVICE_PROPS, hasDuckd, installHost, serve } from "@/core/testing/host"
+import { DEVICE_PROPS, CONTRACT, hasDuckd, installHost, serve } from "@/core/testing/host"
 
 import { systemApi } from "./api"
 
@@ -15,7 +15,7 @@ afterEach(async () => {
   server = undefined
 })
 
-describe.skipIf(!hasDuckd)("system API against the real duckd", () => {
+describe.skipIf(!hasDuckd)("system API against the real duckd", CONTRACT, () => {
   it("lists the compiled features with their contracts", async () => {
     host = installHost()
     const manifest = await featureManifest()

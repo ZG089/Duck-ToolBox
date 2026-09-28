@@ -4,8 +4,9 @@ import { defineFeature } from "@/core/features"
 import { localeFiles } from "@/core/i18n"
 
 import { trickyStoreApi } from "./api"
-import EntrySettings from "./components/EntrySettings.vue"
+import TrickyStoreSettings from "./components/TrickyStoreSettings.vue"
 import { NAMESPACE } from "./i18n"
+import { withDownloadedTranslations } from "./translation-update"
 
 const title = (key: string) => ({ titleKey: `${NAMESPACE}.${key}` })
 
@@ -44,7 +45,7 @@ export default defineFeature({
       meta: title("ta.menu_help"),
     },
   ],
-  messages: localeFiles(import.meta.glob("./locales/*.json")),
+  messages: withDownloadedTranslations(localeFiles(import.meta.glob("./locales/*.json"))),
   contributes: {
     keyboxTargets: [
       {
@@ -56,6 +57,6 @@ export default defineFeature({
         },
       },
     ],
-    settingsSections: [EntrySettings],
+    settingsSections: [TrickyStoreSettings],
   },
 })

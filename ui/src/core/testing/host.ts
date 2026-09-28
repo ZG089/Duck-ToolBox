@@ -28,6 +28,8 @@ const repository = path.resolve(import.meta.dirname, "../../../..")
 /** `DUCKD_BIN`, or the host debug build (`cargo build -p duckd`). */
 export const duckdBinary = process.env.DUCKD_BIN ?? path.join(repository, "target/debug/duckd")
 export const hasDuckd = existsSync(duckdBinary)
+/** Each call spawns the wrapper and a debug build, which also generates RSA keys. */
+export const CONTRACT = { timeout: 120_000 }
 if (process.env.DUCKD_REQUIRED === "1" && !hasDuckd) {
   throw new Error(`contract tests need the duckd binary at ${duckdBinary}`)
 }

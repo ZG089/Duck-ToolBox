@@ -5,6 +5,8 @@ import { bridge } from "@/core/bridge"
 import { duckd } from "@/core/duckd"
 import { i18n } from "@/core/i18n"
 
+export const REPOSITORY_URL = "https://github.com/eltavine/Duck-ToolBox"
+
 /**
  * Opens a link in the system browser. The manager's WebView cannot leave the app, so this
  * goes through `am start` (`duckd system open-url`) and falls back to `window.open`.

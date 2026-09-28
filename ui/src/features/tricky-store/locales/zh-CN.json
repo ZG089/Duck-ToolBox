@@ -106,6 +106,13 @@
     "ownWebui": "{module} 自带 WebUI，因此不添加入口。",
     "noModule": "安装密钥库模块后才能添加入口。"
   },
+  "translations": {
+    "title": "Tricky Addon 翻译",
+    "version": "版本 {version}",
+    "help": "帮助翻译",
+    "telegram": "Tricky Addon 的 Telegram 频道",
+    "guide": "Tricky Store 管理器使用 Tricky Addon 的翻译。可以在 [Crowdin](https://crowdin.com/project/TA_utl) 上改进它们；点击“更新翻译”即可在不更新模块的情况下获取最新翻译。\n\n其余文字在 Duck ToolBox 的 `locales/*.json` 文件中翻译。欢迎在 [GitHub]({repository}) 提交 Pull Request 来新增或修正语言。"
+  },
   "help": {
     "modes": "模式",
     "modesDescription": "长按已选中的应用（或点它的调整按钮），可为其强制证书生成（`!`）或叶子证书修补（`?`），或设置单独的策略。仅 Tricky Store 支持。",
@@ -157,9 +164,12 @@
     "menu_prop_setting": "Prop 设置",
     "menu_set_default_policy": "设置默认策略",
     "menu_help": "帮助",
+    "more_language": "更多",
     "prop_handler": "Prop 助手",
     "boot_hash_title": "哈希值",
     "about_disclaimer": "此 WebUI 不是 Tricky Store 的一部分，遇到任何问题请勿向 Tricky Store 作者反馈。",
+    "about_telegram_channel": "TG频道",
+    "about_translation_update": "更新翻译包",
     "prompt_aosp_key_set": "成功设置 AOSP 密钥",
     "prompt_key_set_error": "更新密钥失败",
     "prompt_unknown_key_set": "成功设置未知密钥",
@@ -167,6 +177,9 @@
     "prompt_boot_hash_set_error": "哈希值重置失败",
     "prompt_saved_target": "配置已保存",
     "prompt_save_error": "保存配置失败",
+    "prompt_no_update": "当前已是最新版本",
+    "prompt_translation_updated": "翻译包更新成功",
+    "prompt_translation_update_failed": "翻译包更新失败",
     "prompt_custom_key_set": "成功设置自定义密钥",
     "prompt_custom_key_set_error": "自定义密钥设置失败",
     "prompt_custom_saved": "已保存自定义密钥入口",
