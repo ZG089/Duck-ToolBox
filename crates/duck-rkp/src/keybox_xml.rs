@@ -52,23 +52,16 @@ pub fn parse_der_cert_chain(data: &[u8]) -> Result<Vec<ParsedCertificate>> {
 
         let slice = &data[offset..end];
         let certificate = Certificate::from_der(slice).context("parse X.509 certificate")?;
-        let subject_der = certificate
-            .tbs_certificate
-            .subject
-            .to_der()
-            .context("encode subject name")?;
-        let issuer_der = certificate
-            .tbs_certificate
-            .issuer
-            .to_der()
-            .context("encode issuer name")?;
+        let tbs = certificate.tbs_certificate();
+        let subject_der = tbs.subject().to_der().context("encode subject name")?;
+        let issuer_der = tbs.issuer().to_der().context("encode issuer name")?;
 
         certificates.push(ParsedCertificate {
             der: slice.to_vec(),
             subject_der,
             issuer_der,
-            subject_summary: format!("{:?}", certificate.tbs_certificate.subject),
-            issuer_summary: format!("{:?}", certificate.tbs_certificate.issuer),
+            subject_summary: tbs.subject().to_string(),
+            issuer_summary: tbs.issuer().to_string(),
         });
 
         offset = end;

@@ -1,5 +1,5 @@
 use ciborium::{ser::into_writer, value::Value};
-use p384::{SecretKey as P384SecretKey, elliptic_curve::sec1::ToEncodedPoint};
+use p384::{SecretKey as P384SecretKey, elliptic_curve::sec1::ToSec1Point};
 
 use super::{ALG_ES384, cose_key::parse_cose_public_key, verify_csr};
 use crate::{
@@ -185,7 +185,7 @@ fn verify_rejects_tampered_dice_chain_signature() {
 #[test]
 fn parse_cose_public_key_accepts_p384() {
     let secret_key = P384SecretKey::from_slice(&[0x11; 48]).unwrap();
-    let encoded = secret_key.public_key().to_encoded_point(false);
+    let encoded = secret_key.public_key().to_sec1_point(false);
     let x = encoded.x().unwrap().to_vec();
     let y = encoded.y().unwrap().to_vec();
 

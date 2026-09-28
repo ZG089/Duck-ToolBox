@@ -2,7 +2,7 @@ use anyhow::{Context, Result};
 use ciborium::value::Value;
 use ed25519_dalek::{Signer as Ed25519Signer, SigningKey};
 use p256::{
-    NonZeroScalar as P256NonZeroScalar, SecretKey as P256SecretKey, U256 as P256U256,
+    FieldBytes as P256FieldBytes, NonZeroScalar as P256NonZeroScalar, SecretKey as P256SecretKey,
     ecdsa::{
         Signature as P256Signature, SigningKey as P256SigningKey, signature::Signer as P256Signer,
     },
@@ -50,7 +50,11 @@ impl DeviceKeys {
         let material = match curve {
             DiceCurve::Ed25519 => DeviceKeyMaterial::Ed25519(SigningKey::from_bytes(&seed)),
             DiceCurve::P256 => {
-                let scalar = <P256NonZeroScalar as Reduce<P256U256>>::reduce_bytes(&seed.into());
+                // Profiles persist only the seed, so this derivation (big-endian
+                // `seed mod (n - 1) + 1`) must never change.
+                let scalar = <P256NonZeroScalar as Reduce<P256FieldBytes>>::reduce(
+                    &P256FieldBytes::from(seed),
+                );
                 let secret_key: P256SecretKey = scalar.into();
                 DeviceKeyMaterial::P256(P256SigningKey::from(secret_key))
             }
@@ -131,7 +135,7 @@ pub fn generate_ec_keypair() -> Result<EcKeyPair> {
 
         if let Ok(secret_key) = P256SecretKey::from_slice(&secret_bytes) {
             let signing_key = P256SigningKey::from(secret_key.clone());
-            let encoded = signing_key.verifying_key().to_encoded_point(false);
+            let encoded = signing_key.verifying_key().to_sec1_point(false);
             let x = encoded.x().context("missing P-256 x coordinate")?.to_vec();
             let y = encoded.y().context("missing P-256 y coordinate")?.to_vec();
 
@@ -145,7 +149,7 @@ pub fn generate_ec_keypair() -> Result<EcKeyPair> {
 }
 
 fn p256_coordinates(signing_key: &P256SigningKey) -> (Vec<u8>, Vec<u8>) {
-    let encoded = signing_key.verifying_key().to_encoded_point(false);
+    let encoded = signing_key.verifying_key().to_sec1_point(false);
     let x = encoded
         .x()
         .expect("uncompressed P-256 point has an x coordinate");

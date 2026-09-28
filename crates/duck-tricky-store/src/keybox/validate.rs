@@ -3,7 +3,7 @@
 use std::io::Cursor;
 
 use anyhow::{Context, Result};
-use quick_xml::{Reader, Writer, events::Event, name::QName};
+use quick_xml::{Reader, Writer, XmlVersion, events::Event, name::QName};
 use serde::Serialize;
 
 use crate::error::TrickyError;
@@ -86,7 +86,8 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
                             .try_get_attribute("algorithm")
                             .ok()
                             .flatten()
-                            .map(|attr| String::from_utf8_lossy(&attr.value).to_ascii_lowercase());
+                            .and_then(|attr| attr.normalized_value(XmlVersion::Implicit1_0).ok())
+                            .map(|value| value.trim().to_ascii_lowercase());
                         match algorithm.as_deref() {
                             Some("ecdsa" | "ec") => summary.has_ecdsa = true,
                             Some("rsa") => summary.has_rsa = true,
@@ -155,7 +156,7 @@ pub fn validate(xml: &str) -> Result<KeyboxSummary> {
 }
 
 fn local_name(name: QName<'_>) -> String {
-    String::from_utf8_lossy(name.local_name().as_ref()).into_owned()
+    name.local_name().as_ref().to_owned()
 }
 
 #[cfg(test)]

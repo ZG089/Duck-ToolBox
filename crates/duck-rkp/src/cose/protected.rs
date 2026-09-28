@@ -11,7 +11,7 @@ use hkdf::Hkdf;
 use hkdf::hmac::{Hmac, Mac, digest::KeyInit as HmacKeyInit};
 use p256::{
     PublicKey as P256PublicKey, SecretKey as P256SecretKey, ecdh::diffie_hellman,
-    elliptic_curve::sec1::ToEncodedPoint,
+    elliptic_curve::sec1::ToSec1Point,
 };
 use sha2::Sha256;
 use x25519_dalek::{PublicKey as X25519PublicKey, StaticSecret};
@@ -86,7 +86,7 @@ pub(super) fn build_protected_data(
     let cipher = Aes256Gcm::new_from_slice(&aes_key).context("create AES-256-GCM")?;
     let ciphertext = cipher
         .encrypt(
-            Nonce::from_slice(&nonce),
+            &Nonce::from(nonce),
             Payload {
                 msg: &plaintext,
                 aad: &aad,
@@ -154,7 +154,7 @@ fn derive_x25519_transport_key(server_pub_bytes: &[u8]) -> Result<TransportKey> 
 
 fn derive_p256_transport_key(server_pub_bytes: &[u8]) -> Result<TransportKey> {
     let ephemeral_secret = generate_p256_secret_key()?;
-    let encoded = ephemeral_secret.public_key().to_encoded_point(false);
+    let encoded = ephemeral_secret.public_key().to_sec1_point(false);
     let x = encoded
         .x()
         .context("missing ephemeral P-256 x coordinate")?;

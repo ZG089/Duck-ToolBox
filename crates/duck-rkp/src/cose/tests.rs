@@ -1,5 +1,5 @@
 use ciborium::value::Value;
-use p256::elliptic_curve::sec1::ToEncodedPoint;
+use p256::elliptic_curve::sec1::ToSec1Point;
 
 use super::{
     ALG_ES256, DeviceKeys, RPC_CURVE_25519, RPC_CURVE_P256, build_csr, build_sig_structure,
@@ -108,12 +108,49 @@ fn device_keys_support_p256_curve() {
     assert!(!keys.sign(b"duck").is_empty());
 }
 
+// Expected values were produced by p256 0.13 / ed25519-dalek 2. A saved profile stores only
+// the seed, so a dependency upgrade must derive the same keys and deterministic signatures.
+#[test]
+fn seed_derivation_is_stable_across_crypto_upgrades() {
+    const MESSAGE: &[u8] = b"duck-toolbox regression";
+
+    let ed25519 = DeviceKeys::from_seed([0x11; 32]);
+    assert_eq!(
+        ed25519.public_key_hex(),
+        "d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737"
+    );
+    assert_eq!(
+        hex::encode(ed25519.sign(MESSAGE)),
+        "a6c661fdbbe9d5a6ef7d412d0bc7e3750c0d6c62b23e9dbaf35a256629223fcd\
+         2212b172ca56acb085178856a2c691ebe109b580712e6ae8748991434a9b080e"
+    );
+
+    let p256 = DeviceKeys::from_seed_with_curve([0x11; 32], DiceCurve::P256);
+    assert_eq!(
+        p256.public_key_hex(),
+        "7b4e0f0a6f5f6ec8438fbd83726acf5d65c8af9afa7d98c914d62fc888150fd3\
+         5a805aa77faa732614a2545f8f1e41e2805735220683e59aaf86bcd462666cd0"
+    );
+    assert_eq!(
+        hex::encode(p256.sign(MESSAGE)),
+        "8de995f88a3a2caba424a77c385426c85c68d18412900ca813cac99ebf8e750e\
+         3692fc97b2ec9fd6410f3c856659943f9a785ff5b708ec1fc09eea417ea8560e"
+    );
+
+    let above_order = DeviceKeys::from_seed_with_curve([0xff; 32], DiceCurve::P256);
+    assert_eq!(
+        above_order.public_key_hex(),
+        "15d93eb187b7dc9ccd671b41e99c3f85a95275305c8f87a690db940da1f8848a\
+         316e66589e27a05622a5eda78a8ab51b01025ac05cfb918df6ce2814cae35462"
+    );
+}
+
 #[test]
 fn build_csr_supports_p256_eek() {
     let keys = DeviceKeys::from_seed([0x11; 32]);
     let ec = generate_ec_keypair().unwrap();
     let server = generate_ec_keypair().unwrap();
-    let encoded = server.secret_key.public_key().to_encoded_point(false);
+    let encoded = server.secret_key.public_key().to_sec1_point(false);
     let server_pub = [
         encoded.x().unwrap().as_slice(),
         encoded.y().unwrap().as_slice(),
