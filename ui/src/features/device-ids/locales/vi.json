@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Trình ghi ID thiết bị",
+    "description": "Ghi ID thiết bị dùng cho chứng thực vào ứng dụng tin cậy Keymaster của Qualcomm.",
+    "warning": "Tính năng này mới chỉ được thử nghiệm trên một số thiết bị OnePlus dùng chip Qualcomm. Không đảm bảo kết quả trên các thiết bị khác, và việc ghi thực tế sẽ thay đổi các ID mà Keymaster TA chứng thực."
+  },
+  "form": {
+    "main": "Mã nhận dạng",
+    "mainHint": "Đã điền sẵn từ thiết bị này. Chỉ thay đổi khi bạn cần khớp với một thiết bị khác.",
+    "advanced": "Nâng cao",
+    "advancedHint": "IMEI, MEID và vị trí của ứng dụng tin cậy.",
+    "brand": "Thương hiệu",
+    "device": "Tên mã thiết bị",
+    "product": "Sản phẩm",
+    "serial": "Số sê-ri",
+    "manufacturer": "Nhà sản xuất",
+    "model": "Kiểu máy",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "Tên TA",
+    "taPath": "Đường dẫn TA",
+    "dryRun": "Chạy thử",
+    "dryRunHint": "Tạo và kiểm tra lệnh mà không gửi đến Keymaster.",
+    "reload": "Đọc lại từ thiết bị",
+    "provision": "Ghi ID thiết bị",
+    "provisionDry": "Bắt đầu chạy thử",
+    "confirm": "Ghi các ID này vào Keymaster ngay bây giờ? Duck ToolBox không thể hoàn tác thao tác này."
+  },
+  "result": {
+    "title": "Kết quả",
+    "done": "Đã hoàn tất ghi ID thiết bị",
+    "mode": "Chế độ",
+    "dry": "Chạy thử",
+    "live": "Ghi thực tế",
+    "count": "Số mục đã ghi",
+    "taVersion": "Phiên bản TA",
+    "library": "Thư viện",
+    "report": "Báo cáo",
+    "notAvailable": "Không có"
+  },
+  "errors": {
+    "missing_device_field": "Có mã nhận dạng bắt buộc bị bỏ trống."
+  }
+}

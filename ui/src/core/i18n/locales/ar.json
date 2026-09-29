@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "أدوات أمان لـ KernelSU وAPatch وMagisk"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "settings": "الإعدادات",
+    "back": "رجوع",
+    "more": "خيارات إضافية",
+    "notFound": "هذه الصفحة غير موجودة."
+  },
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "copy": "نسخ",
+    "copied": "تم النسخ إلى الحافظة",
+    "copyFailed": "النسخ غير متاح هنا",
+    "retry": "إعادة المحاولة",
+    "refresh": "إعادة التحميل",
+    "reset": "إعادة الضبط",
+    "remove": "إزالة",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "open": "فتح",
+    "continue": "متابعة",
+    "details": "التفاصيل",
+    "browse": "تصفّح",
+    "import": "استيراد",
+    "export": "تصدير",
+    "install": "تثبيت",
+    "search": "بحث",
+    "clear": "محو",
+    "done": "تم"
+  },
+  "home": {
+    "tools": "الأدوات",
+    "system": "النظام",
+    "missing": "غير متوفر في هذا الإصدار",
+    "outdated": "يرجى تحديث الوحدة",
+    "checking": "جارٍ التحقق…",
+    "noHost": "افتح Duck ToolBox من KernelSU أو APatch أو أحد تطبيقات WebUI لتشغيل الأدوات.",
+    "confirmTitle": "قبل المتابعة"
+  },
+  "settings": {
+    "appearance": "المظهر",
+    "theme": "السمة",
+    "themeSystem": "حسب النظام",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "language": "اللغة",
+    "languageSystem": "لغة النظام",
+    "about": "حول",
+    "version": "الإصدار",
+    "authors": "المطورون",
+    "repository": "رمز المصدر",
+    "license": "الترخيص",
+    "acknowledgements": "شكر وتقدير",
+    "trickyAddon": "مدير Tricky Store منقول عن Tricky Addon من تطوير KOWX712.",
+    "aospKeybox": "صندوق مفاتيح AOSP المضمّن هو مفتاح التصديق المرجعي من system/keymaster في AOSP."
+  },
+  "files": {
+    "title": "اختيار ملف",
+    "empty": "لا توجد ملفات مطابقة في هذا المجلد.",
+    "up": "أعلى بمستوى واحد",
+    "system": "منتقي ملفات النظام",
+    "loadFailed": "تتعذّر قراءة هذا المجلد."
+  },
+  "errors": {
+    "title": "حدث خطأ ما",
+    "command": "الأمر",
+    "code": "الرمز",
+    "message": "الرسالة",
+    "details": "التفاصيل",
+    "host_unavailable": "لا يتوفر هنا مضيف WebUI يعمل بصلاحيات الجذر.",
+    "api_mismatch": "تستخدم الواجهة الخلفية المثبّتة بروتوكولًا مختلفًا. أعِد تثبيت الوحدة.",
+    "contract_mismatch": "أعادت الواجهة الخلفية بيانات لا تستطيع واجهة WebUI هذه فهمها. أعِد تثبيت الوحدة.",
+    "no_envelope": "لم تستجب الواجهة الخلفية.",
+    "binary_not_found": "الملف التنفيذي للواجهة الخلفية مفقود من الوحدة.",
+    "usage_error": "رفضت الواجهة الخلفية الطلب.",
+    "internal_error": "أبلغت الواجهة الخلفية عن خطأ."
+  }
+}

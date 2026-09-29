@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "الوحدة والتحديثات",
+    "description": "الإصدارات والتحديثات وملفات الإخراج وسجلّ الأوامر والصيانة."
+  },
+  "device": {
+    "title": "هذا الجهاز",
+    "android": "Android {release} · API {sdk}",
+    "patch": "رمز تصحيح الأمان",
+    "kernel": "النواة",
+    "selinux": "SELinux",
+    "rootManager": "مدير الجذر",
+    "module": "Duck ToolBox",
+    "notDetected": "لم يتم اكتشافه"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "إلزامي",
+    "permissive": "متساهل"
+  },
+  "module": {
+    "title": "الوحدة",
+    "id": "معرّف الوحدة",
+    "version": "إصدار الوحدة",
+    "binary": "إصدار الواجهة الخلفية",
+    "author": "المطور"
+  },
+  "update": {
+    "title": "التحديثات",
+    "channel": "قناة التحديث",
+    "stable": "مستقر",
+    "canary": "تجريبي (إصدارات CI)",
+    "off": "إيقاف",
+    "check": "البحث عن تحديثات",
+    "upToDate": "أنت تستخدم أحدث إصدار.",
+    "available": "يتوفر الإصدار {version}",
+    "install": "تثبيت التحديث",
+    "installed": "تم تثبيت التحديث. أعِد تشغيل الجهاز لتطبيقه.",
+    "reboot": "إعادة التشغيل الآن",
+    "changelog": "الميزات الجديدة",
+    "banner": "يتوفر الإصدار {version} من Duck ToolBox",
+    "view": "عرض"
+  },
+  "files": {
+    "title": "ملفات الإخراج",
+    "empty": "لم تكتب الأدوات أي ملفات بعد.",
+    "folder": "محفوظة في {path}"
+  },
+  "activity": {
+    "title": "سجلّ الأوامر",
+    "empty": "لم يتم تشغيل أي أوامر بعد.",
+    "all": "عرض الكل",
+    "failed": "فشل"
+  },
+  "maintenance": {
+    "title": "الصيانة",
+    "reboot": "إعادة تشغيل الجهاز",
+    "rebootConfirm": "هل تريد إعادة تشغيل الجهاز الآن؟",
+    "uninstall": "إلغاء تثبيت Duck ToolBox",
+    "uninstallConfirm": "ستتم إزالة Duck ToolBox عند إعادة التشغيل التالية. تبقى ملفات التعريف والمخرجات المحفوظة ضمن /data/adb/duck-toolbox في مكانها.",
+    "uninstalled": "ستتم إزالة Duck ToolBox بعد إعادة التشغيل التالية."
+  },
+  "errors": {
+    "no_root_manager": "لم يتم العثور على مدير جذر مدعوم.",
+    "invalid_url": "لا يمكن فتح إلا روابط http(s).",
+    "no_update": "لا يتوفر أي تحديث.",
+    "invalid_package": "الملف الذي تم تنزيله ليس وحدة Duck ToolBox.",
+    "download_failed": "تعذّر التنزيل."
+  }
+}

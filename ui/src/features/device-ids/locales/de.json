@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Geräte-ID-Bereitstellung",
+    "description": "Geräte-IDs für die Attestierung in die vertrauenswürdige Keymaster-App von Qualcomm schreiben.",
+    "warning": "Das wurde bisher nur auf einigen OnePlus-Geräten mit Qualcomm-Chip getestet. Auf anderen Geräten ist das Ergebnis nicht garantiert, und ein echter Schreibvorgang ändert die von der Keymaster-TA attestierten IDs."
+  },
+  "form": {
+    "main": "Kennungen",
+    "mainHint": "Von diesem Gerät übernommen. Ändere sie nur, wenn sie einem anderen Gerät entsprechen sollen.",
+    "advanced": "Erweitert",
+    "advancedHint": "IMEI, MEID und Speicherort der vertrauenswürdigen App.",
+    "brand": "Marke",
+    "device": "Geräte-Codename",
+    "product": "Produkt",
+    "serial": "Seriennummer",
+    "manufacturer": "Hersteller",
+    "model": "Modell",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA-Name",
+    "taPath": "TA-Pfad",
+    "dryRun": "Probelauf",
+    "dryRunHint": "Erstellt und prüft den Befehl, ohne ihn an Keymaster zu senden.",
+    "reload": "Erneut vom Gerät laden",
+    "provision": "Geräte-IDs schreiben",
+    "provisionDry": "Probelauf starten",
+    "confirm": "Diese IDs jetzt in Keymaster schreiben? Das lässt sich mit Duck ToolBox nicht rückgängig machen."
+  },
+  "result": {
+    "title": "Ergebnis",
+    "done": "Geräte-ID-Bereitstellung abgeschlossen",
+    "mode": "Modus",
+    "dry": "Probelauf",
+    "live": "Echter Schreibvorgang",
+    "count": "Geschriebene Einträge",
+    "taVersion": "TA-Version",
+    "library": "Bibliothek",
+    "report": "Bericht",
+    "notAvailable": "Nicht verfügbar"
+  },
+  "errors": {
+    "missing_device_field": "Eine erforderliche Kennung ist leer."
+  }
+}

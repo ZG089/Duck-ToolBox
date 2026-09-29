@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Daftar target, keybox, dan kebijakan untuk Tricky Store, TEESimulator, dan OhMyKeymint."
+  },
+  "backend": {
+    "none": "Modul keystore tidak ditemukan",
+    "noneHint": "Instal Tricky Store, TEESimulator, atau OhMyKeymint, lalu mulai ulang. Halaman ini mengelola modul mana pun yang aktif.",
+    "title": "Modul keystore",
+    "active": "Aktif",
+    "inactive": "Dinonaktifkan",
+    "disabled": "{name} dinonaktifkan di pengelola root Anda. Perubahan tetap disimpan dan akan diterapkan setelah Anda mengaktifkannya lalu memulai ulang perangkat.",
+    "configError": "Konfigurasi saat ini tidak dapat dibaca, jadi konfigurasi tersebut akan diganti saat Anda menyimpan: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (lama)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "{count} dipilih",
+    "empty": "Tidak ada aplikasi yang cocok dengan pencarian Anda.",
+    "system": "Sistem",
+    "tune": "Mode dan kebijakan {name}",
+    "customPolicy": "Kebijakan kustom",
+    "unsaved": "Perubahan belum disimpan",
+    "discard": "Buang",
+    "discarded": "Perubahan dibuang",
+    "refresh": "Muat ulang",
+    "selectAll": "Pilih semua",
+    "deselectAll": "Batalkan semua pilihan",
+    "selectedCount": "{count} aplikasi dipilih",
+    "deselectedCount": "Pilihan {count} aplikasi dibatalkan",
+    "nothingChanged": "Tidak ada yang perlu diubah",
+    "more": "Lainnya",
+    "autoAdd": "Tambahkan otomatis aplikasi baru",
+    "autoAddHint": "Aplikasi yang baru diinstal akan ditambahkan ke daftar target saat booting.",
+    "shortcuts": "Ctrl+A pilih semua, Ctrl+D batalkan semua pilihan, Ctrl+F cari, Ctrl+S simpan"
+  },
+  "keybox": {
+    "status": "Keybox terinstal",
+    "missing": "Belum ada keybox terinstal",
+    "modified": "Diubah",
+    "size": "Ukuran",
+    "path": "Jalur",
+    "sources": "Instal keybox",
+    "aospHint": "Keybox software dari AOSP.",
+    "unknownHint": "Keybox yang ditandatangani sendiri, dibuat di perangkat ini.",
+    "localHint": "keybox.xml dari penyimpanan.",
+    "repoHint": "Jelajahi repositori keybox komunitas.",
+    "custom": "Penyedia kustom",
+    "customEmpty": "Belum ada penyedia kustom.",
+    "addProvider": "Tambahkan penyedia",
+    "editProvider": "Edit penyedia",
+    "url": "URL",
+    "decodeHint": "Langkah yang diizinkan: cat, base64 -d, xxd -r -p, digabung dengan {'|'}",
+    "import": "Impor",
+    "export": "Ekspor",
+    "resetProviders": "Setel ulang ke default",
+    "installedDetail": "{count} kunci di {path}",
+    "backup": "Keybox sebelumnya dicadangkan ke {path}",
+    "systemPicker": "Pilih dengan pengelola file sistem",
+    "repoLoading": "Menghubungkan ke repositori keybox…",
+    "repoTitle": "Repositori keybox"
+  },
+  "policy": {
+    "none": "Modul yang aktif tidak memiliki kebijakan default.",
+    "hint": "Kosongkan kolom untuk tetap memakai nilai default modul.",
+    "saved": "Kebijakan default disimpan",
+    "restart": "Mulai ulang untuk menerapkan perubahan setelan Booting Terverifikasi dan OS.",
+    "custom": "Kebijakan kustom untuk aplikasi ini",
+    "fields": {
+      "os_patch": "Patch sistem",
+      "vendor_patch": "Patch vendor",
+      "boot_patch": "Patch boot",
+      "os_version": "Versi OS",
+      "security_patch": "Patch keamanan",
+      "os_patchlevel": "Level patch OS",
+      "vendor_patchlevel": "Level patch vendor",
+      "boot_patchlevel": "Level patch boot",
+      "vb_key": "Kunci Booting Terverifikasi",
+      "vb_hash": "Hash Booting Terverifikasi",
+      "verified_boot_state": "Status Booting Terverifikasi hijau",
+      "device_locked": "Bootloader terkunci",
+      "mode": "Mode operasi",
+      "brand": "Merek",
+      "device": "Perangkat",
+      "product": "Produk",
+      "manufacturer": "Produsen",
+      "model": "Model",
+      "serial": "Nomor seri",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "Sertakan otomatis aplikasi baru"
+    }
+  },
+  "props": {
+    "handlerHint": "Menyetel ulang prop bootloader, Booting Terverifikasi, dan debug saat booting agar terlihat seperti perangkat yang terkunci.",
+    "bootHashHint": "verifiedBootHash dari Key Attestation. Kosongkan agar ro.boot.vbmeta.digest tidak lagi ditimpa.",
+    "invalidHash": "Masukkan 64 karakter heksadesimal",
+    "synced": "Juga ditulis ke kebijakan vb_hash modul"
+  },
+  "entry": {
+    "title": "Entri modul keystore",
+    "description": "Buka halaman ini dari WebUI (atau tombol tindakan) {module} di pengelola root Anda.",
+    "ownWebui": "{module} sudah memiliki WebUI sendiri, jadi entri tidak ditambahkan.",
+    "noModule": "Instal modul keystore untuk menambahkan entri ke modul tersebut."
+  },
+  "translations": {
+    "title": "Terjemahan Tricky Addon",
+    "version": "Paket {version}",
+    "help": "Bantu terjemahkan",
+    "telegram": "Tricky Addon di Telegram",
+    "guide": "Pengelola Tricky Store memakai terjemahan Tricky Addon. Sempurnakan terjemahannya di [Crowdin](https://crowdin.com/project/TA_utl); *Update translation bundle* mengambil terjemahan terbaru tanpa perlu update modul.\n\nSemua teks lainnya diterjemahkan di file `locales/*.json` milik Duck ToolBox. Buka pull request di [GitHub]({repository}) untuk menambahkan atau memperbaiki bahasa."
+  },
+  "help": {
+    "modes": "Mode",
+    "modesDescription": "Tekan lama aplikasi yang dipilih (atau ketuk tombol penyesuaiannya) untuk memaksakan mode pembuatan sertifikat (`!`) atau leaf hack (`?`), atau untuk memberinya kebijakan sendiri. Hanya Tricky Store yang mendukung fitur ini.",
+    "backends": "Modul yang didukung",
+    "backendsDescription": "Tricky Store (config.ini dan target.txt lama), TEESimulator (config.json), dan OhMyKeymint (injector.toml dan config.toml). Duck ToolBox menulis dalam format milik modul yang aktif."
+  },
+  "errors": {
+    "no_backend": "Tidak ada modul keystore yang terinstal",
+    "invalid_keybox": "Keybox tidak valid",
+    "unsupported_decoder": "Langkah dekode tidak diizinkan",
+    "invalid_policy": "Nilai kebijakan tidak valid",
+    "backend_rule": "Ditolak oleh aturan modul keystore",
+    "download_failed": "Pengunduhan gagal"
+  },
   "ta": {
     "help_help_instructions": "Panduan",
     "help_select_denylist": "Pilih dari Denylist",

@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Penyediaan ID Perangkat",
+    "description": "Tulis ID perangkat untuk pengesahan ke aplikasi tepercaya Qualcomm Keymaster.",
+    "warning": "Fitur ini baru diuji di beberapa perangkat OnePlus berbasis Qualcomm. Hasil di perangkat lain tidak dijamin, dan penulisan nyata akan mengubah ID yang disahkan oleh TA Keymaster."
+  },
+  "form": {
+    "main": "Pengenal",
+    "mainHint": "Diisi dari perangkat ini. Ubah hanya jika Anda ingin menyamakannya dengan perangkat lain.",
+    "advanced": "Lanjutan",
+    "advancedHint": "IMEI, MEID, dan lokasi aplikasi tepercaya.",
+    "brand": "Merek",
+    "device": "Kode perangkat",
+    "product": "Produk",
+    "serial": "Nomor seri",
+    "manufacturer": "Produsen",
+    "model": "Model",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "Nama TA",
+    "taPath": "Jalur TA",
+    "dryRun": "Simulasi",
+    "dryRunHint": "Menyusun dan memvalidasi perintah tanpa mengirimkannya ke Keymaster.",
+    "reload": "Muat ulang dari perangkat",
+    "provision": "Tulis ID perangkat",
+    "provisionDry": "Jalankan simulasi",
+    "confirm": "Tulis ID ini ke Keymaster sekarang? Tindakan ini tidak dapat diurungkan dari Duck ToolBox."
+  },
+  "result": {
+    "title": "Hasil",
+    "done": "Penyediaan ID perangkat selesai",
+    "mode": "Mode",
+    "dry": "Simulasi",
+    "live": "Penulisan nyata",
+    "count": "Entri yang ditulis",
+    "taVersion": "Versi TA",
+    "library": "Pustaka",
+    "report": "Laporan",
+    "notAvailable": "Tidak tersedia"
+  },
+  "errors": {
+    "missing_device_field": "Ada pengenal wajib yang kosong."
+  }
+}

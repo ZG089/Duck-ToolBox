@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Liste cible, Keybox et règles pour Tricky Store, TEESimulator et OhMyKeymint."
+  },
+  "backend": {
+    "none": "Aucun module keystore trouvé",
+    "noneHint": "Installez Tricky Store, TEESimulator ou OhMyKeymint, puis redémarrez. Cette page gère celui qui est actif.",
+    "title": "Modules keystore",
+    "active": "Actif",
+    "inactive": "Désactivé",
+    "disabled": "{name} est désactivé dans votre gestionnaire root. Les modifications sont enregistrées et prendront effet une fois le module activé et l’appareil redémarré.",
+    "configError": "Impossible de lire la configuration actuelle, qui sera donc remplacée à l’enregistrement : {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (ancienne version)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "Sélection : {count}",
+    "empty": "Aucune application ne correspond à votre recherche.",
+    "system": "Système",
+    "tune": "Mode et règles de {name}",
+    "customPolicy": "Règles personnalisées",
+    "unsaved": "Modifications non enregistrées",
+    "discard": "Annuler",
+    "discarded": "Modifications annulées",
+    "refresh": "Actualiser",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
+    "selectedCount": "Applications sélectionnées : {count}",
+    "deselectedCount": "Applications désélectionnées : {count}",
+    "nothingChanged": "Rien à modifier",
+    "more": "Plus",
+    "autoAdd": "Ajout auto des nouvelles applis",
+    "autoAddHint": "Les applications nouvellement installées sont ajoutées à la liste cible au démarrage.",
+    "shortcuts": "Ctrl+A tout sélectionner, Ctrl+D tout désélectionner, Ctrl+F rechercher, Ctrl+S enregistrer"
+  },
+  "keybox": {
+    "status": "Keybox installée",
+    "missing": "Aucune Keybox installée",
+    "modified": "Modifiée le",
+    "size": "Taille",
+    "path": "Chemin",
+    "sources": "Installer une Keybox",
+    "aospHint": "Keybox logicielle d’AOSP.",
+    "unknownHint": "Keybox autosignée générée sur cet appareil.",
+    "localHint": "keybox.xml depuis l’espace de stockage.",
+    "repoHint": "Parcourir le dépôt communautaire de Keybox.",
+    "custom": "Fournisseurs personnalisés",
+    "customEmpty": "Aucun fournisseur personnalisé pour le moment.",
+    "addProvider": "Ajouter",
+    "editProvider": "Modifier le fournisseur",
+    "url": "URL",
+    "decodeHint": "Étapes autorisées : cat, base64 -d, xxd -r -p, enchaînées avec {'|'}",
+    "import": "Importer",
+    "export": "Exporter",
+    "resetProviders": "Rétablir les valeurs par défaut",
+    "installedDetail": "Clés dans {path} : {count}",
+    "backup": "Keybox précédente sauvegardée dans {path}",
+    "systemPicker": "Choisir avec le sélecteur du système",
+    "repoLoading": "Connexion au dépôt de Keybox…",
+    "repoTitle": "Dépôt de Keybox"
+  },
+  "policy": {
+    "none": "Le module actif n’a pas de règles par défaut.",
+    "hint": "Laissez un champ vide pour conserver la valeur par défaut du module.",
+    "saved": "Règles par défaut enregistrées",
+    "restart": "Redémarrez pour appliquer les paramètres modifiés du démarrage validé et du système.",
+    "custom": "Règles personnalisées pour cette appli",
+    "fields": {
+      "os_patch": "Correctif système",
+      "vendor_patch": "Correctif fournisseur",
+      "boot_patch": "Correctif de démarrage",
+      "os_version": "Version de l’OS",
+      "security_patch": "Correctif de sécurité",
+      "os_patchlevel": "Niveau de correctif de l’OS",
+      "vendor_patchlevel": "Niveau de correctif fournisseur",
+      "boot_patchlevel": "Niveau de correctif de démarrage",
+      "vb_key": "Clé du démarrage validé",
+      "vb_hash": "Hash du démarrage validé",
+      "verified_boot_state": "État du démarrage validé : vert",
+      "device_locked": "Bootloader verrouillé",
+      "mode": "Mode de fonctionnement",
+      "brand": "Marque",
+      "device": "Appareil",
+      "product": "Produit",
+      "manufacturer": "Fabricant",
+      "model": "Modèle",
+      "serial": "Numéro de série",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "Inclusion auto des nouvelles applis"
+    }
+  },
+  "props": {
+    "handlerHint": "Réinitialise au démarrage les propriétés du bootloader, du démarrage validé et de débogage pour qu’elles correspondent à un appareil verrouillé.",
+    "bootHashHint": "Valeur verifiedBootHash indiquée par Key Attestation. Laissez vide pour ne plus remplacer ro.boot.vbmeta.digest.",
+    "invalidHash": "Saisissez 64 caractères hexadécimaux",
+    "synced": "Également écrit dans la règle vb_hash du module"
+  },
+  "entry": {
+    "title": "Raccourci dans le module keystore",
+    "description": "Permet d’ouvrir cette page depuis la WebUI (ou le bouton d’action) de {module} dans votre gestionnaire root.",
+    "ownWebui": "{module} dispose de sa propre WebUI : aucun raccourci n’est ajouté.",
+    "noModule": "Installez un module keystore pour y ajouter un raccourci."
+  },
+  "translations": {
+    "title": "Traductions de Tricky Addon",
+    "version": "Pack {version}",
+    "help": "Aider à traduire",
+    "telegram": "Tricky Addon sur Telegram",
+    "guide": "Le gestionnaire Tricky Store utilise les traductions de Tricky Addon. Améliorez-les sur [Crowdin](https://crowdin.com/project/TA_utl) ; *Mettre à jour le pack de traduction* récupère ici les plus récentes sans mettre à jour le module.\n\nTout le reste est traduit dans les fichiers `locales/*.json` de Duck ToolBox. Ouvrez une pull request sur [GitHub]({repository}) pour ajouter ou corriger une langue."
+  },
+  "help": {
+    "modes": "Modes",
+    "modesDescription": "Appuyez de manière prolongée sur une application sélectionnée (ou sur son bouton de réglage) pour lui imposer la génération de certificat (`!`) ou le leaf hack (`?`), ou lui attribuer ses propres règles. Seul Tricky Store le permet.",
+    "backends": "Modules compatibles",
+    "backendsDescription": "Tricky Store (config.ini et l’ancien target.txt), TEESimulator (config.json) et OhMyKeymint (injector.toml et config.toml). Duck ToolBox écrit dans le format propre au module actif."
+  },
+  "errors": {
+    "no_backend": "Aucun module keystore installé",
+    "invalid_keybox": "Keybox non valide",
+    "unsupported_decoder": "Étape de décodage non autorisée",
+    "invalid_policy": "Valeur de règle non valide",
+    "backend_rule": "Non conforme aux exigences du module keystore",
+    "download_failed": "Échec du téléchargement"
+  },
   "ta": {
     "help_help_instructions": "Instructions",
     "help_select_denylist": "Sélectionner depuis la DenyList",

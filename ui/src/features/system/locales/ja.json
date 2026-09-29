@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "モジュールとアップデート",
+    "description": "バージョン情報、アップデート、出力ファイル、コマンド履歴、メンテナンス。"
+  },
+  "device": {
+    "title": "このデバイス",
+    "android": "Android {release} · API {sdk}",
+    "patch": "セキュリティ パッチ",
+    "kernel": "カーネル",
+    "selinux": "SELinux",
+    "rootManager": "root マネージャー",
+    "module": "Duck ToolBox",
+    "notDetected": "未検出"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "強制",
+    "permissive": "許容"
+  },
+  "module": {
+    "title": "モジュール",
+    "id": "モジュール ID",
+    "version": "モジュール バージョン",
+    "binary": "バックエンド バージョン",
+    "author": "開発者"
+  },
+  "update": {
+    "title": "アップデート",
+    "channel": "アップデート チャンネル",
+    "stable": "安定版",
+    "canary": "Canary（CI ビルド）",
+    "off": "オフ",
+    "check": "アップデートを確認",
+    "upToDate": "最新バージョンを使用しています。",
+    "available": "バージョン {version} を利用できます",
+    "install": "アップデートをインストール",
+    "installed": "アップデートをインストールしました。再起動すると適用されます。",
+    "reboot": "今すぐ再起動",
+    "changelog": "更新内容",
+    "banner": "Duck ToolBox {version} を利用できます",
+    "view": "表示"
+  },
+  "files": {
+    "title": "出力ファイル",
+    "empty": "ツールが書き出したファイルはまだありません。",
+    "folder": "{path} に保存されています"
+  },
+  "activity": {
+    "title": "コマンド履歴",
+    "empty": "実行されたコマンドはまだありません。",
+    "all": "すべて表示",
+    "failed": "失敗"
+  },
+  "maintenance": {
+    "title": "メンテナンス",
+    "reboot": "デバイスを再起動",
+    "rebootConfirm": "今すぐデバイスを再起動しますか？",
+    "uninstall": "Duck ToolBox をアンインストール",
+    "uninstallConfirm": "Duck ToolBox は次回の再起動時に削除されます。/data/adb/duck-toolbox に保存されたプロファイルと出力ファイルは残ります。",
+    "uninstalled": "Duck ToolBox は次回の再起動後に削除されます。"
+  },
+  "errors": {
+    "no_root_manager": "対応している root マネージャーが見つかりませんでした。",
+    "invalid_url": "開けるのは http(s) のリンクのみです。",
+    "no_update": "利用可能なアップデートはありません。",
+    "invalid_package": "ダウンロードしたファイルは Duck ToolBox モジュールではありません。",
+    "download_failed": "ダウンロードに失敗しました。"
+  }
+}

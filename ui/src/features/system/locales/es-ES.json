@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Módulo y actualizaciones",
+    "description": "Versiones, actualizaciones, archivos de salida, historial de comandos y mantenimiento."
+  },
+  "device": {
+    "title": "Este dispositivo",
+    "android": "Android {release} · API {sdk}",
+    "patch": "Parche de seguridad",
+    "kernel": "Kernel",
+    "selinux": "SELinux",
+    "rootManager": "Gestor de root",
+    "module": "Duck ToolBox",
+    "notDetected": "No detectado"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "Obligatorio",
+    "permissive": "Permisivo"
+  },
+  "module": {
+    "title": "Módulo",
+    "id": "ID del módulo",
+    "version": "Versión del módulo",
+    "binary": "Versión del backend",
+    "author": "Autor"
+  },
+  "update": {
+    "title": "Actualizaciones",
+    "channel": "Canal de actualizaciones",
+    "stable": "Estable",
+    "canary": "Canary (compilaciones de CI)",
+    "off": "Desactivado",
+    "check": "Buscar actualizaciones",
+    "upToDate": "Tienes la versión más reciente.",
+    "available": "Versión {version} disponible",
+    "install": "Instalar actualización",
+    "installed": "Actualización instalada. Reinicia para aplicarla.",
+    "reboot": "Reiniciar ahora",
+    "changelog": "Novedades",
+    "banner": "Duck ToolBox {version} ya está disponible",
+    "view": "Ver"
+  },
+  "files": {
+    "title": "Archivos de salida",
+    "empty": "Las herramientas aún no han generado ningún archivo.",
+    "folder": "Se guardan en {path}"
+  },
+  "activity": {
+    "title": "Historial de comandos",
+    "empty": "Aún no se ha ejecutado ningún comando.",
+    "all": "Ver todo",
+    "failed": "Error"
+  },
+  "maintenance": {
+    "title": "Mantenimiento",
+    "reboot": "Reiniciar dispositivo",
+    "rebootConfirm": "¿Reiniciar el dispositivo ahora?",
+    "uninstall": "Desinstalar Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox se eliminará en el próximo reinicio. Los perfiles guardados y los archivos de salida de /data/adb/duck-toolbox se conservarán.",
+    "uninstalled": "Duck ToolBox se eliminará después del próximo reinicio."
+  },
+  "errors": {
+    "no_root_manager": "No se ha encontrado ningún gestor de root compatible.",
+    "invalid_url": "Solo se pueden abrir enlaces http(s).",
+    "no_update": "No hay ninguna actualización disponible.",
+    "invalid_package": "El archivo descargado no es un módulo de Duck ToolBox.",
+    "download_failed": "No se ha podido completar la descarga."
+  }
+}

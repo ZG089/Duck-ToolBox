@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "قائمة التطبيقات المستهدفة وصندوق المفاتيح والسياسات لـ Tricky Store وTEESimulator وOhMyKeymint."
+  },
+  "backend": {
+    "none": "لم يتم العثور على وحدة مخزن مفاتيح",
+    "noneHint": "ثبّت Tricky Store أو TEESimulator أو OhMyKeymint، ثم أعِد تشغيل الجهاز. تدير هذه الصفحة الوحدة النشطة منها أيًا كانت.",
+    "title": "وحدات مخزن المفاتيح",
+    "active": "نشطة",
+    "inactive": "معطّلة",
+    "disabled": "الوحدة {name} معطّلة في مدير الجذر. تُحفظ التغييرات، لكنها لا تُطبَّق إلا بعد تفعيل الوحدة وإعادة تشغيل الجهاز.",
+    "configError": "تعذّرت قراءة ملف الإعداد الحالي، لذا سيؤدي الحفظ إلى استبداله: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (إصدار قديم)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "المحدد: {count}",
+    "empty": "لا توجد تطبيقات تطابق بحثك.",
+    "system": "النظام",
+    "tune": "وضع {name} وسياسته",
+    "customPolicy": "سياسة مخصصة",
+    "unsaved": "تغييرات غير محفوظة",
+    "discard": "تجاهل",
+    "discarded": "تم تجاهل التغييرات",
+    "refresh": "إعادة التحميل",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل",
+    "selectedCount": "عدد التطبيقات التي تم تحديدها: {count}",
+    "deselectedCount": "عدد التطبيقات التي تم إلغاء تحديدها: {count}",
+    "nothingChanged": "لا يوجد ما يلزم تغييره",
+    "more": "المزيد",
+    "autoAdd": "إضافة التطبيقات الجديدة تلقائيًا",
+    "autoAddHint": "تُضاف التطبيقات المثبّتة حديثًا إلى قائمة التطبيقات المستهدفة عند بدء التشغيل.",
+    "shortcuts": "Ctrl+A لتحديد الكل، وCtrl+D لإلغاء تحديد الكل، وCtrl+F للبحث، وCtrl+S للحفظ"
+  },
+  "keybox": {
+    "status": "صندوق المفاتيح المثبّت",
+    "missing": "لا يوجد صندوق مفاتيح مثبّت",
+    "modified": "آخر تعديل",
+    "size": "الحجم",
+    "path": "المسار",
+    "sources": "تثبيت صندوق مفاتيح",
+    "aospHint": "صندوق مفاتيح برمجي من AOSP.",
+    "unknownHint": "صندوق مفاتيح موقّع ذاتيًا يتم إنشاؤه على هذا الجهاز.",
+    "localHint": "ملف keybox.xml من مساحة التخزين.",
+    "repoHint": "تصفّح مستودع المجتمع لصناديق المفاتيح.",
+    "custom": "المزوّدون المخصصون",
+    "customEmpty": "لا يوجد مزوّدون مخصصون بعد.",
+    "addProvider": "إضافة مزوّد",
+    "editProvider": "تعديل المزوّد",
+    "url": "URL",
+    "decodeHint": "الخطوات المسموح بها: cat وbase64 -d وxxd -r -p، مع الربط بينها بالرمز {'|'}",
+    "import": "استيراد",
+    "export": "تصدير",
+    "resetProviders": "استعادة الإعدادات الافتراضية",
+    "installedDetail": "عدد المفاتيح في {path}: {count}",
+    "backup": "تم حفظ صندوق المفاتيح السابق في {path}",
+    "systemPicker": "الاختيار باستخدام مدير ملفات النظام",
+    "repoLoading": "جارٍ الاتصال بمستودع صناديق المفاتيح…",
+    "repoTitle": "مستودع صناديق المفاتيح"
+  },
+  "policy": {
+    "none": "لا تتضمن الوحدة النشطة سياسة افتراضية.",
+    "hint": "اترك أي حقل فارغًا للإبقاء على القيمة الافتراضية الخاصة بالوحدة.",
+    "saved": "تم حفظ السياسة الافتراضية",
+    "restart": "أعِد تشغيل الجهاز لتطبيق التغييرات على إعدادات Verified Boot ونظام التشغيل.",
+    "custom": "سياسة مخصصة لهذا التطبيق",
+    "fields": {
+      "os_patch": "رمز تصحيح النظام",
+      "vendor_patch": "رمز تصحيح المورّد",
+      "boot_patch": "رمز تصحيح التمهيد",
+      "os_version": "إصدار نظام التشغيل",
+      "security_patch": "رمز تصحيح الأمان",
+      "os_patchlevel": "مستوى رمز تصحيح نظام التشغيل",
+      "vendor_patchlevel": "مستوى رمز تصحيح المورّد",
+      "boot_patchlevel": "مستوى رمز تصحيح التمهيد",
+      "vb_key": "مفتاح Verified Boot",
+      "vb_hash": "تجزئة Verified Boot",
+      "verified_boot_state": "حالة Verified Boot خضراء",
+      "device_locked": "برنامج bootloader مقفل",
+      "mode": "وضع العمل",
+      "brand": "العلامة التجارية",
+      "device": "الجهاز",
+      "product": "المنتج",
+      "manufacturer": "الشركة المصنّعة",
+      "model": "الطراز",
+      "serial": "الرقم التسلسلي",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "تضمين التطبيقات الجديدة تلقائيًا"
+    }
+  },
+  "props": {
+    "handlerHint": "يعيد ضبط خصائص برنامج bootloader وVerified Boot وتصحيح الأخطاء عند بدء التشغيل ليبدو الجهاز مقفلًا.",
+    "bootHashHint": "قيمة verifiedBootHash من تطبيق Key Attestation. اترك الحقل فارغًا لإيقاف استبدال قيمة ro.boot.vbmeta.digest.",
+    "invalidHash": "أدخِل 64 حرفًا ست عشريًا",
+    "synced": "تمت كتابتها أيضًا في سياسة vb_hash الخاصة بالوحدة"
+  },
+  "entry": {
+    "title": "مدخل في وحدة مخزن المفاتيح",
+    "description": "افتح هذه الصفحة من واجهة WebUI الخاصة بالوحدة {module} (أو من زر الإجراء الخاص بها) في مدير الجذر.",
+    "ownWebui": "تتضمن الوحدة {module} واجهة WebUI خاصة بها، لذا لن تتم إضافة مدخل.",
+    "noModule": "ثبّت وحدة مخزن مفاتيح لإضافة مدخل إليها."
+  },
+  "translations": {
+    "title": "ترجمات Tricky Addon",
+    "version": "الحزمة {version}",
+    "help": "المساعدة في الترجمة",
+    "telegram": "Tricky Addon على Telegram",
+    "guide": "يستخدم مدير Tricky Store ترجمات Tricky Addon. يمكنك تحسينها على [Crowdin](https://crowdin.com/project/TA_utl)؛ ويجلب الزر *تحديث حزمة ملفات الترجمة* أحدث الترجمات إلى هنا دون الحاجة إلى تحديث الوحدة.\n\nأما بقية النصوص فتُترجم في ملفات `locales/*.json` الخاصة بـ Duck ToolBox. افتح طلب سحب على [GitHub]({repository}) لإضافة لغة أو تصحيحها."
+  },
+  "help": {
+    "modes": "الأوضاع",
+    "modesDescription": "انقر مع الاستمرار على تطبيق تم تحديده (أو انقر على زر الضبط الخاص به) لفرض وضع «إنشاء شهادة» (`!`) أو «حيلة الورق» (`?`) عليه، أو لتعيين سياسة خاصة به. لا يدعم ذلك إلا Tricky Store.",
+    "backends": "الوحدات المدعومة",
+    "backendsDescription": "Tricky Store (config.ini وملف target.txt القديم)، وTEESimulator (config.json)، وOhMyKeymint (injector.toml وconfig.toml). يكتب Duck ToolBox الإعدادات بالتنسيق الخاص بالوحدة النشطة."
+  },
+  "errors": {
+    "no_backend": "لا توجد وحدة مخزن مفاتيح مثبّتة",
+    "invalid_keybox": "صندوق مفاتيح غير صالح",
+    "unsupported_decoder": "خطوة فك ترميز غير مسموح بها",
+    "invalid_policy": "قيمة سياسة غير صالحة",
+    "backend_rule": "لا يتوافق مع قواعد وحدة مخزن المفاتيح",
+    "download_failed": "تعذّر التنزيل"
+  },
   "ta": {
     "help_help_instructions": "تعليمات",
     "help_save_and_update_description": "حفظ التكوين الحالي.",

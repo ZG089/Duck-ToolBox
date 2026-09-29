@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Lista de destino, keybox e políticas para Tricky Store, TEESimulator e OhMyKeymint."
+  },
+  "backend": {
+    "none": "Nenhum módulo de keystore encontrado",
+    "noneHint": "Instale o Tricky Store, o TEESimulator ou o OhMyKeymint e reinicie. Esta página gerencia o que estiver ativo.",
+    "title": "Módulos de keystore",
+    "active": "Ativo",
+    "inactive": "Desativado",
+    "disabled": "{name} está desativado no seu gerenciador de root. As alterações ficam salvas e entram em vigor depois de ativá-lo e reiniciar.",
+    "configError": "Não foi possível ler a configuração atual. Ao salvar, ela será substituída: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (legado)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "Selecionados: {count}",
+    "empty": "Nenhum app corresponde à sua busca.",
+    "system": "Sistema",
+    "tune": "Modo e política de {name}",
+    "customPolicy": "Política personalizada",
+    "unsaved": "Alterações não salvas",
+    "discard": "Descartar",
+    "discarded": "Alterações descartadas",
+    "refresh": "Atualizar",
+    "selectAll": "Selecionar tudo",
+    "deselectAll": "Desmarcar tudo",
+    "selectedCount": "Apps selecionados: {count}",
+    "deselectedCount": "Apps desmarcados: {count}",
+    "nothingChanged": "Nada para alterar",
+    "more": "Mais",
+    "autoAdd": "Adicionar novos apps automaticamente",
+    "autoAddHint": "Os apps recém-instalados são adicionados à lista de destino na inicialização.",
+    "shortcuts": "Ctrl+A selecionar tudo, Ctrl+D desmarcar tudo, Ctrl+F buscar, Ctrl+S salvar"
+  },
+  "keybox": {
+    "status": "Keybox instalada",
+    "missing": "Nenhuma keybox instalada",
+    "modified": "Última modificação",
+    "size": "Tamanho",
+    "path": "Caminho",
+    "sources": "Instalar uma keybox",
+    "aospHint": "Keybox de software do AOSP.",
+    "unknownHint": "Keybox autoassinada gerada neste dispositivo.",
+    "localHint": "keybox.xml do armazenamento.",
+    "repoHint": "Explore o repositório de keyboxes da comunidade.",
+    "custom": "Provedores personalizados",
+    "customEmpty": "Nenhum provedor personalizado ainda.",
+    "addProvider": "Adicionar provedor",
+    "editProvider": "Editar provedor",
+    "url": "URL",
+    "decodeHint": "Etapas permitidas: cat, base64 -d, xxd -r -p, encadeadas com {'|'}",
+    "import": "Importar",
+    "export": "Exportar",
+    "resetProviders": "Restaurar padrões",
+    "installedDetail": "Chaves em {path}: {count}",
+    "backup": "Keybox anterior salva em {path}",
+    "systemPicker": "Escolher com o gerenciador de arquivos do sistema",
+    "repoLoading": "Conectando ao repositório de keyboxes…",
+    "repoTitle": "Repositório de keyboxes"
+  },
+  "policy": {
+    "none": "O módulo ativo não tem política padrão.",
+    "hint": "Deixe um campo em branco para manter o padrão do próprio módulo.",
+    "saved": "Política padrão salva",
+    "restart": "Reinicie para aplicar as alterações nas configurações de Inicialização verificada e do SO.",
+    "custom": "Política personalizada para este app",
+    "fields": {
+      "os_patch": "Patch do sistema",
+      "vendor_patch": "Patch do fornecedor",
+      "boot_patch": "Patch de inicialização",
+      "os_version": "Versão do SO",
+      "security_patch": "Patch de segurança",
+      "os_patchlevel": "Nível do patch do SO",
+      "vendor_patchlevel": "Nível do patch do fornecedor",
+      "boot_patchlevel": "Nível do patch de inicialização",
+      "vb_key": "Chave da Inicialização verificada",
+      "vb_hash": "Hash da Inicialização verificada",
+      "verified_boot_state": "Inicialização verificada em estado verde",
+      "device_locked": "Bootloader bloqueado",
+      "mode": "Modo de operação",
+      "brand": "Marca",
+      "device": "Dispositivo",
+      "product": "Produto",
+      "manufacturer": "Fabricante",
+      "model": "Modelo",
+      "serial": "Número de série",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "Incluir novos apps automaticamente"
+    }
+  },
+  "props": {
+    "handlerHint": "Na inicialização, redefine as props de bootloader, Inicialização verificada e depuração para simular um dispositivo bloqueado.",
+    "bootHashHint": "O verifiedBootHash do Key Attestation. Deixe em branco para parar de substituir o ro.boot.vbmeta.digest.",
+    "invalidHash": "Digite 64 caracteres hexadecimais",
+    "synced": "Também gravado na política vb_hash do módulo"
+  },
+  "entry": {
+    "title": "Atalho no módulo de keystore",
+    "description": "Permite abrir esta página pela WebUI (ou pelo botão de ação) do {module} no seu gerenciador de root.",
+    "ownWebui": "O {module} já tem a própria WebUI, então nenhum atalho é adicionado.",
+    "noModule": "Instale um módulo de keystore para adicionar um atalho nele."
+  },
+  "translations": {
+    "title": "Traduções do Tricky Addon",
+    "version": "Pacote {version}",
+    "help": "Ajudar a traduzir",
+    "telegram": "Tricky Addon no Telegram",
+    "guide": "O gerenciador do Tricky Store usa as traduções do Tricky Addon. Ajude a melhorá-las no [Crowdin](https://crowdin.com/project/TA_utl); *Atualizar pacote de tradução* traz as mais recentes para cá sem precisar atualizar o módulo.\n\nOs demais textos são traduzidos nos arquivos `locales/*.json` do Duck ToolBox. Abra um pull request no [GitHub]({repository}) para adicionar ou corrigir um idioma."
+  },
+  "help": {
+    "modes": "Modos",
+    "modesDescription": "Toque e mantenha pressionado um app selecionado (ou toque no botão de ajuste dele) para forçar a geração de certificados (`!`) ou o hack leaf (`?`), ou para definir uma política própria para ele. Somente o Tricky Store oferece suporte a isso.",
+    "backends": "Módulos compatíveis",
+    "backendsDescription": "Tricky Store (config.ini e o target.txt legado), TEESimulator (config.json) e OhMyKeymint (injector.toml e config.toml). O Duck ToolBox grava no formato próprio do módulo ativo."
+  },
+  "errors": {
+    "no_backend": "Nenhum módulo de keystore instalado",
+    "invalid_keybox": "Keybox inválida",
+    "unsupported_decoder": "Etapa de decodificação não permitida",
+    "invalid_policy": "Valor de política inválido",
+    "backend_rule": "Recusado pelas regras do módulo de keystore",
+    "download_failed": "Falha no download"
+  },
   "ta": {
     "help_help_instructions": "Instruções",
     "help_save_and_update_description": "Salvar configuração atual.",

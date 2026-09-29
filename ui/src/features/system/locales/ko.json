@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "모듈 및 업데이트",
+    "description": "버전, 업데이트, 출력 파일, 명령 기록을 확인하고 유지 관리합니다."
+  },
+  "device": {
+    "title": "이 기기",
+    "android": "Android {release} · API {sdk}",
+    "patch": "보안 패치",
+    "kernel": "커널",
+    "selinux": "SELinux",
+    "rootManager": "루트 관리자",
+    "module": "Duck ToolBox",
+    "notDetected": "감지되지 않음"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "강제",
+    "permissive": "허용"
+  },
+  "module": {
+    "title": "모듈",
+    "id": "모듈 ID",
+    "version": "모듈 버전",
+    "binary": "백엔드 버전",
+    "author": "제작자"
+  },
+  "update": {
+    "title": "업데이트",
+    "channel": "업데이트 채널",
+    "stable": "안정화 버전",
+    "canary": "카나리 버전(CI 빌드)",
+    "off": "사용 안함",
+    "check": "업데이트 확인",
+    "upToDate": "최신 버전을 사용 중입니다.",
+    "available": "{version} 버전 사용 가능",
+    "install": "업데이트 설치",
+    "installed": "업데이트를 설치했습니다. 적용하려면 재부팅하세요.",
+    "reboot": "지금 재부팅",
+    "changelog": "새로운 기능",
+    "banner": "Duck ToolBox {version} 사용 가능",
+    "view": "보기"
+  },
+  "files": {
+    "title": "출력 파일",
+    "empty": "아직 도구에서 생성한 파일이 없습니다.",
+    "folder": "저장 위치: {path}"
+  },
+  "activity": {
+    "title": "명령 기록",
+    "empty": "아직 실행한 명령이 없습니다.",
+    "all": "모두 보기",
+    "failed": "실패"
+  },
+  "maintenance": {
+    "title": "유지 관리",
+    "reboot": "기기 재부팅",
+    "rebootConfirm": "지금 기기를 재부팅하시겠습니까?",
+    "uninstall": "Duck ToolBox 제거",
+    "uninstallConfirm": "다음 재부팅 시 Duck ToolBox가 제거됩니다. /data/adb/duck-toolbox에 저장된 프로필과 출력 파일은 그대로 유지됩니다.",
+    "uninstalled": "다음 재부팅 후 Duck ToolBox가 제거됩니다."
+  },
+  "errors": {
+    "no_root_manager": "지원되는 루트 관리자를 찾을 수 없습니다.",
+    "invalid_url": "http(s) 링크만 열 수 있습니다.",
+    "no_update": "사용 가능한 업데이트가 없습니다.",
+    "invalid_package": "다운로드한 파일이 Duck ToolBox 모듈이 아닙니다.",
+    "download_failed": "다운로드에 실패했습니다."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Инструменты безопасности для KernelSU, APatch и Magisk"
+  },
+  "nav": {
+    "home": "Главная",
+    "settings": "Настройки",
+    "back": "Назад",
+    "more": "Другие параметры",
+    "notFound": "Этой страницы не существует."
+  },
+  "actions": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "confirm": "Подтвердить",
+    "copy": "Копировать",
+    "copied": "Скопировано в буфер обмена",
+    "copyFailed": "Копирование здесь недоступно",
+    "retry": "Повторить",
+    "refresh": "Обновить",
+    "reset": "Сбросить",
+    "remove": "Удалить",
+    "edit": "Изменить",
+    "add": "Добавить",
+    "open": "Открыть",
+    "continue": "Продолжить",
+    "details": "Подробнее",
+    "browse": "Обзор",
+    "import": "Импорт",
+    "export": "Экспорт",
+    "install": "Установить",
+    "search": "Поиск",
+    "clear": "Очистить",
+    "done": "Готово"
+  },
+  "home": {
+    "tools": "Инструменты",
+    "system": "Система",
+    "missing": "Нет в этой сборке",
+    "outdated": "Обновите модуль",
+    "checking": "Проверка…",
+    "noHost": "Откройте Duck ToolBox через KernelSU, APatch или приложение WebUI, чтобы запускать инструменты.",
+    "confirmTitle": "Прежде чем продолжить"
+  },
+  "settings": {
+    "appearance": "Внешний вид",
+    "theme": "Тема",
+    "themeSystem": "Системная",
+    "themeLight": "Светлая",
+    "themeDark": "Тёмная",
+    "language": "Язык",
+    "languageSystem": "Язык системы",
+    "about": "О приложении",
+    "version": "Версия",
+    "authors": "Авторы",
+    "repository": "Исходный код",
+    "license": "Лицензия",
+    "acknowledgements": "Благодарности",
+    "trickyAddon": "Менеджер Tricky Store — это порт Tricky Addon от KOWX712.",
+    "aospKeybox": "Встроенный AOSP keybox — эталонный ключ аттестации из AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Выберите файл",
+    "empty": "В этой папке нет подходящих файлов.",
+    "up": "На уровень выше",
+    "system": "Системный выбор файлов",
+    "loadFailed": "Не удаётся прочитать эту папку."
+  },
+  "errors": {
+    "title": "Что-то пошло не так",
+    "command": "Команда",
+    "code": "Код",
+    "message": "Сообщение",
+    "details": "Подробности",
+    "host_unavailable": "Здесь нет root-среды для WebUI.",
+    "api_mismatch": "Установленный бэкенд использует другой протокол. Переустановите модуль.",
+    "contract_mismatch": "Бэкенд вернул данные, которые этот WebUI не понимает. Переустановите модуль.",
+    "no_envelope": "Бэкенд не ответил.",
+    "binary_not_found": "В модуле отсутствует исполняемый файл бэкенда.",
+    "usage_error": "Бэкенд отклонил запрос.",
+    "internal_error": "Бэкенд сообщил об ошибке."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Công cụ bảo mật cho KernelSU, APatch và Magisk"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "settings": "Cài đặt",
+    "back": "Quay lại",
+    "more": "Tùy chọn khác",
+    "notFound": "Trang này không tồn tại."
+  },
+  "actions": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép vào bảng nhớ tạm",
+    "copyFailed": "Không thể sao chép tại đây",
+    "retry": "Thử lại",
+    "refresh": "Làm mới",
+    "reset": "Đặt lại",
+    "remove": "Xóa",
+    "edit": "Chỉnh sửa",
+    "add": "Thêm",
+    "open": "Mở",
+    "continue": "Tiếp tục",
+    "details": "Chi tiết",
+    "browse": "Duyệt",
+    "import": "Nhập",
+    "export": "Xuất",
+    "install": "Cài đặt",
+    "search": "Tìm kiếm",
+    "clear": "Xóa",
+    "done": "Xong"
+  },
+  "home": {
+    "tools": "Công cụ",
+    "system": "Hệ thống",
+    "missing": "Không có trong bản này",
+    "outdated": "Cần cập nhật module",
+    "checking": "Đang kiểm tra…",
+    "noHost": "Hãy mở Duck ToolBox từ KernelSU, APatch hoặc một ứng dụng WebUI để sử dụng các công cụ.",
+    "confirmTitle": "Trước khi tiếp tục"
+  },
+  "settings": {
+    "appearance": "Giao diện",
+    "theme": "Chủ đề",
+    "themeSystem": "Hệ thống",
+    "themeLight": "Sáng",
+    "themeDark": "Tối",
+    "language": "Ngôn ngữ",
+    "languageSystem": "Mặc định của hệ thống",
+    "about": "Giới thiệu",
+    "version": "Phiên bản",
+    "authors": "Tác giả",
+    "repository": "Mã nguồn",
+    "license": "Giấy phép",
+    "acknowledgements": "Lời cảm ơn",
+    "trickyAddon": "Trình quản lý Tricky Store được chuyển thể từ Tricky Addon của KOWX712.",
+    "aospKeybox": "Keybox AOSP đi kèm là khóa chứng thực tham chiếu lấy từ AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Chọn tệp",
+    "empty": "Không có tệp phù hợp trong thư mục này.",
+    "up": "Lên một cấp",
+    "system": "Trình chọn tệp của hệ thống",
+    "loadFailed": "Không thể đọc thư mục này."
+  },
+  "errors": {
+    "title": "Đã xảy ra lỗi",
+    "command": "Lệnh",
+    "code": "Mã lỗi",
+    "message": "Thông báo",
+    "details": "Chi tiết",
+    "host_unavailable": "Không có môi trường WebUI root nào khả dụng tại đây.",
+    "api_mismatch": "Backend đã cài đặt dùng giao thức khác. Hãy cài đặt lại module.",
+    "contract_mismatch": "Backend trả về dữ liệu mà WebUI này không hiểu được. Hãy cài đặt lại module.",
+    "no_envelope": "Backend không phản hồi.",
+    "binary_not_found": "Module thiếu tệp nhị phân của backend.",
+    "usage_error": "Backend đã từ chối yêu cầu.",
+    "internal_error": "Backend đã báo lỗi."
+  }
+}

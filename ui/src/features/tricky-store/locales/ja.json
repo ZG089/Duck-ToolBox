@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Tricky Store、TEESimulator、OhMyKeymint のターゲットリスト、Keybox、ポリシーを管理します。"
+  },
+  "backend": {
+    "none": "キーストア モジュールが見つかりません",
+    "noneHint": "Tricky Store、TEESimulator、OhMyKeymint のいずれかをインストールして、再起動してください。このページでは、有効になっているモジュールを管理します。",
+    "title": "キーストア モジュール",
+    "active": "使用中",
+    "inactive": "無効",
+    "disabled": "{name} は root マネージャーで無効になっています。変更は保存されますが、適用されるのは有効にして再起動した後です。",
+    "configError": "現在の設定を読み込めないため、保存すると上書きされます：{error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store（旧バージョン）",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "{count} 件選択",
+    "empty": "検索に一致するアプリはありません。",
+    "system": "システム",
+    "tune": "{name} のモードとポリシー",
+    "customPolicy": "カスタム ポリシー",
+    "unsaved": "未保存の変更",
+    "discard": "破棄",
+    "discarded": "変更を破棄しました",
+    "refresh": "再読み込み",
+    "selectAll": "すべて選択",
+    "deselectAll": "すべて選択解除",
+    "selectedCount": "{count} 個のアプリを選択しました",
+    "deselectedCount": "{count} 個のアプリの選択を解除しました",
+    "nothingChanged": "変更する項目はありません",
+    "more": "その他",
+    "autoAdd": "新しいアプリを自動で追加",
+    "autoAddHint": "新しくインストールしたアプリを起動時にターゲットリストへ追加します。",
+    "shortcuts": "Ctrl+A ですべて選択、Ctrl+D ですべて選択解除、Ctrl+F で検索、Ctrl+S で保存"
+  },
+  "keybox": {
+    "status": "インストール済みの Keybox",
+    "missing": "Keybox がインストールされていません",
+    "modified": "更新日時",
+    "size": "サイズ",
+    "path": "パス",
+    "sources": "Keybox をインストール",
+    "aospHint": "AOSP のソフトウェア Keybox を使用します。",
+    "unknownHint": "このデバイスで生成した自己署名の Keybox を使用します。",
+    "localHint": "ストレージから keybox.xml を選択します。",
+    "repoHint": "コミュニティの Keybox リポジトリを参照します。",
+    "custom": "カスタム プロバイダ",
+    "customEmpty": "カスタム プロバイダはまだありません。",
+    "addProvider": "プロバイダを追加",
+    "editProvider": "プロバイダを編集",
+    "url": "URL",
+    "decodeHint": "使用できる手順：cat、base64 -d、xxd -r -p（{'|'} で連結）",
+    "import": "インポート",
+    "export": "エクスポート",
+    "resetProviders": "デフォルトに戻す",
+    "installedDetail": "{path} に {count} 個の鍵",
+    "backup": "以前の Keybox を {path} に保存しました",
+    "systemPicker": "システムのファイル マネージャーで選択",
+    "repoLoading": "Keybox リポジトリに接続しています…",
+    "repoTitle": "Keybox リポジトリ"
+  },
+  "policy": {
+    "none": "使用中のモジュールにはデフォルトのポリシーがありません。",
+    "hint": "空欄のままにすると、モジュール本来のデフォルト値が使用されます。",
+    "saved": "デフォルトのポリシーを保存しました",
+    "restart": "変更した確認付きブートと OS の設定を適用するには、再起動してください。",
+    "custom": "このアプリのカスタム ポリシー",
+    "fields": {
+      "os_patch": "システム パッチ",
+      "vendor_patch": "ベンダー パッチ",
+      "boot_patch": "ブート パッチ",
+      "os_version": "OS バージョン",
+      "security_patch": "セキュリティ パッチ",
+      "os_patchlevel": "OS パッチ レベル",
+      "vendor_patchlevel": "ベンダー パッチ レベル",
+      "boot_patchlevel": "ブート パッチ レベル",
+      "vb_key": "確認付きブートキー",
+      "vb_hash": "確認付きブートハッシュ",
+      "verified_boot_state": "確認付きブートの状態がグリーン",
+      "device_locked": "ブートローダーがロック済み",
+      "mode": "動作モード",
+      "brand": "ブランド",
+      "device": "デバイス",
+      "product": "製品名",
+      "manufacturer": "メーカー",
+      "model": "モデル",
+      "serial": "シリアル番号",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "新しいアプリを自動的に含める"
+    }
+  },
+  "props": {
+    "handlerHint": "起動時にブートローダー、確認付きブート、デバッグ関連のプロパティをリセットし、ロックされたデバイスのように見せます。",
+    "bootHashHint": "Key Attestation で表示される verifiedBootHash を入力します。空欄にすると ro.boot.vbmeta.digest を上書きしなくなります。",
+    "invalidHash": "16 進数 64 文字で入力してください",
+    "synced": "モジュールの vb_hash ポリシーにも書き込みました"
+  },
+  "entry": {
+    "title": "キーストア モジュールから開く",
+    "description": "root マネージャーで {module} の WebUI（またはアクション ボタン）からこのページを開けるようにします。",
+    "ownWebui": "{module} には独自の WebUI があるため、このページへのエントリは追加されません。",
+    "noModule": "エントリを追加するには、キーストア モジュールをインストールしてください。"
+  },
+  "translations": {
+    "title": "Tricky Addon の翻訳",
+    "version": "バージョン {version}",
+    "help": "翻訳に協力",
+    "telegram": "Tricky Addon の Telegram",
+    "guide": "Tricky Store マネージャーは Tricky Addon の翻訳を使用しています。翻訳は [Crowdin](https://crowdin.com/project/TA_utl) で改善できます。*Update translation bundle* を使うと、モジュールを更新しなくても最新の翻訳を取得できます。\n\nそれ以外の文字列は、Duck ToolBox の `locales/*.json` ファイルで翻訳されています。言語を追加または修正するには、[GitHub]({repository}) でプル リクエストを作成してください。"
+  },
+  "help": {
+    "modes": "モード",
+    "modesDescription": "選択したアプリを長押し（または調整ボタンをタップ）すると、そのアプリに証明書生成（`!`）またはリーフハック（`?`）を強制したり、個別のポリシーを設定したりできます。この機能に対応しているのは Tricky Store のみです。",
+    "backends": "対応モジュール",
+    "backendsDescription": "Tricky Store（config.ini と旧形式の target.txt）、TEESimulator（config.json）、OhMyKeymint（injector.toml と config.toml）に対応しています。Duck ToolBox は、使用中のモジュール独自の形式で書き込みます。"
+  },
+  "errors": {
+    "no_backend": "キーストア モジュールがインストールされていません",
+    "invalid_keybox": "無効な Keybox です",
+    "unsupported_decoder": "許可されていないデコード手順です",
+    "invalid_policy": "無効なポリシー値です",
+    "backend_rule": "キーストア モジュールのルールにより拒否されました",
+    "download_failed": "ダウンロードに失敗しました"
+  },
   "ta": {
     "help_help_instructions": "使い方",
     "help_select_denylist": "DenyList から選択",

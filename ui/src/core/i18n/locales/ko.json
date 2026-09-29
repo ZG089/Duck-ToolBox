@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "KernelSU, APatch 및 Magisk용 보안 도구"
+  },
+  "nav": {
+    "home": "홈",
+    "settings": "설정",
+    "back": "뒤로",
+    "more": "옵션 더보기",
+    "notFound": "존재하지 않는 페이지입니다."
+  },
+  "actions": {
+    "save": "저장",
+    "cancel": "취소",
+    "close": "닫기",
+    "confirm": "확인",
+    "copy": "복사",
+    "copied": "클립보드에 복사됨",
+    "copyFailed": "이 환경에서는 복사할 수 없음",
+    "retry": "다시 시도",
+    "refresh": "새로고침",
+    "reset": "초기화",
+    "remove": "삭제",
+    "edit": "수정",
+    "add": "추가",
+    "open": "열기",
+    "continue": "계속",
+    "details": "세부정보",
+    "browse": "찾아보기",
+    "import": "가져오기",
+    "export": "내보내기",
+    "install": "설치",
+    "search": "검색",
+    "clear": "지우기",
+    "done": "완료"
+  },
+  "home": {
+    "tools": "도구",
+    "system": "시스템",
+    "missing": "이 빌드에 없음",
+    "outdated": "모듈 업데이트 필요",
+    "checking": "확인 중…",
+    "noHost": "도구를 실행하려면 KernelSU, APatch 또는 WebUI 앱에서 Duck ToolBox를 여세요.",
+    "confirmTitle": "계속하기 전에"
+  },
+  "settings": {
+    "appearance": "모양",
+    "theme": "테마",
+    "themeSystem": "시스템",
+    "themeLight": "밝게",
+    "themeDark": "어둡게",
+    "language": "언어",
+    "languageSystem": "시스템 기본값",
+    "about": "정보",
+    "version": "버전",
+    "authors": "제작자",
+    "repository": "소스 코드",
+    "license": "라이선스",
+    "acknowledgements": "감사의 말",
+    "trickyAddon": "Tricky Store 관리 기능은 KOWX712의 Tricky Addon을 이식한 것입니다.",
+    "aospKeybox": "내장된 AOSP 키박스는 AOSP system/keymaster의 참조용 증명 키입니다."
+  },
+  "files": {
+    "title": "파일 선택",
+    "empty": "이 폴더에 일치하는 파일이 없습니다.",
+    "up": "상위 폴더로 이동",
+    "system": "시스템 파일 선택기",
+    "loadFailed": "이 폴더를 읽을 수 없습니다."
+  },
+  "errors": {
+    "title": "문제가 발생했습니다",
+    "command": "명령",
+    "code": "코드",
+    "message": "메시지",
+    "details": "세부정보",
+    "host_unavailable": "이 환경에서 사용할 수 있는 루트 WebUI 호스트가 없습니다.",
+    "api_mismatch": "설치된 백엔드가 다른 프로토콜을 사용합니다. 모듈을 다시 설치하세요.",
+    "contract_mismatch": "백엔드가 이 WebUI에서 인식할 수 없는 데이터를 반환했습니다. 모듈을 다시 설치하세요.",
+    "no_envelope": "백엔드가 응답하지 않았습니다.",
+    "binary_not_found": "모듈에 백엔드 바이너리가 없습니다.",
+    "usage_error": "백엔드가 요청을 거부했습니다.",
+    "internal_error": "백엔드에서 오류를 보고했습니다."
+  }
+}

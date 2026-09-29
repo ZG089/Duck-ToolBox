@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Modul & update",
+    "description": "Versi, update, file output, riwayat perintah, dan pemeliharaan."
+  },
+  "device": {
+    "title": "Perangkat ini",
+    "android": "Android {release} · API {sdk}",
+    "patch": "Patch keamanan",
+    "kernel": "Kernel",
+    "selinux": "SELinux",
+    "rootManager": "Pengelola root",
+    "module": "Duck ToolBox",
+    "notDetected": "Tidak terdeteksi"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "Menerapkan",
+    "permissive": "Permisif"
+  },
+  "module": {
+    "title": "Modul",
+    "id": "ID modul",
+    "version": "Versi modul",
+    "binary": "Versi backend",
+    "author": "Pembuat"
+  },
+  "update": {
+    "title": "Update",
+    "channel": "Saluran update",
+    "stable": "Stabil",
+    "canary": "Canary (build CI)",
+    "off": "Nonaktif",
+    "check": "Periksa update",
+    "upToDate": "Anda sudah menggunakan versi terbaru.",
+    "available": "Versi {version} tersedia",
+    "install": "Instal update",
+    "installed": "Update terinstal. Mulai ulang untuk menerapkannya.",
+    "reboot": "Mulai ulang sekarang",
+    "changelog": "Yang baru",
+    "banner": "Duck ToolBox {version} tersedia",
+    "view": "Lihat"
+  },
+  "files": {
+    "title": "File output",
+    "empty": "Alat belum menulis file apa pun.",
+    "folder": "Disimpan di {path}"
+  },
+  "activity": {
+    "title": "Riwayat perintah",
+    "empty": "Belum ada perintah yang dijalankan.",
+    "all": "Tampilkan semua",
+    "failed": "Gagal"
+  },
+  "maintenance": {
+    "title": "Pemeliharaan",
+    "reboot": "Mulai ulang perangkat",
+    "rebootConfirm": "Mulai ulang perangkat sekarang?",
+    "uninstall": "Uninstal Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox akan dihapus saat perangkat dimulai ulang berikutnya. Profil dan output tersimpan di /data/adb/duck-toolbox akan tetap ada.",
+    "uninstalled": "Duck ToolBox akan dihapus setelah perangkat dimulai ulang."
+  },
+  "errors": {
+    "no_root_manager": "Pengelola root yang didukung tidak ditemukan.",
+    "invalid_url": "Hanya link http(s) yang dapat dibuka.",
+    "no_update": "Tidak ada update yang tersedia.",
+    "invalid_package": "File yang diunduh bukan modul Duck ToolBox.",
+    "download_failed": "Pengunduhan gagal."
+  }
+}

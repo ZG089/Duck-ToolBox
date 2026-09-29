@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Список целевых приложений, keybox и политики для Tricky Store, TEESimulator и OhMyKeymint."
+  },
+  "backend": {
+    "none": "Модуль хранилища ключей не найден",
+    "noneHint": "Установите Tricky Store, TEESimulator или OhMyKeymint и перезагрузите устройство. Здесь настраивается активный из них.",
+    "title": "Модули хранилища ключей",
+    "active": "Активен",
+    "inactive": "Отключён",
+    "disabled": "Модуль {name} отключён в root-менеджере. Изменения сохранятся и вступят в силу, когда вы включите его и перезагрузите устройство.",
+    "configError": "Не удалось прочитать текущую конфигурацию, поэтому при сохранении она будет перезаписана: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (старая версия)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "Выбрано: {count}",
+    "empty": "Нет приложений, соответствующих запросу.",
+    "system": "Системное",
+    "tune": "Режим и политика для {name}",
+    "customPolicy": "Своя политика",
+    "unsaved": "Есть несохранённые изменения",
+    "discard": "Отменить",
+    "discarded": "Изменения отменены",
+    "refresh": "Обновить",
+    "selectAll": "Выбрать все",
+    "deselectAll": "Отменить выбор всех",
+    "selectedCount": "Выбрано приложений: {count}",
+    "deselectedCount": "Отменён выбор приложений: {count}",
+    "nothingChanged": "Изменений нет",
+    "more": "Ещё",
+    "autoAdd": "Автодобавление новых приложений",
+    "autoAddHint": "Новые приложения добавляются в список целевых приложений при загрузке устройства.",
+    "shortcuts": "Ctrl+A — выбрать все, Ctrl+D — отменить выбор всех, Ctrl+F — поиск, Ctrl+S — сохранить"
+  },
+  "keybox": {
+    "status": "Установленный keybox",
+    "missing": "Keybox не установлен",
+    "modified": "Дата изменения",
+    "size": "Размер",
+    "path": "Путь",
+    "sources": "Установка keybox",
+    "aospHint": "Программный keybox из AOSP.",
+    "unknownHint": "Самоподписанный keybox, созданный на этом устройстве.",
+    "localHint": "Файл keybox.xml из памяти устройства.",
+    "repoHint": "Просмотр репозитория keybox от сообщества.",
+    "custom": "Пользовательские источники",
+    "customEmpty": "Пользовательских источников пока нет.",
+    "addProvider": "Добавить источник",
+    "editProvider": "Изменить источник",
+    "url": "URL",
+    "decodeHint": "Допустимые шаги: cat, base64 -d, xxd -r -p, соединённые через {'|'}",
+    "import": "Импорт",
+    "export": "Экспорт",
+    "resetProviders": "Вернуть стандартные",
+    "installedDetail": "Ключей в {path}: {count}",
+    "backup": "Предыдущий keybox сохранён в {path}",
+    "systemPicker": "Выбрать в системном файловом менеджере",
+    "repoLoading": "Подключение к репозиторию keybox…",
+    "repoTitle": "Репозиторий keybox"
+  },
+  "policy": {
+    "none": "У активного модуля нет политики по умолчанию.",
+    "hint": "Оставьте поле пустым, чтобы использовать значение модуля по умолчанию.",
+    "saved": "Политика по умолчанию сохранена",
+    "restart": "Перезагрузите устройство, чтобы применить изменённые настройки Verified Boot и ОС.",
+    "custom": "Своя политика для этого приложения",
+    "fields": {
+      "os_patch": "Патч системы",
+      "vendor_patch": "Патч vendor",
+      "boot_patch": "Патч boot",
+      "os_version": "Версия ОС",
+      "security_patch": "Патч безопасности",
+      "os_patchlevel": "Уровень патча ОС",
+      "vendor_patchlevel": "Уровень патча vendor",
+      "boot_patchlevel": "Уровень патча boot",
+      "vb_key": "Ключ Verified Boot",
+      "vb_hash": "Хеш Verified Boot",
+      "verified_boot_state": "Зелёное состояние Verified Boot",
+      "device_locked": "Загрузчик заблокирован",
+      "mode": "Режим работы",
+      "brand": "Бренд",
+      "device": "Устройство",
+      "product": "Продукт",
+      "manufacturer": "Производитель",
+      "model": "Модель",
+      "serial": "Серийный номер",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "Автоматически включать новые приложения"
+    }
+  },
+  "props": {
+    "handlerHint": "При загрузке сбрасывает свойства загрузчика, Verified Boot и отладки, чтобы они выглядели как у заблокированного устройства.",
+    "bootHashHint": "Значение verifiedBootHash из приложения Key Attestation. Оставьте поле пустым, чтобы больше не переопределять ro.boot.vbmeta.digest.",
+    "invalidHash": "Введите 64 шестнадцатеричных символа",
+    "synced": "Также записано в политику vb_hash модуля"
+  },
+  "entry": {
+    "title": "Ярлык в модуле хранилища ключей",
+    "description": "Открывайте эту страницу через WebUI (или кнопку действия) модуля {module} в root-менеджере.",
+    "ownWebui": "У модуля {module} есть собственный WebUI, поэтому ярлык не добавляется.",
+    "noModule": "Установите модуль хранилища ключей, чтобы добавить в него ярлык."
+  },
+  "translations": {
+    "title": "Переводы Tricky Addon",
+    "version": "Пакет {version}",
+    "help": "Помочь с переводом",
+    "telegram": "Tricky Addon в Telegram",
+    "guide": "Менеджер Tricky Store использует переводы Tricky Addon. Улучшить их можно на [Crowdin](https://crowdin.com/project/TA_utl), а кнопка *Обновить пакет переводов* загрузит сюда свежие переводы без обновления модуля.\n\nВесь остальной текст переводится в файлах `locales/*.json` проекта Duck ToolBox. Чтобы добавить или исправить язык, откройте пул-реквест на [GitHub]({repository})."
+  },
+  "help": {
+    "modes": "Режимы",
+    "modesDescription": "Нажмите и удерживайте выбранное приложение (или нажмите кнопку настройки рядом с ним), чтобы принудительно включить для него генерацию сертификата (`!`) или модификацию листового сертификата (`?`) либо задать ему свою политику. Это поддерживается только в Tricky Store.",
+    "backends": "Поддерживаемые модули",
+    "backendsDescription": "Tricky Store (config.ini и старый формат target.txt), TEESimulator (config.json) и OhMyKeymint (injector.toml и config.toml). Duck ToolBox записывает настройки в собственном формате активного модуля."
+  },
+  "errors": {
+    "no_backend": "Модуль хранилища ключей не установлен",
+    "invalid_keybox": "Неверный keybox",
+    "unsupported_decoder": "Недопустимый шаг декодирования",
+    "invalid_policy": "Неверное значение политики",
+    "backend_rule": "Отклонено правилами модуля хранилища ключей",
+    "download_failed": "Не удалось скачать файл"
+  },
   "ta": {
     "help_help_instructions": "Инструкции",
     "help_select_denylist": "Выбрать из DenyList",

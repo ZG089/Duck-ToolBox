@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "デバイス ID の書き込み",
+    "description": "構成証明用のデバイス ID を Qualcomm Keymaster のトラステッド アプリに書き込みます。",
+    "warning": "Qualcomm チップ搭載の一部の OnePlus デバイスでのみテストされています。その他のデバイスでの結果は保証されません。また、実際に書き込むと、Keymaster TA が構成証明する ID が変わります。"
+  },
+  "form": {
+    "main": "識別子",
+    "mainHint": "このデバイスの値が入力されています。別のデバイスに合わせる場合にのみ変更してください。",
+    "advanced": "詳細設定",
+    "advancedHint": "IMEI、MEID、トラステッド アプリの場所。",
+    "brand": "ブランド",
+    "device": "コードネーム",
+    "product": "製品名",
+    "serial": "シリアル番号",
+    "manufacturer": "メーカー",
+    "model": "モデル",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA 名",
+    "taPath": "TA のパス",
+    "dryRun": "ドライラン",
+    "dryRunHint": "コマンドを作成して検証しますが、Keymaster には送信しません。",
+    "reload": "デバイスから再読み込み",
+    "provision": "デバイス ID を書き込む",
+    "provisionDry": "ドライランを実行",
+    "confirm": "これらの ID を今すぐ Keymaster に書き込みますか？この操作は Duck ToolBox では元に戻せません。"
+  },
+  "result": {
+    "title": "結果",
+    "done": "デバイス ID の書き込みが完了しました",
+    "mode": "モード",
+    "dry": "ドライラン",
+    "live": "実際の書き込み",
+    "count": "書き込み件数",
+    "taVersion": "TA バージョン",
+    "library": "ライブラリ",
+    "report": "レポート",
+    "notAvailable": "なし"
+  },
+  "errors": {
+    "missing_device_field": "必須の識別子が入力されていません。"
+  }
+}

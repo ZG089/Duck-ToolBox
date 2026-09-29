@@ -40,6 +40,9 @@
   - Menus, tabs and button groups mirror in right-to-left languages too.
   - Follows the KernelSU manager's window insets.
   - The Android back gesture closes dialogs and sheets.
+- Every tool in 14 languages: English, Simplified and Traditional Chinese, Japanese, Korean,
+  Spanish, French, German, Italian, Brazilian Portuguese, Russian, Arabic, Vietnamese and
+  Indonesian.
 - Help: long links and code wrap inside the page, and two slips in upstream translations
   (a link missing its parenthesis, a code span closed with a quote) no longer show raw
   Markdown.

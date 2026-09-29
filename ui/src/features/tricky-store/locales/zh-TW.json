@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "管理 Tricky Store、TEESimulator 和 OhMyKeymint 的目標列表、密鑰與策略。"
+  },
+  "backend": {
+    "none": "找不到金鑰庫模組",
+    "noneHint": "請安裝 Tricky Store、TEESimulator 或 OhMyKeymint，然後重新啟動。此頁面會管理目前啟用的模組。",
+    "title": "金鑰庫模組",
+    "active": "使用中",
+    "inactive": "已停用",
+    "disabled": "{name} 已在 Root 管理器中停用。變更仍會儲存，但須啟用該模組並重新啟動後才會生效。",
+    "configError": "無法讀取目前的設定檔，儲存時會將其取代：{error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store（舊版）",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "已選取 {count} 個",
+    "empty": "沒有符合搜尋條件的應用程式。",
+    "system": "系統",
+    "tune": "{name} 的模式與策略",
+    "customPolicy": "自訂策略",
+    "unsaved": "有未儲存的變更",
+    "discard": "捨棄",
+    "discarded": "已捨棄變更",
+    "refresh": "重新整理",
+    "selectAll": "全選",
+    "deselectAll": "取消全選",
+    "selectedCount": "已選取 {count} 個應用程式",
+    "deselectedCount": "已取消選取 {count} 個應用程式",
+    "nothingChanged": "沒有需要變更的項目",
+    "more": "更多",
+    "autoAdd": "自動加入新應用程式",
+    "autoAddHint": "開機時將新安裝的應用程式加入目標列表。",
+    "shortcuts": "Ctrl+A 全選，Ctrl+D 取消全選，Ctrl+F 搜尋，Ctrl+S 儲存"
+  },
+  "keybox": {
+    "status": "已安裝的密鑰",
+    "missing": "尚未安裝密鑰",
+    "modified": "修改時間",
+    "size": "大小",
+    "path": "路徑",
+    "sources": "安裝密鑰",
+    "aospHint": "來自 AOSP 的軟體密鑰。",
+    "unknownHint": "在本機產生、自行簽署的密鑰。",
+    "localHint": "從儲存空間選擇 keybox.xml。",
+    "repoHint": "瀏覽社群密鑰倉庫。",
+    "custom": "自訂提供者",
+    "customEmpty": "尚未新增自訂提供者。",
+    "addProvider": "新增提供者",
+    "editProvider": "編輯提供者",
+    "url": "URL",
+    "decodeHint": "允許的步驟：cat、base64 -d、xxd -r -p，以 {'|'} 串接",
+    "import": "匯入",
+    "export": "匯出",
+    "resetProviders": "還原預設值",
+    "installedDetail": "{path} 中有 {count} 個金鑰",
+    "backup": "原密鑰已備份至 {path}",
+    "systemPicker": "使用系統檔案管理器選取",
+    "repoLoading": "正在連線至密鑰倉庫…",
+    "repoTitle": "密鑰倉庫"
+  },
+  "policy": {
+    "none": "目前使用的模組沒有預設策略。",
+    "hint": "欄位留空即沿用模組本身的預設值。",
+    "saved": "預設策略已儲存",
+    "restart": "重新啟動後，變更的 Verified Boot 與系統版本設定才會生效。",
+    "custom": "此應用程式的自訂策略",
+    "fields": {
+      "os_patch": "系統修補程式",
+      "vendor_patch": "Vendor 修補程式",
+      "boot_patch": "Boot 修補程式",
+      "os_version": "系統版本",
+      "security_patch": "安全性修補程式",
+      "os_patchlevel": "系統修補程式等級",
+      "vendor_patchlevel": "Vendor 修補程式等級",
+      "boot_patchlevel": "Boot 修補程式等級",
+      "vb_key": "Verified Boot 金鑰",
+      "vb_hash": "Verified Boot 雜湊值",
+      "verified_boot_state": "Verified Boot 狀態為綠色",
+      "device_locked": "開機載入程式已鎖定",
+      "mode": "運作模式",
+      "brand": "品牌",
+      "device": "裝置代號",
+      "product": "產品",
+      "manufacturer": "製造商",
+      "model": "型號",
+      "serial": "序號",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "自動納入新應用程式"
+    }
+  },
+  "props": {
+    "handlerHint": "開機時重設開機載入程式、Verified Boot 與偵錯相關屬性，讓裝置看起來處於鎖定狀態。",
+    "bootHashHint": "填入 Key Attestation 顯示的 verifiedBootHash。留空則不再覆寫 ro.boot.vbmeta.digest。",
+    "invalidHash": "請輸入 64 個十六進位字元",
+    "synced": "也已寫入模組的 vb_hash 策略"
+  },
+  "entry": {
+    "title": "金鑰庫模組入口",
+    "description": "在 Root 管理器中透過 {module} 的 WebUI（或動作按鈕）開啟此頁面。",
+    "ownWebui": "{module} 已內建自己的 WebUI，因此不會新增入口。",
+    "noModule": "請先安裝金鑰庫模組，才能新增入口。"
+  },
+  "translations": {
+    "title": "Tricky Addon 翻譯",
+    "version": "翻譯包 {version}",
+    "help": "協助翻譯",
+    "telegram": "Tricky Addon 的 Telegram 頻道",
+    "guide": "Tricky Store 管理功能使用 Tricky Addon 的翻譯。歡迎到 [Crowdin](https://crowdin.com/project/TA_utl) 協助改進；點選「*更新翻譯包*」即可取得最新翻譯，無須更新模組。\n\n其他文字則在 Duck ToolBox 的 `locales/*.json` 檔案中翻譯。如要新增或修正語言，請在 [GitHub]({repository}) 提交 Pull Request。"
+  },
+  "help": {
+    "modes": "模式",
+    "modesDescription": "長按已選取的應用程式（或輕觸它的調整按鈕），即可強制使用「生成證書鏈」（`!`）或「修改證書鏈」（`?`）模式，或為它設定專屬策略。僅 Tricky Store 支援此功能。",
+    "backends": "支援的模組",
+    "backendsDescription": "Tricky Store（config.ini 與舊版 target.txt）、TEESimulator（config.json）和 OhMyKeymint（injector.toml 與 config.toml）。Duck ToolBox 會以目前啟用模組本身的格式寫入。"
+  },
+  "errors": {
+    "no_backend": "未安裝金鑰庫模組",
+    "invalid_keybox": "密鑰無效",
+    "unsupported_decoder": "不允許的解碼步驟",
+    "invalid_policy": "策略值無效",
+    "backend_rule": "不符合金鑰庫模組的規則",
+    "download_failed": "下載失敗"
+  },
   "ta": {
     "help_help_instructions": "使用指南",
     "help_save_and_update_description": "儲存目前配置。",

@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Strumenti di sicurezza per KernelSU, APatch e Magisk"
+  },
+  "nav": {
+    "home": "Home",
+    "settings": "Impostazioni",
+    "back": "Indietro",
+    "more": "Altre opzioni",
+    "notFound": "Questa pagina non esiste."
+  },
+  "actions": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "confirm": "Conferma",
+    "copy": "Copia",
+    "copied": "Copiato negli appunti",
+    "copyFailed": "Qui non è possibile copiare",
+    "retry": "Riprova",
+    "refresh": "Aggiorna",
+    "reset": "Reimposta",
+    "remove": "Rimuovi",
+    "edit": "Modifica",
+    "add": "Aggiungi",
+    "open": "Apri",
+    "continue": "Continua",
+    "details": "Dettagli",
+    "browse": "Sfoglia",
+    "import": "Importa",
+    "export": "Esporta",
+    "install": "Installa",
+    "search": "Cerca",
+    "clear": "Cancella",
+    "done": "Fine"
+  },
+  "home": {
+    "tools": "Strumenti",
+    "system": "Sistema",
+    "missing": "Non in questa build",
+    "outdated": "Aggiorna il modulo",
+    "checking": "Verifica in corso…",
+    "noHost": "Apri Duck ToolBox da KernelSU, APatch o da un'app WebUI per usare gli strumenti.",
+    "confirmTitle": "Prima di continuare"
+  },
+  "settings": {
+    "appearance": "Aspetto",
+    "theme": "Tema",
+    "themeSystem": "Sistema",
+    "themeLight": "Chiaro",
+    "themeDark": "Scuro",
+    "language": "Lingua",
+    "languageSystem": "Predefinita di sistema",
+    "about": "Informazioni",
+    "version": "Versione",
+    "authors": "Autori",
+    "repository": "Codice sorgente",
+    "license": "Licenza",
+    "acknowledgements": "Ringraziamenti",
+    "trickyAddon": "Il gestore di Tricky Store è un porting di Tricky Addon di KOWX712.",
+    "aospKeybox": "La keybox AOSP inclusa è la chiave di attestazione di riferimento presa da system/keymaster di AOSP."
+  },
+  "files": {
+    "title": "Scegli un file",
+    "empty": "Nessun file corrispondente in questa cartella.",
+    "up": "Livello superiore",
+    "system": "Selettore file di sistema",
+    "loadFailed": "Impossibile leggere questa cartella."
+  },
+  "errors": {
+    "title": "Si è verificato un problema",
+    "command": "Comando",
+    "code": "Codice",
+    "message": "Messaggio",
+    "details": "Dettagli",
+    "host_unavailable": "Qui non è disponibile alcun host WebUI root.",
+    "api_mismatch": "Il backend installato usa un protocollo diverso. Reinstalla il modulo.",
+    "contract_mismatch": "Il backend ha restituito dati che questa WebUI non riconosce. Reinstalla il modulo.",
+    "no_envelope": "Il backend non ha risposto.",
+    "binary_not_found": "Nel modulo manca il binario del backend.",
+    "usage_error": "Il backend ha rifiutato la richiesta.",
+    "internal_error": "Il backend ha segnalato un errore."
+  }
+}

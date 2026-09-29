@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Outils de sécurité pour KernelSU, APatch et Magisk"
+  },
+  "nav": {
+    "home": "Accueil",
+    "settings": "Paramètres",
+    "back": "Retour",
+    "more": "Plus d’options",
+    "notFound": "Cette page n’existe pas."
+  },
+  "actions": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "copy": "Copier",
+    "copied": "Copié dans le presse-papiers",
+    "copyFailed": "La copie n’est pas disponible ici",
+    "retry": "Réessayer",
+    "refresh": "Actualiser",
+    "reset": "Réinitialiser",
+    "remove": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "open": "Ouvrir",
+    "continue": "Continuer",
+    "details": "Détails",
+    "browse": "Parcourir",
+    "import": "Importer",
+    "export": "Exporter",
+    "install": "Installer",
+    "search": "Rechercher",
+    "clear": "Effacer",
+    "done": "Terminé"
+  },
+  "home": {
+    "tools": "Outils",
+    "system": "Système",
+    "missing": "Absent de ce build",
+    "outdated": "Mise à jour requise",
+    "checking": "Vérification…",
+    "noHost": "Ouvrez Duck ToolBox depuis KernelSU, APatch ou une application WebUI pour utiliser les outils.",
+    "confirmTitle": "Avant de continuer"
+  },
+  "settings": {
+    "appearance": "Apparence",
+    "theme": "Thème",
+    "themeSystem": "Système",
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
+    "language": "Langue",
+    "languageSystem": "Langue du système",
+    "about": "À propos",
+    "version": "Version",
+    "authors": "Auteurs",
+    "repository": "Code source",
+    "license": "Licence",
+    "acknowledgements": "Remerciements",
+    "trickyAddon": "Le gestionnaire Tricky Store est un portage de Tricky Addon, développé par KOWX712.",
+    "aospKeybox": "La Keybox AOSP incluse est la clé d’attestation de référence issue d’AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Choisir un fichier",
+    "empty": "Aucun fichier correspondant dans ce dossier.",
+    "up": "Dossier parent",
+    "system": "Sélecteur de fichiers système",
+    "loadFailed": "Impossible de lire ce dossier."
+  },
+  "errors": {
+    "title": "Un problème est survenu",
+    "command": "Commande",
+    "code": "Code",
+    "message": "Message",
+    "details": "Détails",
+    "host_unavailable": "Aucun hôte WebUI root n’est disponible ici.",
+    "api_mismatch": "Le backend installé utilise un autre protocole. Réinstallez le module.",
+    "contract_mismatch": "Le backend a renvoyé des données que cette WebUI ne comprend pas. Réinstallez le module.",
+    "no_envelope": "Le backend n’a pas répondu.",
+    "binary_not_found": "Le binaire du backend est absent du module.",
+    "usage_error": "Le backend a refusé la requête.",
+    "internal_error": "Le backend a signalé une erreur."
+  }
+}

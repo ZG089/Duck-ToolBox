@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Tricky Store, TEESimulator, OhMyKeymint의 대상 목록, 키박스, 정책을 관리합니다."
+  },
+  "backend": {
+    "none": "키 저장소 모듈을 찾을 수 없음",
+    "noneHint": "Tricky Store, TEESimulator 또는 OhMyKeymint를 설치한 후 재부팅하세요. 이 페이지에서는 활성화된 모듈을 관리합니다.",
+    "title": "키 저장소 모듈",
+    "active": "사용 중",
+    "inactive": "비활성화됨",
+    "disabled": "루트 관리자에서 {name} 모듈이 비활성화되어 있습니다. 변경사항은 저장되며, 모듈을 활성화하고 재부팅하면 적용됩니다.",
+    "configError": "현재 설정을 읽을 수 없어 저장하면 기존 설정을 덮어씁니다: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store(구버전)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "{count}개 선택됨",
+    "empty": "검색과 일치하는 앱이 없습니다.",
+    "system": "시스템",
+    "tune": "{name}의 모드 및 정책",
+    "customPolicy": "사용자 정의 정책",
+    "unsaved": "저장되지 않은 변경사항",
+    "discard": "변경 취소",
+    "discarded": "변경사항 취소됨",
+    "refresh": "새로고침",
+    "selectAll": "모두 선택",
+    "deselectAll": "모두 선택 해제",
+    "selectedCount": "앱 {count}개 선택됨",
+    "deselectedCount": "앱 {count}개 선택 해제됨",
+    "nothingChanged": "변경할 항목 없음",
+    "more": "더보기",
+    "autoAdd": "새 앱 자동 추가",
+    "autoAddHint": "부팅 시 새로 설치된 앱을 대상 목록에 추가합니다.",
+    "shortcuts": "Ctrl+A 모두 선택, Ctrl+D 모두 선택 해제, Ctrl+F 검색, Ctrl+S 저장"
+  },
+  "keybox": {
+    "status": "설치된 키박스",
+    "missing": "설치된 키박스 없음",
+    "modified": "수정 날짜",
+    "size": "크기",
+    "path": "경로",
+    "sources": "키박스 설치",
+    "aospHint": "AOSP의 소프트웨어 키박스입니다.",
+    "unknownHint": "이 기기에서 생성한 자체 서명 키박스입니다.",
+    "localHint": "기기에 저장된 keybox.xml을 선택합니다.",
+    "repoHint": "커뮤니티 키박스 저장소를 둘러봅니다.",
+    "custom": "사용자 정의 제공자",
+    "customEmpty": "아직 사용자 정의 제공자가 없습니다.",
+    "addProvider": "제공자 추가",
+    "editProvider": "제공자 수정",
+    "url": "URL",
+    "decodeHint": "허용되는 단계: cat, base64 -d, xxd -r -p ({'|'}로 연결)",
+    "import": "가져오기",
+    "export": "내보내기",
+    "resetProviders": "기본값으로 초기화",
+    "installedDetail": "{path}에 키 {count}개",
+    "backup": "이전 키박스 백업 위치: {path}",
+    "systemPicker": "시스템 파일 관리자로 선택",
+    "repoLoading": "키박스 저장소에 연결하는 중…",
+    "repoTitle": "키박스 저장소"
+  },
+  "policy": {
+    "none": "활성화된 모듈에는 기본 정책이 없습니다.",
+    "hint": "필드를 비워 두면 모듈 자체의 기본값이 유지됩니다.",
+    "saved": "기본 정책 저장됨",
+    "restart": "변경한 Verified Boot 및 OS 설정을 적용하려면 재부팅하세요.",
+    "custom": "이 앱의 사용자 정의 정책",
+    "fields": {
+      "os_patch": "시스템 패치",
+      "vendor_patch": "공급업체 패치",
+      "boot_patch": "부트 패치",
+      "os_version": "OS 버전",
+      "security_patch": "보안 패치",
+      "os_patchlevel": "OS 패치 수준",
+      "vendor_patchlevel": "공급업체 패치 수준",
+      "boot_patchlevel": "부트 패치 수준",
+      "vb_key": "Verified Boot 키",
+      "vb_hash": "Verified Boot 해시",
+      "verified_boot_state": "Verified Boot 상태를 green으로 설정",
+      "device_locked": "부트로더 잠김",
+      "mode": "작동 모드",
+      "brand": "브랜드",
+      "device": "기기",
+      "product": "제품",
+      "manufacturer": "제조업체",
+      "model": "모델",
+      "serial": "일련번호",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "새 앱 자동 포함"
+    }
+  },
+  "props": {
+    "handlerHint": "부팅 시 부트로더, Verified Boot, 디버그 관련 속성을 재설정하여 잠긴 기기처럼 보이게 합니다.",
+    "bootHashHint": "Key Attestation 앱에 표시되는 verifiedBootHash 값입니다. 비워 두면 ro.boot.vbmeta.digest를 더 이상 덮어쓰지 않습니다.",
+    "invalidHash": "16진수 64자를 입력하세요",
+    "synced": "모듈의 vb_hash 정책에도 기록됨"
+  },
+  "entry": {
+    "title": "키 저장소 모듈 바로가기",
+    "description": "루트 관리자에서 {module}의 WebUI(또는 액션 버튼)로 이 페이지를 엽니다.",
+    "ownWebui": "{module}에 자체 WebUI가 있으므로 바로가기를 추가하지 않습니다.",
+    "noModule": "바로가기를 추가하려면 키 저장소 모듈을 설치하세요."
+  },
+  "translations": {
+    "title": "Tricky Addon 번역",
+    "version": "번들 {version}",
+    "help": "번역 참여",
+    "telegram": "Tricky Addon Telegram 채널",
+    "guide": "Tricky Store 관리 기능은 Tricky Addon의 번역을 사용합니다. [Crowdin](https://crowdin.com/project/TA_utl)에서 번역을 개선할 수 있으며, *번역 번들 업데이트*를 누르면 모듈을 업데이트하지 않아도 최신 번역을 가져옵니다.\n\n그 밖의 텍스트는 Duck ToolBox의 `locales/*.json` 파일에서 번역합니다. 언어를 추가하거나 수정하려면 [GitHub]({repository})에 풀 리퀘스트를 보내 주세요."
+  },
+  "help": {
+    "modes": "모드",
+    "modesDescription": "선택한 앱을 길게 누르거나 해당 앱의 조정 버튼을 탭하면 인증서 생성(`!`) 또는 리프 해킹(`?`)을 강제하거나 앱별 정책을 지정할 수 있습니다. 이 기능은 Tricky Store에서만 지원됩니다.",
+    "backends": "지원되는 모듈",
+    "backendsDescription": "Tricky Store(config.ini 및 구버전 target.txt), TEESimulator(config.json), OhMyKeymint(injector.toml 및 config.toml)를 지원합니다. Duck ToolBox는 활성화된 모듈 고유의 형식으로 기록합니다."
+  },
+  "errors": {
+    "no_backend": "설치된 키 저장소 모듈 없음",
+    "invalid_keybox": "잘못된 키박스",
+    "unsupported_decoder": "허용되지 않는 디코딩 단계",
+    "invalid_policy": "잘못된 정책 값",
+    "backend_rule": "키 저장소 모듈 규칙에 따라 거부됨",
+    "download_failed": "다운로드 실패"
+  },
   "ta": {
     "help_help_instructions": "설명서",
     "help_select_denylist": "DenyList에서 선택",

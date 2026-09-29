@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "模組與更新",
+    "description": "版本資訊、更新、輸出檔案、指令記錄與維護。"
+  },
+  "device": {
+    "title": "這部裝置",
+    "android": "Android {release} · API {sdk}",
+    "patch": "安全性修補程式",
+    "kernel": "核心",
+    "selinux": "SELinux",
+    "rootManager": "Root 管理器",
+    "module": "Duck ToolBox",
+    "notDetected": "未偵測到"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "強制執行",
+    "permissive": "寬鬆"
+  },
+  "module": {
+    "title": "模組",
+    "id": "模組 ID",
+    "version": "模組版本",
+    "binary": "後端版本",
+    "author": "作者"
+  },
+  "update": {
+    "title": "更新",
+    "channel": "更新管道",
+    "stable": "穩定版",
+    "canary": "測試版（CI 建構）",
+    "off": "關閉",
+    "check": "檢查更新",
+    "upToDate": "已是最新版本。",
+    "available": "可更新至 {version}",
+    "install": "安裝更新",
+    "installed": "更新已安裝，重新啟動後即可套用。",
+    "reboot": "立即重新啟動",
+    "changelog": "最新異動",
+    "banner": "Duck ToolBox {version} 現已推出",
+    "view": "查看"
+  },
+  "files": {
+    "title": "輸出檔案",
+    "empty": "工具尚未產生任何檔案。",
+    "folder": "儲存在 {path}"
+  },
+  "activity": {
+    "title": "指令記錄",
+    "empty": "尚未執行任何指令。",
+    "all": "查看全部",
+    "failed": "失敗"
+  },
+  "maintenance": {
+    "title": "維護",
+    "reboot": "重新啟動裝置",
+    "rebootConfirm": "要立即重新啟動裝置嗎？",
+    "uninstall": "解除安裝 Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox 會在下次重新啟動時移除，/data/adb/duck-toolbox 中已儲存的設定檔和輸出檔案則會保留。",
+    "uninstalled": "Duck ToolBox 將在下次重新啟動後移除。"
+  },
+  "errors": {
+    "no_root_manager": "找不到支援的 Root 管理器。",
+    "invalid_url": "只能開啟 http(s) 連結。",
+    "no_update": "目前沒有可用的更新。",
+    "invalid_package": "下載的檔案不是 Duck ToolBox 模組。",
+    "download_failed": "下載失敗。"
+  }
+}

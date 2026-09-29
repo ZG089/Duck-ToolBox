@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "適用於 KernelSU、APatch 與 Magisk 的安全性工具"
+  },
+  "nav": {
+    "home": "首頁",
+    "settings": "設定",
+    "back": "返回",
+    "more": "更多選項",
+    "notFound": "這個頁面不存在。"
+  },
+  "actions": {
+    "save": "儲存",
+    "cancel": "取消",
+    "close": "關閉",
+    "confirm": "確認",
+    "copy": "複製",
+    "copied": "已複製到剪貼簿",
+    "copyFailed": "目前環境無法複製",
+    "retry": "重試",
+    "refresh": "重新整理",
+    "reset": "重設",
+    "remove": "移除",
+    "edit": "編輯",
+    "add": "新增",
+    "open": "開啟",
+    "continue": "繼續",
+    "details": "詳細資料",
+    "browse": "瀏覽",
+    "import": "匯入",
+    "export": "匯出",
+    "install": "安裝",
+    "search": "搜尋",
+    "clear": "清除",
+    "done": "完成"
+  },
+  "home": {
+    "tools": "工具",
+    "system": "系統",
+    "missing": "此版本未包含",
+    "outdated": "請更新模組",
+    "checking": "檢查中…",
+    "noHost": "請從 KernelSU、APatch 或 WebUI 應用程式開啟 Duck ToolBox 以執行工具。",
+    "confirmTitle": "繼續之前"
+  },
+  "settings": {
+    "appearance": "外觀",
+    "theme": "主題",
+    "themeSystem": "系統預設",
+    "themeLight": "淺色",
+    "themeDark": "深色",
+    "language": "語言",
+    "languageSystem": "系統預設",
+    "about": "關於",
+    "version": "版本",
+    "authors": "作者",
+    "repository": "原始碼",
+    "license": "授權",
+    "acknowledgements": "致謝",
+    "trickyAddon": "Tricky Store 管理功能移植自 KOWX712 的 Tricky Addon。",
+    "aospKeybox": "內建的 AOSP keybox 是 AOSP system/keymaster 中的參考認證金鑰。"
+  },
+  "files": {
+    "title": "選擇檔案",
+    "empty": "這個資料夾中沒有相符的檔案。",
+    "up": "上一層",
+    "system": "系統檔案選擇器",
+    "loadFailed": "無法讀取這個資料夾。"
+  },
+  "errors": {
+    "title": "發生錯誤",
+    "command": "指令",
+    "code": "代碼",
+    "message": "訊息",
+    "details": "詳細資料",
+    "host_unavailable": "目前環境中沒有可用的 root WebUI 主機。",
+    "api_mismatch": "已安裝的後端使用不同的通訊協定，請重新安裝模組。",
+    "contract_mismatch": "後端傳回了此 WebUI 無法解讀的資料，請重新安裝模組。",
+    "no_envelope": "後端沒有回應。",
+    "binary_not_found": "模組中缺少後端執行檔。",
+    "usage_error": "後端拒絕了這項要求。",
+    "internal_error": "後端回報了錯誤。"
+  }
+}

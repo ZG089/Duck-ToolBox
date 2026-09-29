@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "기기 ID 프로비저닝",
+    "description": "증명용 기기 ID를 Qualcomm Keymaster 신뢰 앱(TA)에 기록합니다.",
+    "warning": "일부 Qualcomm 기반 OnePlus 기기에서만 테스트되었습니다. 다른 기기에서의 결과는 보장되지 않으며, 실제로 기록하면 Keymaster TA가 증명하는 ID가 변경됩니다."
+  },
+  "form": {
+    "main": "식별자",
+    "mainHint": "이 기기에서 가져온 값입니다. 맞추려는 기기와 일치시켜야 할 때만 변경하세요.",
+    "advanced": "고급",
+    "advancedHint": "IMEI, MEID 및 신뢰 앱(TA) 위치를 설정합니다.",
+    "brand": "브랜드",
+    "device": "기기 코드명",
+    "product": "제품",
+    "serial": "일련번호",
+    "manufacturer": "제조업체",
+    "model": "모델",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA 이름",
+    "taPath": "TA 경로",
+    "dryRun": "모의 실행",
+    "dryRunHint": "Keymaster로 전송하지 않고 명령을 생성하고 검증합니다.",
+    "reload": "기기에서 다시 불러오기",
+    "provision": "기기 ID 기록",
+    "provisionDry": "모의 실행 시작",
+    "confirm": "지금 이 ID를 Keymaster에 기록하시겠습니까? Duck ToolBox에서는 되돌릴 수 없습니다."
+  },
+  "result": {
+    "title": "결과",
+    "done": "기기 ID 프로비저닝 완료",
+    "mode": "모드",
+    "dry": "모의 실행",
+    "live": "실제 기록",
+    "count": "기록된 항목",
+    "taVersion": "TA 버전",
+    "library": "라이브러리",
+    "report": "보고서",
+    "notAvailable": "정보 없음"
+  },
+  "errors": {
+    "missing_device_field": "필수 식별자가 비어 있습니다."
+  }
+}

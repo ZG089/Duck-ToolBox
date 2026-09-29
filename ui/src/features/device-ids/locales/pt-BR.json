@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Provisionamento de IDs",
+    "description": "Grava os IDs de atestado do dispositivo no app confiável do Keymaster da Qualcomm.",
+    "warning": "Isso só foi testado em alguns dispositivos OnePlus com processador Qualcomm. Os resultados em outros dispositivos não são garantidos, e uma gravação real altera os IDs atestados pelo TA do Keymaster."
+  },
+  "form": {
+    "main": "Identificadores",
+    "mainHint": "Preenchidos com os dados deste dispositivo. Altere-os apenas para que correspondam ao dispositivo de referência.",
+    "advanced": "Avançado",
+    "advancedHint": "IMEI, MEID e o local do app confiável.",
+    "brand": "Marca",
+    "device": "Codinome",
+    "product": "Produto",
+    "serial": "Número de série",
+    "manufacturer": "Fabricante",
+    "model": "Modelo",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "Nome do TA",
+    "taPath": "Caminho do TA",
+    "dryRun": "Simulação",
+    "dryRunHint": "Gera e valida o comando sem enviá-lo ao Keymaster.",
+    "reload": "Recarregar do dispositivo",
+    "provision": "Provisionar IDs do dispositivo",
+    "provisionDry": "Executar simulação",
+    "confirm": "Gravar estes IDs no Keymaster agora? Não é possível desfazer isso pelo Duck ToolBox."
+  },
+  "result": {
+    "title": "Resultado",
+    "done": "Provisionamento de IDs do dispositivo concluído",
+    "mode": "Modo",
+    "dry": "Simulação",
+    "live": "Gravação real",
+    "count": "Entradas gravadas",
+    "taVersion": "Versão do TA",
+    "library": "Biblioteca",
+    "report": "Relatório",
+    "notAvailable": "Indisponível"
+  },
+  "errors": {
+    "missing_device_field": "Um identificador obrigatório está vazio."
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Module và bản cập nhật",
+    "description": "Phiên bản, bản cập nhật, tệp đầu ra, lịch sử lệnh và bảo trì."
+  },
+  "device": {
+    "title": "Thiết bị này",
+    "android": "Android {release} · API {sdk}",
+    "patch": "Bản vá bảo mật",
+    "kernel": "Phiên bản Kernel",
+    "selinux": "SELinux",
+    "rootManager": "Trình quản lý root",
+    "module": "Duck ToolBox",
+    "notDetected": "Không phát hiện được"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "Thực thi",
+    "permissive": "Cho phép"
+  },
+  "module": {
+    "title": "Module",
+    "id": "ID module",
+    "version": "Phiên bản module",
+    "binary": "Phiên bản backend",
+    "author": "Tác giả"
+  },
+  "update": {
+    "title": "Bản cập nhật",
+    "channel": "Kênh cập nhật",
+    "stable": "Ổn định",
+    "canary": "Canary (bản dựng CI)",
+    "off": "Tắt",
+    "check": "Kiểm tra bản cập nhật",
+    "upToDate": "Bạn đang dùng phiên bản mới nhất.",
+    "available": "Đã có phiên bản {version}",
+    "install": "Cài đặt bản cập nhật",
+    "installed": "Đã cài đặt bản cập nhật. Khởi động lại để áp dụng.",
+    "reboot": "Khởi động lại ngay",
+    "changelog": "Có gì mới",
+    "banner": "Đã có Duck ToolBox {version}",
+    "view": "Xem"
+  },
+  "files": {
+    "title": "Tệp đầu ra",
+    "empty": "Các công cụ chưa tạo tệp nào.",
+    "folder": "Được lưu tại {path}"
+  },
+  "activity": {
+    "title": "Lịch sử lệnh",
+    "empty": "Chưa có lệnh nào được chạy.",
+    "all": "Xem tất cả",
+    "failed": "Thất bại"
+  },
+  "maintenance": {
+    "title": "Bảo trì",
+    "reboot": "Khởi động lại thiết bị",
+    "rebootConfirm": "Khởi động lại thiết bị ngay bây giờ?",
+    "uninstall": "Gỡ cài đặt Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox sẽ bị gỡ bỏ vào lần khởi động lại tiếp theo. Các hồ sơ và tệp đầu ra đã lưu trong /data/adb/duck-toolbox vẫn được giữ nguyên.",
+    "uninstalled": "Duck ToolBox sẽ bị gỡ bỏ sau lần khởi động lại tiếp theo."
+  },
+  "errors": {
+    "no_root_manager": "Không tìm thấy trình quản lý root nào được hỗ trợ.",
+    "invalid_url": "Chỉ có thể mở đường liên kết http(s).",
+    "no_update": "Hiện không có bản cập nhật nào.",
+    "invalid_package": "Tệp đã tải xuống không phải là module Duck ToolBox.",
+    "download_failed": "Tải xuống thất bại."
+  }
+}

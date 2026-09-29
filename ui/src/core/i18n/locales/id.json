@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Alat keamanan untuk KernelSU, APatch, dan Magisk"
+  },
+  "nav": {
+    "home": "Beranda",
+    "settings": "Setelan",
+    "back": "Kembali",
+    "more": "Opsi lainnya",
+    "notFound": "Halaman ini tidak ada."
+  },
+  "actions": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "close": "Tutup",
+    "confirm": "Konfirmasi",
+    "copy": "Salin",
+    "copied": "Disalin ke papan klip",
+    "copyFailed": "Tidak dapat menyalin di sini",
+    "retry": "Coba lagi",
+    "refresh": "Muat ulang",
+    "reset": "Setel ulang",
+    "remove": "Hapus",
+    "edit": "Edit",
+    "add": "Tambahkan",
+    "open": "Buka",
+    "continue": "Lanjutkan",
+    "details": "Detail",
+    "browse": "Jelajahi",
+    "import": "Impor",
+    "export": "Ekspor",
+    "install": "Instal",
+    "search": "Telusuri",
+    "clear": "Hapus",
+    "done": "Selesai"
+  },
+  "home": {
+    "tools": "Alat",
+    "system": "Sistem",
+    "missing": "Tidak ada di build ini",
+    "outdated": "Update modul",
+    "checking": "Memeriksa…",
+    "noHost": "Buka Duck ToolBox dari KernelSU, APatch, atau aplikasi WebUI untuk menjalankan alat.",
+    "confirmTitle": "Sebelum melanjutkan"
+  },
+  "settings": {
+    "appearance": "Tampilan",
+    "theme": "Tema",
+    "themeSystem": "Sistem",
+    "themeLight": "Terang",
+    "themeDark": "Gelap",
+    "language": "Bahasa",
+    "languageSystem": "Default sistem",
+    "about": "Tentang",
+    "version": "Versi",
+    "authors": "Pembuat",
+    "repository": "Kode sumber",
+    "license": "Lisensi",
+    "acknowledgements": "Ucapan terima kasih",
+    "trickyAddon": "Pengelola Tricky Store adalah hasil porting Tricky Addon karya KOWX712.",
+    "aospKeybox": "Keybox AOSP bawaan adalah kunci pengesahan referensi dari AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Pilih file",
+    "empty": "Tidak ada file yang cocok di folder ini.",
+    "up": "Naik satu tingkat",
+    "system": "Pemilih file sistem",
+    "loadFailed": "Folder ini tidak dapat dibaca."
+  },
+  "errors": {
+    "title": "Terjadi masalah",
+    "command": "Perintah",
+    "code": "Kode",
+    "message": "Pesan",
+    "details": "Detail",
+    "host_unavailable": "Tidak ada host WebUI root yang tersedia di sini.",
+    "api_mismatch": "Backend yang terinstal menggunakan protokol berbeda. Instal ulang modul.",
+    "contract_mismatch": "Backend mengembalikan data yang tidak dipahami WebUI ini. Instal ulang modul.",
+    "no_envelope": "Backend tidak merespons.",
+    "binary_not_found": "Biner backend tidak ditemukan di modul.",
+    "usage_error": "Backend menolak permintaan.",
+    "internal_error": "Backend melaporkan error."
+  }
+}

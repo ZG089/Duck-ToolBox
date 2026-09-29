@@ -1,4 +1,134 @@
 {
+  "meta": {
+    "title": "Tricky Store",
+    "description": "Danh sách mục tiêu, Keybox và chính sách cho Tricky Store, TEESimulator và OhMyKeymint."
+  },
+  "backend": {
+    "none": "Không tìm thấy module kho khóa",
+    "noneHint": "Hãy cài đặt Tricky Store, TEESimulator hoặc OhMyKeymint rồi khởi động lại. Trang này sẽ quản lý module đang hoạt động.",
+    "title": "Module kho khóa",
+    "active": "Đang hoạt động",
+    "inactive": "Đã tắt",
+    "disabled": "{name} đang bị tắt trong trình quản lý root. Các thay đổi vẫn được lưu và sẽ có hiệu lực sau khi bạn bật module rồi khởi động lại.",
+    "configError": "Không đọc được cấu hình hiện tại nên khi lưu sẽ thay thế cấu hình này: {error}",
+    "names": {
+      "tricky-store": "Tricky Store",
+      "tricky-store-legacy": "Tricky Store (bản cũ)",
+      "tee-simulator": "TEESimulator",
+      "oh-my-keymint": "OhMyKeymint"
+    }
+  },
+  "list": {
+    "selected": "Đã chọn {count}",
+    "empty": "Không có ứng dụng nào khớp với tìm kiếm của bạn.",
+    "system": "Hệ thống",
+    "tune": "Chế độ và chính sách của {name}",
+    "customPolicy": "Chính sách tùy chỉnh",
+    "unsaved": "Có thay đổi chưa lưu",
+    "discard": "Hủy thay đổi",
+    "discarded": "Đã hủy các thay đổi",
+    "refresh": "Làm mới",
+    "selectAll": "Chọn tất cả",
+    "deselectAll": "Bỏ chọn tất cả",
+    "selectedCount": "Đã chọn {count} ứng dụng",
+    "deselectedCount": "Đã bỏ chọn {count} ứng dụng",
+    "nothingChanged": "Không có gì để thay đổi",
+    "more": "Tùy chọn khác",
+    "autoAdd": "Tự động thêm ứng dụng mới",
+    "autoAddHint": "Ứng dụng mới cài đặt sẽ được thêm vào danh sách mục tiêu khi khởi động.",
+    "shortcuts": "Ctrl+A chọn tất cả, Ctrl+D bỏ chọn tất cả, Ctrl+F tìm kiếm, Ctrl+S lưu"
+  },
+  "keybox": {
+    "status": "Keybox đã cài đặt",
+    "missing": "Chưa cài đặt Keybox",
+    "modified": "Đã sửa đổi",
+    "size": "Kích thước",
+    "path": "Đường dẫn",
+    "sources": "Cài đặt Keybox",
+    "aospHint": "Keybox phần mềm từ AOSP.",
+    "unknownHint": "Keybox tự ký được tạo trên thiết bị này.",
+    "localHint": "Chọn keybox.xml từ bộ nhớ.",
+    "repoHint": "Duyệt kho lưu trữ Keybox của cộng đồng.",
+    "custom": "Nhà cung cấp tùy chỉnh",
+    "customEmpty": "Chưa có nhà cung cấp tùy chỉnh nào.",
+    "addProvider": "Thêm nhà cung cấp",
+    "editProvider": "Chỉnh sửa nhà cung cấp",
+    "url": "URL",
+    "decodeHint": "Các bước được phép: cat, base64 -d, xxd -r -p, nối với nhau bằng {'|'}",
+    "import": "Nhập",
+    "export": "Xuất",
+    "resetProviders": "Đặt lại về mặc định",
+    "installedDetail": "{count} khóa trong {path}",
+    "backup": "Đã lưu Keybox cũ vào {path}",
+    "systemPicker": "Chọn bằng trình quản lý tệp của hệ thống",
+    "repoLoading": "Đang kết nối với kho lưu trữ Keybox…",
+    "repoTitle": "Kho lưu trữ Keybox"
+  },
+  "policy": {
+    "none": "Module đang hoạt động không có chính sách mặc định.",
+    "hint": "Để trống một trường để giữ giá trị mặc định của module.",
+    "saved": "Đã lưu chính sách mặc định",
+    "restart": "Khởi động lại để áp dụng thay đổi về cài đặt Khởi động đã xác minh và hệ điều hành.",
+    "custom": "Chính sách tùy chỉnh cho ứng dụng này",
+    "fields": {
+      "os_patch": "Bản vá hệ thống",
+      "vendor_patch": "Bản vá vendor",
+      "boot_patch": "Bản vá boot",
+      "os_version": "Phiên bản hệ điều hành",
+      "security_patch": "Bản vá bảo mật",
+      "os_patchlevel": "Cấp bản vá hệ điều hành",
+      "vendor_patchlevel": "Cấp bản vá vendor",
+      "boot_patchlevel": "Cấp bản vá boot",
+      "vb_key": "Khóa Khởi động đã xác minh",
+      "vb_hash": "Mã băm Khởi động đã xác minh",
+      "verified_boot_state": "Trạng thái Khởi động đã xác minh là xanh lục",
+      "device_locked": "Đã khóa trình tải khởi động",
+      "mode": "Chế độ hoạt động",
+      "brand": "Thương hiệu",
+      "device": "Thiết bị",
+      "product": "Sản phẩm",
+      "manufacturer": "Nhà sản xuất",
+      "model": "Kiểu máy",
+      "serial": "Số sê-ri",
+      "imei": "IMEI",
+      "imei2": "IMEI 2",
+      "meid": "MEID",
+      "autoIncludeNewApps": "Tự động thêm ứng dụng mới"
+    }
+  },
+  "props": {
+    "handlerHint": "Mỗi lần khởi động, đặt lại các thuộc tính về trình tải khởi động, Khởi động đã xác minh và gỡ lỗi để giống một thiết bị đã khóa.",
+    "bootHashHint": "Giá trị verifiedBootHash từ Key Attestation. Để trống để ngừng ghi đè ro.boot.vbmeta.digest.",
+    "invalidHash": "Nhập 64 ký tự thập lục phân",
+    "synced": "Cũng đã được ghi vào chính sách vb_hash của module"
+  },
+  "entry": {
+    "title": "Lối tắt trong module kho khóa",
+    "description": "Mở trang này từ WebUI (hoặc nút hành động) của {module} trong trình quản lý root.",
+    "ownWebui": "{module} đã có WebUI riêng nên sẽ không thêm lối tắt.",
+    "noModule": "Hãy cài đặt một module kho khóa để thêm lối tắt vào đó."
+  },
+  "translations": {
+    "title": "Bản dịch Tricky Addon",
+    "version": "Gói {version}",
+    "help": "Giúp dịch",
+    "telegram": "Tricky Addon trên Telegram",
+    "guide": "Trình quản lý Tricky Store dùng bản dịch của Tricky Addon. Bạn có thể cải thiện các bản dịch này trên [Crowdin](https://crowdin.com/project/TA_utl); nút *Cập nhật gói dịch thuật* sẽ tải bản dịch mới nhất về đây mà không cần cập nhật module.\n\nMọi nội dung khác được dịch trong các tệp `locales/*.json` của Duck ToolBox. Hãy mở một pull request trên [GitHub]({repository}) để thêm hoặc sửa một ngôn ngữ."
+  },
+  "help": {
+    "modes": "Chế độ",
+    "modesDescription": "Nhấn và giữ một ứng dụng đã chọn (hoặc nhấn nút điều chỉnh của ứng dụng đó) để buộc dùng chế độ Cert Generating (`!`) hoặc Leaf Hack (`?`), hoặc để đặt chính sách riêng cho ứng dụng. Chỉ Tricky Store hỗ trợ tính năng này.",
+    "backends": "Module được hỗ trợ",
+    "backendsDescription": "Tricky Store (config.ini và target.txt kiểu cũ), TEESimulator (config.json) và OhMyKeymint (injector.toml và config.toml). Duck ToolBox ghi theo đúng định dạng riêng của module đang hoạt động."
+  },
+  "errors": {
+    "no_backend": "Chưa cài đặt module kho khóa nào",
+    "invalid_keybox": "Keybox không hợp lệ",
+    "unsupported_decoder": "Bước giải mã không được phép",
+    "invalid_policy": "Giá trị chính sách không hợp lệ",
+    "backend_rule": "Bị từ chối theo quy tắc của module kho khóa",
+    "download_failed": "Tải xuống thất bại"
+  },
   "ta": {
     "help_help_instructions": "Hướng dẫn",
     "help_save_and_update_description": "Lưu cấu hình hiện tại.",

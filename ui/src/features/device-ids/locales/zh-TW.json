@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "裝置 ID 寫入工具",
+    "description": "將認證用的裝置 ID 寫入 Qualcomm Keymaster 受信任應用程式。",
+    "warning": "此功能僅在部分採用 Qualcomm 晶片的 OnePlus 裝置上測試過，無法保證在其他裝置上的結果；實際寫入會變更 Keymaster TA 所認證的 ID。"
+  },
+  "form": {
+    "main": "識別碼",
+    "mainHint": "已從這部裝置讀取並填入。只有在需要比照其他裝置時才修改。",
+    "advanced": "進階",
+    "advancedHint": "IMEI、MEID 以及受信任應用程式的位置。",
+    "brand": "品牌",
+    "device": "裝置代號",
+    "product": "產品名稱",
+    "serial": "序號",
+    "manufacturer": "製造商",
+    "model": "型號",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "TA 名稱",
+    "taPath": "TA 路徑",
+    "dryRun": "模擬執行",
+    "dryRunHint": "只建立並驗證指令，不會實際傳送至 Keymaster。",
+    "reload": "重新從裝置讀取",
+    "provision": "寫入裝置 ID",
+    "provisionDry": "開始模擬執行",
+    "confirm": "要立即將這些 ID 寫入 Keymaster 嗎？此操作無法在 Duck ToolBox 中復原。"
+  },
+  "result": {
+    "title": "結果",
+    "done": "裝置 ID 寫入完成",
+    "mode": "模式",
+    "dry": "模擬執行",
+    "live": "實際寫入",
+    "count": "寫入項目數",
+    "taVersion": "TA 版本",
+    "library": "程式庫",
+    "report": "報告",
+    "notAvailable": "無法取得"
+  },
+  "errors": {
+    "missing_device_field": "有必填的識別碼未填寫。"
+  }
+}

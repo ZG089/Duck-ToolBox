@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Sicherheitstools für KernelSU, APatch und Magisk"
+  },
+  "nav": {
+    "home": "Startseite",
+    "settings": "Einstellungen",
+    "back": "Zurück",
+    "more": "Weitere Optionen",
+    "notFound": "Diese Seite existiert nicht."
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "copy": "Kopieren",
+    "copied": "In die Zwischenablage kopiert",
+    "copyFailed": "Kopieren ist hier nicht möglich",
+    "retry": "Wiederholen",
+    "refresh": "Aktualisieren",
+    "reset": "Zurücksetzen",
+    "remove": "Entfernen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "open": "Öffnen",
+    "continue": "Weiter",
+    "details": "Details",
+    "browse": "Durchsuchen",
+    "import": "Importieren",
+    "export": "Exportieren",
+    "install": "Installieren",
+    "search": "Suchen",
+    "clear": "Löschen",
+    "done": "Fertig"
+  },
+  "home": {
+    "tools": "Tools",
+    "system": "System",
+    "missing": "Nicht in diesem Build",
+    "outdated": "Modul aktualisieren",
+    "checking": "Wird geprüft…",
+    "noHost": "Öffne Duck ToolBox über KernelSU, APatch oder eine WebUI-App, um die Tools zu nutzen.",
+    "confirmTitle": "Bevor du fortfährst"
+  },
+  "settings": {
+    "appearance": "Darstellung",
+    "theme": "Design",
+    "themeSystem": "System",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "language": "Sprache",
+    "languageSystem": "Systemstandard",
+    "about": "Über",
+    "version": "Version",
+    "authors": "Autoren",
+    "repository": "Quellcode",
+    "license": "Lizenz",
+    "acknowledgements": "Danksagungen",
+    "trickyAddon": "Die Tricky Store-Verwaltung ist eine Portierung von Tricky Addon, einem Projekt von KOWX712.",
+    "aospKeybox": "Die mitgelieferte AOSP-Keybox ist der Referenz-Attestierungsschlüssel aus AOSP system/keymaster."
+  },
+  "files": {
+    "title": "Datei auswählen",
+    "empty": "Keine passenden Dateien in diesem Ordner.",
+    "up": "Eine Ebene höher",
+    "system": "Dateiauswahl des Systems",
+    "loadFailed": "Dieser Ordner kann nicht gelesen werden."
+  },
+  "errors": {
+    "title": "Ein Fehler ist aufgetreten",
+    "command": "Befehl",
+    "code": "Code",
+    "message": "Meldung",
+    "details": "Details",
+    "host_unavailable": "Hier ist kein Root-WebUI-Host verfügbar.",
+    "api_mismatch": "Das installierte Backend nutzt ein anderes Protokoll. Installiere das Modul neu.",
+    "contract_mismatch": "Das Backend hat Daten zurückgegeben, die diese WebUI nicht versteht. Installiere das Modul neu.",
+    "no_envelope": "Das Backend hat nicht geantwortet.",
+    "binary_not_found": "Im Modul fehlt die Backend-Binärdatei.",
+    "usage_error": "Das Backend hat die Anfrage abgelehnt.",
+    "internal_error": "Das Backend hat einen Fehler gemeldet."
+  }
+}

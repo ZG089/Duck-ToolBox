@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Provisioning ID dispositivo",
+    "description": "Scrivi gli ID dispositivo per l'attestazione nell'app attendibile Keymaster di Qualcomm.",
+    "warning": "Questa funzione è stata testata solo su alcuni dispositivi OnePlus basati su Qualcomm. I risultati su altri dispositivi non sono garantiti e una scrittura effettiva modifica gli ID attestati dalla TA Keymaster."
+  },
+  "form": {
+    "main": "Identificatori",
+    "mainHint": "Compilati con i valori di questo dispositivo. Modificali solo per allinearli al dispositivo di riferimento.",
+    "advanced": "Avanzate",
+    "advancedHint": "IMEI, MEID e posizione dell'app attendibile.",
+    "brand": "Marca",
+    "device": "Nome in codice",
+    "product": "Prodotto",
+    "serial": "Numero di serie",
+    "manufacturer": "Produttore",
+    "model": "Modello",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "Nome TA",
+    "taPath": "Percorso TA",
+    "dryRun": "Simulazione",
+    "dryRunHint": "Crea e convalida il comando senza inviarlo a Keymaster.",
+    "reload": "Ricarica dal dispositivo",
+    "provision": "Scrivi ID dispositivo",
+    "provisionDry": "Avvia simulazione",
+    "confirm": "Scrivere ora questi ID in Keymaster? Questa operazione non può essere annullata da Duck ToolBox."
+  },
+  "result": {
+    "title": "Risultato",
+    "done": "Provisioning ID dispositivo completato",
+    "mode": "Modalità",
+    "dry": "Simulazione",
+    "live": "Scrittura effettiva",
+    "count": "Voci scritte",
+    "taVersion": "Versione TA",
+    "library": "Libreria",
+    "report": "Rapporto",
+    "notAvailable": "Non disponibile"
+  },
+  "errors": {
+    "missing_device_field": "Un identificatore obbligatorio è vuoto."
+  }
+}

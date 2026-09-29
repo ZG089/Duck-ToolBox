@@ -39,6 +39,11 @@ changed, removed or added on its own.
 - **Module & updates**: version and device summary, stable and canary updates with
   changelog, output files, command history, uninstall and reboot.
 
+Every tool is translated into 14 languages: English, Simplified and Traditional Chinese,
+Japanese, Korean, Spanish, French, German, Italian, Brazilian Portuguese, Russian, Arabic,
+Vietnamese and Indonesian. Tricky Addon's other translations cover the strings the Tricky
+Store manager shares with it.
+
 ## Architecture
 
 ```txt
@@ -92,9 +97,9 @@ What keeps it modular and resistant to breaking changes:
    `crates/duckd/src/main.rs`.
 2. **WebUI:** create `ui/src/features/<id>/` with an `index.ts` exporting
    `defineFeature({ id, namespace, icon, order, routes, messages })`, an `api.ts` that calls
-   `duckd()` with zod schemas, `locales/en.json` and `locales/zh-CN.json`, and optionally a
-   `mock.ts`. The home page, router, i18n, availability check and dev mock pick it up
-   automatically.
+   `duckd()` with zod schemas, a `locales/<language>.json` for each of the 14 languages
+   (`src/locales.test.ts` fails on a missing key), and optionally a `mock.ts`. The home page,
+   router, i18n, availability check and dev mock pick it up automatically.
 
 ## Module lifecycle
 

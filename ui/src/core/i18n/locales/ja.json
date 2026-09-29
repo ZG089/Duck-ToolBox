@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "KernelSU、APatch、Magisk 向けのセキュリティ ツール"
+  },
+  "nav": {
+    "home": "ホーム",
+    "settings": "設定",
+    "back": "戻る",
+    "more": "その他のオプション",
+    "notFound": "このページは存在しません。"
+  },
+  "actions": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "confirm": "確認",
+    "copy": "コピー",
+    "copied": "クリップボードにコピーしました",
+    "copyFailed": "この環境ではコピーできません",
+    "retry": "再試行",
+    "refresh": "再読み込み",
+    "reset": "リセット",
+    "remove": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "open": "開く",
+    "continue": "続行",
+    "details": "詳細",
+    "browse": "参照",
+    "import": "インポート",
+    "export": "エクスポート",
+    "install": "インストール",
+    "search": "検索",
+    "clear": "クリア",
+    "done": "完了"
+  },
+  "home": {
+    "tools": "ツール",
+    "system": "システム",
+    "missing": "このビルドに未搭載",
+    "outdated": "要モジュール更新",
+    "checking": "確認中…",
+    "noHost": "ツールを実行するには、KernelSU、APatch、または WebUI アプリから Duck ToolBox を開いてください。",
+    "confirmTitle": "続行する前に"
+  },
+  "settings": {
+    "appearance": "外観",
+    "theme": "テーマ",
+    "themeSystem": "システム",
+    "themeLight": "ライト",
+    "themeDark": "ダーク",
+    "language": "言語",
+    "languageSystem": "システムのデフォルト",
+    "about": "概要",
+    "version": "バージョン",
+    "authors": "開発者",
+    "repository": "ソースコード",
+    "license": "ライセンス",
+    "acknowledgements": "謝辞",
+    "trickyAddon": "Tricky Store マネージャーは、KOWX712 による Tricky Addon を移植したものです。",
+    "aospKeybox": "同梱の AOSP Keybox は、AOSP の system/keymaster に含まれるリファレンス用の構成証明鍵です。"
+  },
+  "files": {
+    "title": "ファイルを選択",
+    "empty": "このフォルダには一致するファイルがありません。",
+    "up": "上の階層へ",
+    "system": "システムのファイル選択",
+    "loadFailed": "このフォルダを読み込めません。"
+  },
+  "errors": {
+    "title": "問題が発生しました",
+    "command": "コマンド",
+    "code": "コード",
+    "message": "メッセージ",
+    "details": "詳細",
+    "host_unavailable": "利用可能な root WebUI ホストがありません。",
+    "api_mismatch": "インストールされているバックエンドのプロトコルが異なります。モジュールを再インストールしてください。",
+    "contract_mismatch": "バックエンドから、この WebUI では解釈できないデータが返されました。モジュールを再インストールしてください。",
+    "no_envelope": "バックエンドから応答がありませんでした。",
+    "binary_not_found": "モジュールにバックエンドのバイナリがありません。",
+    "usage_error": "バックエンドがリクエストを拒否しました。",
+    "internal_error": "バックエンドでエラーが発生しました。"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Écriture des ID d’appareil",
+    "description": "Écrire les ID d’attestation de l’appareil dans l’application de confiance Keymaster de Qualcomm.",
+    "warning": "Cet outil n’a été testé que sur certains appareils OnePlus équipés d’une puce Qualcomm. Les résultats sur d’autres appareils ne sont pas garantis, et une écriture réelle modifie les ID attestés par la TA Keymaster."
+  },
+  "form": {
+    "main": "Identifiants",
+    "mainHint": "Préremplis à partir de cet appareil. Ne les modifiez que pour les aligner sur un autre appareil.",
+    "advanced": "Paramètres avancés",
+    "advancedHint": "IMEI, MEID et emplacement de l’application de confiance.",
+    "brand": "Marque",
+    "device": "Nom de code",
+    "product": "Produit",
+    "serial": "Numéro de série",
+    "manufacturer": "Fabricant",
+    "model": "Modèle",
+    "imei": "IMEI",
+    "imei2": "IMEI 2",
+    "meid": "MEID",
+    "meid2": "MEID 2",
+    "taName": "Nom de la TA",
+    "taPath": "Chemin de la TA",
+    "dryRun": "Simulation",
+    "dryRunHint": "Génère et valide la commande sans l’envoyer à Keymaster.",
+    "reload": "Recharger depuis l’appareil",
+    "provision": "Écrire les ID d’appareil",
+    "provisionDry": "Lancer la simulation",
+    "confirm": "Écrire ces ID dans Keymaster maintenant ? Duck ToolBox ne pourra pas annuler cette opération."
+  },
+  "result": {
+    "title": "Résultat",
+    "done": "Écriture des ID d’appareil terminée",
+    "mode": "Mode",
+    "dry": "Simulation",
+    "live": "Écriture réelle",
+    "count": "Entrées écrites",
+    "taVersion": "Version de la TA",
+    "library": "Bibliothèque",
+    "report": "Rapport",
+    "notAvailable": "Non disponible"
+  },
+  "errors": {
+    "missing_device_field": "Un identifiant obligatoire est vide."
+  }
+}

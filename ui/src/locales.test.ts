@@ -6,6 +6,8 @@ import { describe, expect, it } from "vitest"
 type Messages = Record<string, unknown>
 
 const root = path.dirname(new URL(import.meta.url).pathname)
+/** Translated in full. Tricky Addon's `ta` group follows upstream, so it is not counted. */
+const complete = ["zh-TW", "ja", "ko", "es-ES", "fr", "de", "it", "pt-BR", "ru", "ar", "vi", "id"]
 const directories = [
   "core/i18n/locales",
   ...readdirSync(path.join(root, "features")).map((feature) => `features/${feature}/locales`),
@@ -39,6 +41,12 @@ describe.each(directories)("messages in %s", (directory) => {
 
   it("keeps Simplified Chinese complete", () => {
     expect(new Set(keys(locales.get("zh-CN") ?? {}))).toEqual(english)
+  })
+
+  it.each(complete)("keeps %s complete", (locale) => {
+    const own = (list: Iterable<string>) =>
+      new Set([...list].filter((key) => !key.startsWith("ta.")))
+    expect(own(keys(locales.get(locale) ?? {}))).toEqual(own(english))
   })
 
   it.each([...locales])("%s adds no keys English lacks", (_locale, messages) => {

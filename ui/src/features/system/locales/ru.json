@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Модуль и обновления",
+    "description": "Версии, обновления, выходные файлы, история команд и обслуживание."
+  },
+  "device": {
+    "title": "Это устройство",
+    "android": "Android {release} · API {sdk}",
+    "patch": "Патч безопасности",
+    "kernel": "Ядро",
+    "selinux": "SELinux",
+    "rootManager": "Root-менеджер",
+    "module": "Duck ToolBox",
+    "notDetected": "Не обнаружен"
+  },
+  "rootManagers": {
+    "kernel-su": "KernelSU",
+    "apatch": "APatch",
+    "magisk": "Magisk"
+  },
+  "selinux": {
+    "enforcing": "Принудительный",
+    "permissive": "Разрешающий"
+  },
+  "module": {
+    "title": "Модуль",
+    "id": "ID модуля",
+    "version": "Версия модуля",
+    "binary": "Версия бэкенда",
+    "author": "Автор"
+  },
+  "update": {
+    "title": "Обновления",
+    "channel": "Канал обновлений",
+    "stable": "Стабильный",
+    "canary": "Canary (сборки CI)",
+    "off": "Отключено",
+    "check": "Проверить обновления",
+    "upToDate": "Установлена последняя версия.",
+    "available": "Доступна версия {version}",
+    "install": "Установить обновление",
+    "installed": "Обновление установлено. Чтобы применить его, перезагрузите устройство.",
+    "reboot": "Перезагрузить сейчас",
+    "changelog": "Что нового",
+    "banner": "Доступно обновление Duck ToolBox {version}",
+    "view": "Посмотреть"
+  },
+  "files": {
+    "title": "Выходные файлы",
+    "empty": "Инструменты пока не создали ни одного файла.",
+    "folder": "Сохраняются в {path}"
+  },
+  "activity": {
+    "title": "История команд",
+    "empty": "Команды ещё не выполнялись.",
+    "all": "Показать все",
+    "failed": "Ошибка"
+  },
+  "maintenance": {
+    "title": "Обслуживание",
+    "reboot": "Перезагрузить устройство",
+    "rebootConfirm": "Перезагрузить устройство сейчас?",
+    "uninstall": "Удалить Duck ToolBox",
+    "uninstallConfirm": "Duck ToolBox будет удалён при следующей перезагрузке. Сохранённые профили и выходные файлы в /data/adb/duck-toolbox останутся на месте.",
+    "uninstalled": "Duck ToolBox будет удалён после следующей перезагрузки."
+  },
+  "errors": {
+    "no_root_manager": "Не найден поддерживаемый root-менеджер.",
+    "invalid_url": "Можно открывать только ссылки http(s).",
+    "no_update": "Нет доступных обновлений.",
+    "invalid_package": "Скачанный файл не является модулем Duck ToolBox.",
+    "download_failed": "Не удалось скачать файл."
+  }
+}

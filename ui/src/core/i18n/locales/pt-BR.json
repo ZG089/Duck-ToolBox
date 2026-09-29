@@ -1,0 +1,85 @@
+{
+  "app": {
+    "name": "Duck ToolBox",
+    "tagline": "Ferramentas de segurança para KernelSU, APatch e Magisk"
+  },
+  "nav": {
+    "home": "Início",
+    "settings": "Configurações",
+    "back": "Voltar",
+    "more": "Mais opções",
+    "notFound": "Esta página não existe."
+  },
+  "actions": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "copy": "Copiar",
+    "copied": "Copiado para a área de transferência",
+    "copyFailed": "Não é possível copiar aqui",
+    "retry": "Tentar novamente",
+    "refresh": "Atualizar",
+    "reset": "Redefinir",
+    "remove": "Remover",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "open": "Abrir",
+    "continue": "Continuar",
+    "details": "Detalhes",
+    "browse": "Procurar",
+    "import": "Importar",
+    "export": "Exportar",
+    "install": "Instalar",
+    "search": "Pesquisar",
+    "clear": "Limpar",
+    "done": "Concluído"
+  },
+  "home": {
+    "tools": "Ferramentas",
+    "system": "Sistema",
+    "missing": "Ausente neste build",
+    "outdated": "Atualize o módulo",
+    "checking": "Verificando…",
+    "noHost": "Abra o Duck ToolBox pelo KernelSU, pelo APatch ou por um app de WebUI para usar as ferramentas.",
+    "confirmTitle": "Antes de continuar"
+  },
+  "settings": {
+    "appearance": "Aparência",
+    "theme": "Tema",
+    "themeSystem": "Sistema",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "language": "Idioma",
+    "languageSystem": "Padrão do sistema",
+    "about": "Sobre",
+    "version": "Versão",
+    "authors": "Autores",
+    "repository": "Código-fonte",
+    "license": "Licença",
+    "acknowledgements": "Agradecimentos",
+    "trickyAddon": "O gerenciador do Tricky Store é uma adaptação do Tricky Addon, de KOWX712.",
+    "aospKeybox": "A keybox AOSP incluída é a chave de atestado de referência do system/keymaster do AOSP."
+  },
+  "files": {
+    "title": "Escolha um arquivo",
+    "empty": "Nenhum arquivo correspondente nesta pasta.",
+    "up": "Subir um nível",
+    "system": "Seletor de arquivos do sistema",
+    "loadFailed": "Não é possível ler esta pasta."
+  },
+  "errors": {
+    "title": "Algo deu errado",
+    "command": "Comando",
+    "code": "Código",
+    "message": "Mensagem",
+    "details": "Detalhes",
+    "host_unavailable": "Não há um host de WebUI com root disponível aqui.",
+    "api_mismatch": "O back-end instalado usa outro protocolo. Reinstale o módulo.",
+    "contract_mismatch": "O back-end retornou dados que esta WebUI não entende. Reinstale o módulo.",
+    "no_envelope": "O back-end não respondeu.",
+    "binary_not_found": "O binário do back-end não foi encontrado no módulo.",
+    "usage_error": "O back-end recusou a solicitação.",
+    "internal_error": "O back-end informou um erro."
+  }
+}
