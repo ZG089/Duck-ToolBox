@@ -24,8 +24,9 @@ function onClick(event: MouseEvent) {
 
 <template>
   <!-- eslint-disable vue/no-v-html -- sanitized by DOMPurify above -->
+  <!-- Long URLs and code break where they would overflow; wide tables scroll on their own. -->
   <div
-    class="prose prose-sm prose-neutral dark:prose-invert max-w-none"
+    class="prose prose-sm prose-neutral dark:prose-invert prose-table:block prose-table:overflow-x-auto max-w-none min-w-0 [overflow-wrap:anywhere]"
     @click="onClick"
     v-html="html"
   />

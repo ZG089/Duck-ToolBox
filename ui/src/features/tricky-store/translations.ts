@@ -105,6 +105,18 @@ export function convert(value: string): string {
     })
 }
 
+/**
+ * Repairs two slips in Tricky Addon's Markdown help strings so they render as meant: a link
+ * whose URL runs straight into the next word (`[x](https://…/releases获取`), and a code span
+ * closed with a quote (`` `verifiedBootHash' ``), which swallows everything up to the next
+ * backtick, links included. Both would otherwise show raw Markdown.
+ */
+export function repairMarkdown(markdown: string): string {
+  const linked = markdown.replace(/(\]\(https?:\/\/[^\s()]*[\w/#=&%~+-])(?=\P{ASCII})/gu, "$1)")
+  const unbalanced = (linked.match(/`/g)?.length ?? 0) % 2 === 1
+  return unbalanced ? linked.replace(/`([\w.-]+)'/, "`$1`") : linked
+}
+
 /** The known keys of one language's strings, converted; missing or empty ones are left out. */
 export function pick(strings: ReadonlyMap<string, string>): Record<string, string> {
   const messages: Record<string, string> = {}

@@ -40,6 +40,9 @@
   - Menus, tabs and button groups mirror in right-to-left languages too.
   - Follows the KernelSU manager's window insets.
   - The Android back gesture closes dialogs and sheets.
+- Help: long links and code wrap inside the page, and two slips in upstream translations
+  (a link missing its parenthesis, a code span closed with a quote) no longer show raw
+  Markdown.
 - Every tool is a self-contained feature folder, discovered automatically.
   - Features plug into each other only through extension points.
   - Every backend response is validated against a schema.
