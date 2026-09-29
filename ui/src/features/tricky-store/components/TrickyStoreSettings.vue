@@ -59,7 +59,7 @@ const description = computed(() => {
 
 <template>
   <SectionCard :title="t('meta.title')">
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-5">
       <Field v-if="entry.data.value" orientation="horizontal">
         <FieldContent>
           <FieldLabel for="tricky-store-entry">{{ t("entry.title") }}</FieldLabel>
@@ -92,11 +92,11 @@ const description = computed(() => {
         </Button>
       </div>
       <div class="flex flex-wrap gap-2">
-        <Button size="sm" variant="outline" @click="guideOpen = true">
+        <Button variant="outline" @click="guideOpen = true">
           <Languages />
           {{ t("translations.help") }}
         </Button>
-        <Button size="sm" variant="outline" @click="openExternal(TELEGRAM_CHANNEL)">
+        <Button variant="outline" @click="openExternal(TELEGRAM_CHANNEL)">
           <Send />
           {{ t("translations.telegram") }}
         </Button>

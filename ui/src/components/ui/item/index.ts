@@ -13,17 +13,19 @@ export { default as ItemSeparator } from "./ItemSeparator.vue"
 export { default as ItemTitle } from "./ItemTitle.vue"
 
 export const itemVariants = cva(
-  "group/item flex items-center border border-transparent text-sm rounded-md transition-colors [a]:hover:bg-accent/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3",
+  "group/item flex items-center border border-transparent text-sm rounded-md transition-[border-radius,background-color] duration-350 ease-spring-fast flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3",
   {
     variants: {
       variant: {
         default: "bg-transparent",
         outline: "border-border",
         muted: "bg-muted/50",
+        // Material 3 Expressive segmented list: 4dp inner corners, 16dp outer ones.
+        segmented: "bg-card rounded-xs first:rounded-t-lg last:rounded-b-lg",
       },
       size: {
-        default: "p-4 gap-4 ",
-        sm: "py-3 px-4 gap-2.5",
+        default: "min-h-18 gap-4 px-4 py-3",
+        sm: "min-h-14 gap-4 px-4 py-2",
       },
     },
     defaultVariants: {
@@ -34,14 +36,14 @@ export const itemVariants = cva(
 )
 
 export const itemMediaVariants = cva(
-  "flex shrink-0 items-center justify-center gap-2 group-has-[[data-slot=item-description]]/item:self-start [&_svg]:pointer-events-none group-has-[[data-slot=item-description]]/item:translate-y-0.5",
+  "flex shrink-0 items-center justify-center gap-2 [&_svg]:pointer-events-none",
   {
     variants: {
       variant: {
         default: "bg-transparent",
-        icon: "size-8 border rounded-sm bg-muted [&_svg:not([class*='size-'])]:size-4",
+        icon: "size-10 rounded-full bg-secondary text-secondary-foreground [&_svg:not([class*='size-'])]:size-5",
         image:
-          "size-10 rounded-sm overflow-hidden [&_img]:size-full [&_img]:object-cover",
+          "size-10 rounded-full overflow-hidden [&_img]:size-full [&_img]:object-cover",
       },
     },
     defaultVariants: {

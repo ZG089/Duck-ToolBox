@@ -29,13 +29,13 @@ const tabs = ["profile", "provision", "keybox", "verify"] as const
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-4 p-4 pt-0">
     <QueryState
       :loading="loading.isPending.value"
       :error="loading.error.value"
       @retry="loading.refetch()"
     >
-      <Tabs v-model="tab" class="gap-4">
+      <Tabs v-model="tab" class="gap-6">
         <TabsList class="w-full">
           <TabsTrigger v-for="name in tabs" :key="name" :value="name">
             {{ t(`tabs.${name}`) }}

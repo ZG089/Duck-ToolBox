@@ -27,7 +27,7 @@ export default defineFeature({
     {
       path: "keybox/repo",
       component: () => import("./pages/RepoPage.vue"),
-      meta: title("keybox.repoTitle"),
+      meta: { ...title("keybox.repoTitle"), smallAppBar: true },
     },
     {
       path: "policy",

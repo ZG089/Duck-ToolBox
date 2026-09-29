@@ -69,7 +69,7 @@ function submit() {
             id="provider-decode"
             v-model="form.decode"
             placeholder="base64 -d"
-            class="font-mono"
+            class="font-mono text-sm"
             autocapitalize="off"
             spellcheck="false"
           />

@@ -51,20 +51,20 @@ const rows = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <p v-if="!verify" class="text-muted-foreground text-sm">{{ t("verify.empty") }}</p>
+  <div class="flex flex-col gap-6">
+    <p v-if="!verify" class="text-muted-foreground px-4 text-sm">{{ t("verify.empty") }}</p>
     <Field>
       <FieldLabel for="verify-path">{{ t("verify.path") }}</FieldLabel>
       <InputGroup>
         <InputGroupInput
           id="verify-path"
           v-model="verifyPath"
-          class="font-mono text-xs"
+          class="font-mono text-sm"
           :placeholder="t('verify.placeholder')"
         />
         <InputGroupAddon align="inline-end">
           <InputGroupButton
-            size="icon-xs"
+            size="icon-sm"
             :aria-label="global.t('core.actions.browse')"
             @click="picking = true"
           >
@@ -73,8 +73,8 @@ const rows = computed(() => {
         </InputGroupAddon>
       </InputGroup>
     </Field>
-    <Button :disabled="!verifyPath.trim() || run.isPending.value" @click="run.mutate()">
-      <Spinner v-if="run.isPending.value" />
+    <Button size="lg" :disabled="!verifyPath.trim() || run.isPending.value" @click="run.mutate()">
+      <Spinner v-if="run.isPending.value" class="size-6" />
       <ShieldCheck v-else />
       {{ t("verify.run") }}
     </Button>

@@ -125,7 +125,7 @@ onKeyStroke("Escape", (event) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 p-4 pb-28">
+  <div class="flex flex-col gap-3 p-4 pb-32">
     <AppBarActions>
       <TargetsMenu
         v-if="store.status?.active"
@@ -148,7 +148,7 @@ onKeyStroke("Escape", (event) => {
       @retry="status.refetch()"
     >
       <template v-if="store.status && store.draft">
-        <Empty v-if="!store.status.active" class="border">
+        <Empty v-if="!store.status.active">
           <EmptyHeader>
             <EmptyMedia variant="icon"><PackageSearch /></EmptyMedia>
             <EmptyTitle>{{ t("backend.none") }}</EmptyTitle>
@@ -159,11 +159,10 @@ onKeyStroke("Escape", (event) => {
         <template v-else>
           <BackendCard :status="store.status" />
 
-          <div
-            class="bg-background/85 sticky top-[calc(3.5rem+var(--inset-top))] z-20 -mx-4 px-4 py-2 backdrop-blur"
-          >
-            <InputGroup ref="search">
-              <InputGroupAddon><Search /></InputGroupAddon>
+          <!-- Material 3 search bar: 56dp, fully round, filled; it stays under the app bar. -->
+          <div class="bg-background sticky top-[calc(4rem+var(--inset-top))] z-20 -mx-4 px-4 py-2">
+            <InputGroup ref="search" class="bg-card h-14 rounded-full border-0">
+              <InputGroupAddon class="ps-5"><Search class="size-6" /></InputGroupAddon>
               <InputGroupInput
                 v-model="query"
                 type="search"
@@ -172,14 +171,14 @@ onKeyStroke("Escape", (event) => {
               />
               <InputGroupAddon
                 align="inline-end"
-                class="text-muted-foreground text-xs tabular-nums"
+                class="text-muted-foreground pe-5 text-xs tabular-nums"
               >
                 {{ t("list.selected", { count: store.draft.targets.size }) }}
               </InputGroupAddon>
             </InputGroup>
           </div>
 
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-0.5">
             <AppRow
               v-for="item in visible"
               :key="item.packageName"

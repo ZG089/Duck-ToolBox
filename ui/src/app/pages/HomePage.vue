@@ -9,6 +9,7 @@ import { useRouter } from "vue-router"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ItemGroup } from "@/components/ui/item"
 import ConfirmDialog from "@/core/components/ConfirmDialog.vue"
+import SectionCard from "@/core/components/SectionCard.vue"
 import { bridge } from "@/core/bridge"
 import { featureManifest } from "@/core/duckd"
 import type { FeatureDefinition } from "@/core/features"
@@ -68,7 +69,7 @@ function confirm() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <Alert v-if="!hostAvailable">
       <MonitorSmartphone />
       <AlertDescription>{{ t("core.home.noHost") }}</AlertDescription>
@@ -76,11 +77,13 @@ function confirm() {
 
     <component :is="widget" v-for="(widget, index) in widgets" :key="index" />
 
-    <section v-for="group in groups" :key="group.placement" class="flex flex-col gap-2">
-      <h2 class="text-muted-foreground px-1 text-sm font-medium">
-        {{ group.placement === "tool" ? t("core.home.tools") : t("core.home.system") }}
-      </h2>
-      <ItemGroup class="gap-2">
+    <SectionCard
+      v-for="group in groups"
+      :key="group.placement"
+      :title="group.placement === 'tool' ? t('core.home.tools') : t('core.home.system')"
+      plain
+    >
+      <ItemGroup>
         <FeatureItem
           v-for="feature in group.items"
           :key="feature.id"
@@ -89,7 +92,7 @@ function confirm() {
           @open="open"
         />
       </ItemGroup>
-    </section>
+    </SectionCard>
 
     <ConfirmDialog
       v-model:open="confirmOpen"

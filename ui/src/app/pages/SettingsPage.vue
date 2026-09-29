@@ -44,23 +44,24 @@ function setTheme(value: unknown) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <SectionCard :title="t('core.settings.appearance')">
-      <div class="flex flex-col gap-5">
+      <div class="flex flex-col gap-6">
         <Field>
           <FieldLabel>{{ t("core.settings.theme") }}</FieldLabel>
           <ToggleGroup
             type="single"
-            variant="outline"
+            variant="tonal"
             class="w-full"
             :model-value="theme"
             @update:model-value="setTheme"
           >
+            <!-- Icon above the label, so the three fit a small phone in any language. -->
             <ToggleGroupItem
               v-for="option in themes"
               :key="option.value"
               :value="option.value"
-              class="flex-1"
+              class="h-auto min-h-16 flex-1 flex-col gap-1 px-2 py-2.5 text-center leading-tight whitespace-normal"
             >
               <component :is="option.icon" />
               {{ option.label }}
@@ -87,15 +88,14 @@ function setTheme(value: unknown) {
     <component :is="section" v-for="(section, index) in sections" :key="index" />
 
     <SectionCard :title="t('core.settings.about')">
-      <div class="flex flex-col gap-4 text-sm">
+      <div class="flex flex-col gap-5 text-sm">
         <div>
-          <p class="text-muted-foreground mb-2">{{ t("core.settings.authors") }}</p>
+          <p class="text-muted-foreground mb-3">{{ t("core.settings.authors") }}</p>
           <div class="flex flex-wrap gap-2">
             <Button
               v-for="author in AUTHORS"
               :key="author.name"
               variant="secondary"
-              size="sm"
               @click="openExternal(author.url)"
             >
               {{ author.name }}
@@ -104,21 +104,22 @@ function setTheme(value: unknown) {
         </div>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-muted-foreground">{{ t("core.settings.license") }}: MIT</span>
-          <Button variant="outline" size="sm" @click="openExternal(REPOSITORY_URL)">
+          <Button variant="outline" @click="openExternal(REPOSITORY_URL)">
             <ExternalLink />
             {{ t("core.settings.repository") }}
           </Button>
         </div>
         <div>
-          <p class="text-muted-foreground mb-2">{{ t("core.settings.acknowledgements") }}</p>
-          <ul class="flex flex-col gap-2">
+          <p class="text-muted-foreground mb-1">{{ t("core.settings.acknowledgements") }}</p>
+          <ul class="-mx-2 flex flex-col">
             <li v-for="entry in ACKNOWLEDGEMENTS" :key="entry.key">
               <button
                 type="button"
-                class="text-start underline-offset-4 hover:underline"
+                class="state-layer relative flex min-h-12 w-full items-center gap-3 rounded-md px-2 py-3 text-start"
                 @click="openExternal(entry.url)"
               >
-                {{ t(entry.key) }}
+                <span class="flex-1">{{ t(entry.key) }}</span>
+                <ExternalLink class="text-muted-foreground size-4.5 shrink-0" />
               </button>
             </li>
           </ul>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from "@tanstack/vue-query"
 import { Copy, FileText } from "@lucide/vue"
+import { useI18n } from "vue-i18n"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,6 +21,7 @@ import { systemApi } from "../api"
 import { useSystemI18n } from "../i18n"
 
 const { t } = useSystemI18n()
+const global = useI18n()
 const copy = useCopy()
 const artifacts = useQuery({ queryKey: ["system.artifacts"], queryFn: systemApi.artifacts })
 </script>
@@ -52,8 +54,14 @@ const artifacts = useQuery({ queryKey: ["system.artifacts"], queryFn: systemApi.
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button size="icon" variant="ghost" class="size-8" @click="copy(file.path)">
-              <Copy />
+            <Button
+              size="icon"
+              variant="ghost"
+              class="text-muted-foreground -me-2"
+              :aria-label="global.t('core.actions.copy')"
+              @click="copy(file.path)"
+            >
+              <Copy class="size-5" />
             </Button>
           </ItemActions>
         </Item>

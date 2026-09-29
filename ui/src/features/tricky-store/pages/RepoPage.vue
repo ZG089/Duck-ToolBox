@@ -63,7 +63,7 @@ useEventListener(window, "message", (event: MessageEvent) => {
 </script>
 
 <template>
-  <div class="relative h-[calc(100dvh-3.5rem-var(--inset-top))]">
+  <div class="relative h-[calc(100dvh-4rem-var(--inset-top))]">
     <div
       v-if="loading"
       class="text-muted-foreground absolute inset-0 flex flex-col items-center justify-center gap-3 text-sm"

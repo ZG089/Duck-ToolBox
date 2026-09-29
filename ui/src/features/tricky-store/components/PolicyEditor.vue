@@ -38,7 +38,7 @@ function fillToday() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-5">
     <template v-for="field in fields" :key="field.key">
       <Field v-if="field.kind === 'boolean'" orientation="horizontal">
         <FieldContent>
@@ -59,7 +59,7 @@ function fillToday() {
           :placeholder="field.placeholder"
           :maxlength="field.max_length"
           rows="2"
-          class="font-mono text-xs"
+          class="font-mono text-sm"
           autocapitalize="off"
           spellcheck="false"
           @update:model-value="set(field.key, String($event))"
@@ -74,11 +74,11 @@ function fillToday() {
           spellcheck="false"
           @update:model-value="set(field.key, String($event))"
         />
-        <div v-if="field.options.length" class="flex flex-wrap gap-1.5">
+        <div v-if="field.options.length" class="flex flex-wrap gap-2">
           <Button
             v-for="option in field.options"
             :key="option"
-            size="xs"
+            size="sm"
             :variant="policy[field.key] === option ? 'default' : 'outline'"
             class="font-mono"
             @click="set(field.key, option)"

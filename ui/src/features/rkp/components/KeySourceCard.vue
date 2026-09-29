@@ -29,17 +29,18 @@ const keyInvalid = computed(
 
 <template>
   <SectionCard :title="t('profile.keySource')">
-    <div class="flex flex-col gap-4">
-      <RadioGroup v-model="draft.mode" class="gap-2">
+    <div class="flex flex-col gap-5">
+      <RadioGroup v-model="draft.mode" class="gap-0.5">
+        <!-- Segmented rows: the whole row selects, and the selected one turns round. -->
         <Label
           v-for="mode in modes"
           :key="mode.value"
           :for="`mode-${mode.value}`"
-          class="has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 flex items-start gap-3 rounded-lg border p-3 font-normal"
+          class="state-layer bg-muted has-data-[state=checked]:bg-secondary relative items-start gap-4 rounded-xs p-4 leading-snug font-normal transition-[border-radius,background-color] duration-350 ease-spring-fast first:rounded-t-lg last:rounded-b-lg has-data-[state=checked]:rounded-lg"
         >
           <RadioGroupItem :id="`mode-${mode.value}`" :value="mode.value" class="mt-0.5" />
-          <span class="flex flex-col gap-0.5">
-            <span class="font-medium">{{ mode.label }}</span>
+          <span class="flex flex-col gap-1">
+            <span class="text-base">{{ mode.label }}</span>
             <span class="text-muted-foreground text-sm">{{ mode.hint }}</span>
           </span>
         </Label>
@@ -50,7 +51,7 @@ const keyInvalid = computed(
         <Textarea
           id="seed"
           v-model="draft.seed_hex"
-          class="font-mono text-xs"
+          class="font-mono text-sm"
           rows="3"
           autocapitalize="off"
           spellcheck="false"
@@ -66,7 +67,7 @@ const keyInvalid = computed(
           <Input
             id="hw-key"
             v-model="draft.hw_key_hex"
-            class="font-mono text-xs"
+            class="font-mono text-sm"
             autocapitalize="off"
             spellcheck="false"
             :placeholder="t('profile.hwKeyPlaceholder')"
@@ -76,7 +77,7 @@ const keyInvalid = computed(
         </Field>
         <Field>
           <FieldLabel for="kdf-label">{{ t("profile.kdfLabel") }}</FieldLabel>
-          <Input id="kdf-label" v-model="draft.kdf_label" class="font-mono text-xs" />
+          <Input id="kdf-label" v-model="draft.kdf_label" class="font-mono text-sm" />
           <FieldDescription>{{
             t("profile.kdfLabelHint", { label: DEFAULT_KDF_LABEL })
           }}</FieldDescription>

@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { ArrowLeft, Settings } from "@lucide/vue"
-import { useWindowScroll } from "@vueuse/core"
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { useRoute, useRouter } from "vue-router"
 
 import { Button } from "@/components/ui/button"
 
+defineProps<{
+  title: string
+  titleVisible: boolean
+  /** The page has no headline of its own, so the bar title is its heading. */
+  titleIsHeading: boolean
+}>()
+
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const { y } = useWindowScroll()
 
 const isHome = computed(() => route.name === "home")
-const title = computed(() => {
-  const key = [...route.matched].reverse().find((record) => record.meta.titleKey)?.meta.titleKey
-  return key ? t(key) : t("core.app.name")
-})
 
 function back() {
   if (window.history.state?.back) {
@@ -30,13 +31,9 @@ function back() {
 </script>
 
 <template>
-  <header
-    :class="[
-      'bg-background/85 pt-safe px-safe sticky top-0 z-40 backdrop-blur transition-shadow',
-      y > 4 ? 'shadow-sm' : '',
-    ]"
-  >
-    <div class="mx-auto flex h-14 max-w-3xl items-center gap-1 px-2">
+  <!-- Material 3 small app bar: 64dp, 48dp touch targets, the title in title large. -->
+  <header class="bg-background pt-safe px-safe sticky top-0 z-40">
+    <div class="mx-auto flex h-16 max-w-3xl items-center gap-2 px-2">
       <Button
         v-if="!isHome"
         variant="ghost"
@@ -50,12 +47,21 @@ function back() {
         v-else
         src="/duck-logo.svg"
         alt=""
-        class="ms-2 me-1 size-7 dark:invert"
+        class="ms-2 size-7 dark:invert"
         width="28"
         height="28"
       />
-      <h1 class="min-w-0 flex-1 truncate px-1 text-lg font-semibold">{{ title }}</h1>
-      <div id="app-bar-actions" class="flex items-center gap-0.5" />
+      <component
+        :is="titleIsHeading ? 'h1' : 'span'"
+        :aria-hidden="titleIsHeading ? undefined : 'true'"
+        :class="[
+          'min-w-0 flex-1 truncate px-1 text-[1.375rem] leading-7 transition-opacity duration-200',
+          titleVisible ? 'opacity-100' : 'opacity-0',
+        ]"
+      >
+        {{ title }}
+      </component>
+      <div id="app-bar-actions" class="flex items-center gap-2" />
       <Button
         v-if="isHome"
         variant="ghost"

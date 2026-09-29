@@ -1,31 +1,35 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
 defineProps<{
   title?: string
   description?: string
   contentClass?: string
+  /** The content brings its own surfaces, like a segmented list. */
+  plain?: boolean
 }>()
 </script>
 
 <template>
-  <Card class="gap-4 py-4">
-    <CardHeader v-if="title || description || $slots.action" class="px-4">
-      <CardTitle v-if="title" class="text-base">{{ title }}</CardTitle>
-      <CardDescription v-if="description">{{ description }}</CardDescription>
-      <CardAction v-if="$slots.action">
-        <slot name="action" />
-      </CardAction>
-    </CardHeader>
-    <CardContent :class="['px-4', contentClass]">
+  <!-- Like a Material 3 settings group: the heading sits above the surface it names. -->
+  <section class="flex flex-col gap-2">
+    <header
+      v-if="title || description || $slots.action"
+      class="flex min-h-8 items-center gap-3 px-4"
+    >
+      <div class="min-w-0 flex-1">
+        <h2 v-if="title" class="text-sm font-medium">{{ title }}</h2>
+        <p v-if="description" class="text-muted-foreground text-sm break-words">
+          {{ description }}
+        </p>
+      </div>
+      <slot name="action" />
+    </header>
+    <div
+      :class="[
+        plain ? 'flex flex-col' : 'bg-card text-card-foreground rounded-lg p-4',
+        contentClass,
+      ]"
+    >
       <slot />
-    </CardContent>
-  </Card>
+    </div>
+  </section>
 </template>

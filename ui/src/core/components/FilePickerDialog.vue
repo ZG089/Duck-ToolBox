@@ -60,6 +60,8 @@ const segments = computed(() =>
     })),
 )
 
+const crumb = "state-layer touch-target relative rounded-sm px-1.5 py-1"
+
 function up() {
   if (directory.value === props.root) return
   directory.value = directory.value.split("/").slice(0, -1).join("/") || props.root
@@ -87,31 +89,34 @@ async function onSystemFile(event: Event) {
     <DialogContent class="flex max-h-[85vh] flex-col gap-3">
       <DialogHeader>
         <DialogTitle>{{ title ?? t("core.files.title") }}</DialogTitle>
-        <DialogDescription class="flex flex-wrap items-center gap-1 font-mono text-xs">
-          <button type="button" class="hover:underline" @click="directory = root">
+        <DialogDescription
+          dir="ltr"
+          class="-mx-1.5 flex flex-wrap items-center font-mono text-xs rtl:justify-end"
+        >
+          <button type="button" :class="crumb" @click="directory = root">
             {{ root }}
           </button>
           <template v-for="segment in segments" :key="segment.path">
             <span aria-hidden="true">/</span>
-            <button type="button" class="hover:underline" @click="directory = segment.path">
+            <button type="button" :class="crumb" @click="directory = segment.path">
               {{ segment.name }}
             </button>
           </template>
         </DialogDescription>
       </DialogHeader>
 
-      <div class="-mx-2 min-h-40 flex-1 overflow-y-auto px-2">
+      <div class="-mx-4 min-h-40 flex-1 overflow-y-auto">
         <QueryState
           :loading="listing.isPending.value"
           :error="listing.error.value"
           @retry="listing.refetch()"
         >
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col">
             <Item
               v-if="directory !== root"
               as="button"
               size="sm"
-              class="w-full text-start"
+              class="state-layer relative w-full text-start"
               @click="up"
             >
               <ItemMedia variant="icon"><ArrowUp /></ItemMedia>
@@ -124,7 +129,7 @@ async function onSystemFile(event: Event) {
               :key="entry.path"
               as="button"
               size="sm"
-              class="w-full text-start"
+              class="state-layer relative w-full text-start"
               @click="choose(entry.path, entry.directory)"
             >
               <ItemMedia variant="icon">

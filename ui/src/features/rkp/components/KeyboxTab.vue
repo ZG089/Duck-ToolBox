@@ -53,10 +53,10 @@ const rows = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <p v-if="!keybox" class="text-muted-foreground text-sm">{{ t("keybox.empty") }}</p>
-    <Button :disabled="generate.isPending.value" @click="generate.mutate()">
-      <Spinner v-if="generate.isPending.value" />
+  <div class="flex flex-col gap-6">
+    <p v-if="!keybox" class="text-muted-foreground px-4 text-sm">{{ t("keybox.empty") }}</p>
+    <Button size="lg" :disabled="generate.isPending.value" @click="generate.mutate()">
+      <Spinner v-if="generate.isPending.value" class="size-6" />
       <FileKey2 v-else />
       {{ t("keybox.generate") }}
     </Button>

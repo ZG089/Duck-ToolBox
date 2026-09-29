@@ -10,6 +10,8 @@ declare module "vue-router" {
   interface RouteMeta {
     /** i18n key of the app bar title; the deepest matched route with one wins. */
     titleKey?: string
+    /** Title in the app bar only, without the headline above the page (full-height pages). */
+    smallAppBar?: boolean
   }
 }
 
@@ -40,7 +42,7 @@ export function createAppRouter(features: readonly FeatureDefinition[]) {
     routes,
     scrollBehavior: (to, from, saved) => {
       if (saved) return saved
-      if (to.hash) return { el: to.hash, top: 72 }
+      if (to.hash) return { el: to.hash, top: 80 }
       return to.path === from.path ? false : { top: 0 }
     },
   })

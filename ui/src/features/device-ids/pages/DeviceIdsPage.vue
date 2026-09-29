@@ -81,7 +81,7 @@ const resultRows = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <QueryState
       :loading="defaults.isPending.value"
       :error="defaults.error.value"
@@ -99,7 +99,7 @@ const resultRows = computed(() => {
               <RefreshCw />
             </Button>
           </template>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-x-3 gap-y-5">
             <Field v-for="key in mainFields" :key="key">
               <FieldLabel :for="`ids-${key}`">{{ labels[key]() }}</FieldLabel>
               <Input :id="`ids-${key}`" v-model="profile[key]" autocapitalize="off" />
@@ -110,24 +110,27 @@ const resultRows = computed(() => {
         <Card class="py-0">
           <Collapsible v-model:open="advancedOpen">
             <CollapsibleTrigger
-              class="flex w-full items-center justify-between gap-3 p-4 text-start"
+              class="state-layer focus-visible:ring-ring/50 relative flex min-h-18 w-full items-center justify-between gap-4 rounded-lg p-4 text-start outline-none focus-visible:ring-3"
             >
-              <span>
-                <span class="block font-semibold">{{ t("form.advanced") }}</span>
+              <span class="flex flex-col gap-1">
+                <span class="text-base">{{ t("form.advanced") }}</span>
                 <span class="text-muted-foreground text-sm">{{ t("form.advancedHint") }}</span>
               </span>
               <ChevronDown
-                :class="['size-4 transition-transform', advancedOpen ? 'rotate-180' : '']"
+                :class="[
+                  'text-muted-foreground size-5 shrink-0 transition-transform duration-350 ease-spring-fast',
+                  advancedOpen ? 'rotate-180' : '',
+                ]"
               />
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <CardContent class="grid grid-cols-2 gap-3 px-4 pb-4">
+              <CardContent class="grid grid-cols-2 gap-x-3 gap-y-5 px-4 pt-1 pb-4">
                 <Field v-for="key in advancedFields" :key="key">
                   <FieldLabel :for="`ids-${key}`">{{ labels[key]() }}</FieldLabel>
                   <Input
                     :id="`ids-${key}`"
                     v-model="profile[key]"
-                    class="font-mono text-xs"
+                    class="font-mono text-sm"
                     autocapitalize="off"
                   />
                 </Field>
@@ -136,7 +139,7 @@ const resultRows = computed(() => {
           </Collapsible>
         </Card>
 
-        <Field orientation="horizontal" class="bg-card rounded-xl border p-4">
+        <Field orientation="horizontal" class="bg-card gap-4 rounded-lg p-4">
           <FieldContent>
             <FieldLabel for="dry-run">{{ t("form.dryRun") }}</FieldLabel>
             <FieldDescription>{{ t("form.dryRunHint") }}</FieldDescription>
@@ -145,11 +148,12 @@ const resultRows = computed(() => {
         </Field>
 
         <Button
+          size="lg"
           :variant="profile.dry_run ? 'default' : 'destructive'"
           :disabled="provision.isPending.value"
           @click="submit"
         >
-          <Spinner v-if="provision.isPending.value" />
+          <Spinner v-if="provision.isPending.value" class="size-6" />
           <Send v-else />
           {{ profile.dry_run ? t("form.provisionDry") : t("form.provision") }}
         </Button>

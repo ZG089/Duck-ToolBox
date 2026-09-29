@@ -11,7 +11,7 @@ const props = defineProps<{
   <div
     data-slot="empty"
     :class="cn(
-      'flex min-w-0 flex-1 flex-col items-center justify-center gap-6 text-balance rounded-lg border-dashed p-6 text-center md:p-12',
+      'bg-card flex min-w-0 flex-1 flex-col items-center justify-center gap-6 text-balance rounded-lg px-6 py-10 text-center',
       props.class,
     )"
   >

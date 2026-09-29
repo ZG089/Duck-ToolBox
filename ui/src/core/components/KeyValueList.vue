@@ -23,7 +23,7 @@ const copy = useCopy()
     <div
       v-for="row in rows"
       :key="row.label"
-      class="flex items-start justify-between gap-3 py-2.5 first:pt-0 last:pb-0"
+      class="flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0"
     >
       <dt class="text-muted-foreground shrink-0 text-sm">{{ row.label }}</dt>
       <dd class="flex min-w-0 items-start gap-1 text-end">
@@ -39,13 +39,13 @@ const copy = useCopy()
         </bdi>
         <Button
           v-if="row.copy && row.value"
-          size="icon"
+          size="icon-sm"
           variant="ghost"
-          class="-my-1 size-7 shrink-0"
+          class="text-muted-foreground -my-1.5 -me-1.5"
           :aria-label="t('core.actions.copy')"
           @click="copy(String(row.value))"
         >
-          <Copy class="size-3.5" />
+          <Copy class="size-4.5" />
         </Button>
       </dd>
     </div>

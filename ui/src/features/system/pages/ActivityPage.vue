@@ -4,6 +4,8 @@ import ActivityList from "../components/ActivityList.vue"
 
 <template>
   <div class="p-4">
-    <ActivityList :limit="200" />
+    <div class="bg-card rounded-lg p-4">
+      <ActivityList :limit="200" />
+    </div>
   </div>
 </template>

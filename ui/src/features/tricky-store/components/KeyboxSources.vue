@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronRight, FileKey, Globe, HardDrive, ShieldQuestion } from "@lucide/vue"
+import { FileKey, Globe, HardDrive, ShieldQuestion } from "@lucide/vue"
 import type { Component } from "vue"
 import { computed, ref } from "vue"
 import { useRouter } from "vue-router"
@@ -84,12 +84,12 @@ const sources = computed<Source[]>(() => [
 </script>
 
 <template>
-  <SectionCard :title="t('keybox.sources')" content-class="px-2">
+  <SectionCard :title="t('keybox.sources')" plain>
     <ItemGroup>
-      <Item v-for="source in sources" :key="source.id" as-child size="sm">
+      <Item v-for="source in sources" :key="source.id" as-child variant="segmented">
         <button
           type="button"
-          class="w-full text-start"
+          class="state-layer relative w-full text-start"
           :disabled="source.busy()"
           @click="source.run()"
         >
@@ -98,9 +98,8 @@ const sources = computed<Source[]>(() => [
             <ItemTitle>{{ source.title }}</ItemTitle>
             <ItemDescription>{{ source.description }}</ItemDescription>
           </ItemContent>
-          <ItemActions>
-            <Spinner v-if="source.busy()" />
-            <ChevronRight v-else class="rtl-flip text-muted-foreground size-4" />
+          <ItemActions v-if="source.busy()">
+            <Spinner />
           </ItemActions>
         </button>
       </Item>

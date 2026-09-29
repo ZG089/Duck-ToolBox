@@ -7,12 +7,16 @@
 /*
  * Black and white on purpose: hue is reserved for status, which is the destructive red here
  * and the toaster's green and yellow.
+ *
+ * Surfaces follow Material 3's tonal model in gray: the page has the container tone, and cards,
+ * lists and the search bar sit one step lighter (light) or brighter (dark), so containers need
+ * neither borders nor shadows. Menus, dialogs and sheets are one step above cards.
  */
 :root {
   color-scheme: light;
-  --radius: 0.875rem;
+  --radius: 1rem;
 
-  --background: oklch(1 0 0);
+  --background: oklch(0.97 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -20,15 +24,17 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.9 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --muted: oklch(0.94 0 0);
+  /* At least 4.5:1 on the page tone as well as on cards. */
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.94 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0.9 0 0);
+  /* Outlines of fields and controls: WCAG 1.4.11 asks for 3:1 against the surface. */
+  --input: oklch(0.62 0 0);
   --ring: oklch(0.708 0 0);
 
   /* KernelSU `internal/insets.css` defines --window-inset-*; plain browsers use env(). */
@@ -44,11 +50,11 @@
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.235 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: oklch(0.3 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -56,7 +62,7 @@
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --input: oklch(0.52 0 0);
   --ring: oklch(0.556 0 0);
 }
 
@@ -83,10 +89,95 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Material 3 shape scale, extra small to extra extra large. */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 3rem;
+}
+
+@theme {
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /*
+   * Material 3 Expressive springs sampled into linear(); pair each with its settle time.
+   * spring-fast, 350ms: spatial fast (damping 0.6, stiffness 800), for small components.
+   * spring, 420ms: spatial default (damping 0.8, stiffness 380), for sheets and the FAB.
+   */
+  --ease-spring-fast: linear(
+    0,
+    0.042,
+    0.147,
+    0.287,
+    0.44,
+    0.59,
+    0.726,
+    0.842,
+    0.934,
+    1.003,
+    1.05,
+    1.079,
+    1.092,
+    1.094,
+    1.088,
+    1.077,
+    1.063,
+    1.049,
+    1.035,
+    1.022,
+    1.012,
+    1.004,
+    0.998,
+    0.994,
+    0.992,
+    0.991,
+    0.991,
+    0.992,
+    0.993,
+    0.994,
+    0.996,
+    0.997,
+    1
+  );
+  --ease-spring: linear(
+    0,
+    0.029,
+    0.099,
+    0.195,
+    0.301,
+    0.409,
+    0.512,
+    0.607,
+    0.69,
+    0.763,
+    0.823,
+    0.873,
+    0.913,
+    0.944,
+    0.968,
+    0.985,
+    0.997,
+    1.006,
+    1.011,
+    1.014,
+    1.015,
+    1.015,
+    1.014,
+    1.013,
+    1.011,
+    1.01,
+    1.008,
+    1.007,
+    1.005,
+    1.004,
+    1.003,
+    1.002,
+    1
+  );
 }
 
 @layer base {
@@ -96,6 +187,7 @@
 
   html {
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   body {
@@ -105,6 +197,68 @@
 
   [dir="rtl"] .rtl-flip {
     transform: scaleX(-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* A touch target of at least 48 × 48 (Material 3, WCAG 2.5.5) whatever the visual size. */
+@utility touch-target {
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 3rem);
+    height: max(100%, 3rem);
+    translate: -50% -50%;
+  }
+}
+
+/*
+ * Material 3 state layer: the content color over the container, 8% hovered, 10% focused or
+ * pressed. It appears at once on press and fades on release, so a quick tap still shows.
+ * Both utilities need a positioned element.
+ */
+@utility state-layer {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    &:hover::before {
+      opacity: 0.08;
+    }
+  }
+
+  &:focus-visible::before,
+  &[data-highlighted]::before {
+    opacity: 0.1;
+  }
+
+  &:active:not(:has(button:active))::before {
+    opacity: 0.1;
+    transition-duration: 0s;
+  }
+
+  &:is(:disabled, [data-disabled])::before {
+    opacity: 0;
   }
 }
 

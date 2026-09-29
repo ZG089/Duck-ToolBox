@@ -71,11 +71,12 @@ function save() {
 
 <template>
   <Dialog v-model:open="open">
-    <DialogContent class="flex max-h-[85vh] flex-col gap-3">
+    <!-- Picking from the list is the common case: do not raise the keyboard on open. -->
+    <DialogContent class="flex max-h-[85vh] flex-col gap-3" @open-auto-focus.prevent>
       <DialogHeader>
         <DialogTitle>{{ t("ta.add_system_app_title") }}</DialogTitle>
       </DialogHeader>
-      <InputGroup>
+      <InputGroup class="bg-muted rounded-full border-0">
         <InputGroupAddon><Search /></InputGroupAddon>
         <InputGroupInput
           v-model="query"
@@ -83,20 +84,20 @@ function save() {
           :placeholder="t('ta.search_bar_search_placeholder')"
         />
       </InputGroup>
-      <div class="-mx-2 min-h-0 flex-1 overflow-y-auto">
+      <div class="-mx-3 min-h-0 flex-1 overflow-y-auto">
         <div
           v-for="row in rows"
           :key="row.packageName"
           role="checkbox"
           tabindex="0"
           :aria-checked="checked.has(row.packageName)"
-          class="hover:bg-accent flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 [contain-intrinsic-size:auto_56px] [content-visibility:auto]"
+          class="state-layer focus-visible:ring-ring/50 relative flex min-h-16 cursor-pointer items-center gap-4 rounded-md px-3 py-2 outline-none select-none focus-visible:ring-3 [contain-intrinsic-size:auto_64px] [content-visibility:auto]"
           @click="toggle(row.packageName)"
           @keydown.space.prevent="toggle(row.packageName)"
         >
           <AppIcon :package-name="row.packageName" :label="row.label" />
           <div class="min-w-0 flex-1">
-            <div class="truncate text-sm font-medium">{{ row.label }}</div>
+            <div class="truncate text-base">{{ row.label }}</div>
             <div dir="ltr" class="text-muted-foreground truncate font-mono text-xs rtl:text-right">
               {{ row.packageName }}
             </div>

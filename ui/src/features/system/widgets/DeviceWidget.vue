@@ -22,17 +22,17 @@ const manager = computed(() => {
 </script>
 
 <template>
-  <Card v-if="info.isEnabled.value" class="gap-3 py-4">
-    <CardContent class="flex flex-col gap-3 px-4">
+  <Card v-if="info.isEnabled.value" class="gap-4 rounded-2xl py-5">
+    <CardContent class="flex flex-col gap-4 px-5">
       <template v-if="device">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           <div
-            class="bg-secondary text-secondary-foreground grid size-10 place-items-center rounded-xl"
+            class="bg-secondary text-secondary-foreground grid size-12 shrink-0 place-items-center rounded-full"
           >
-            <Smartphone class="size-5" />
+            <Smartphone class="size-6" />
           </div>
           <div class="min-w-0 flex-1">
-            <p class="truncate font-semibold">{{ device.brand }} {{ device.model }}</p>
+            <p class="truncate text-[1.375rem] leading-7">{{ device.brand }} {{ device.model }}</p>
             <p class="text-muted-foreground truncate text-sm">
               {{ t("device.android", { release: device.android_release, sdk: device.sdk }) }}
             </p>
@@ -55,7 +55,7 @@ const manager = computed(() => {
         </div>
       </template>
       <template v-else>
-        <Skeleton class="h-10 w-2/3" />
+        <Skeleton class="h-12 w-2/3" />
         <Skeleton class="h-6 w-full" />
       </template>
     </CardContent>

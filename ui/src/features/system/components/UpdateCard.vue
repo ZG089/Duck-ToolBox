@@ -42,7 +42,7 @@ const status = computed(() => {
 
 <template>
   <SectionCard id="update" :title="t('update.title')">
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-5">
       <Field>
         <FieldLabel for="update-channel">{{ t("update.channel") }}</FieldLabel>
         <Select v-model="updateChannel">
@@ -77,20 +77,21 @@ const status = computed(() => {
       <template v-if="check.data.value?.available">
         <div
           v-if="check.data.value.changelog"
-          class="bg-muted/50 max-h-72 overflow-y-auto rounded-lg p-3"
+          class="bg-muted max-h-72 overflow-y-auto rounded-md p-4"
         >
           <p class="mb-2 text-sm font-medium">{{ t("update.changelog") }}</p>
           <MarkdownView :source="check.data.value.changelog" />
         </div>
         <Button
           v-if="!install.isSuccess.value"
+          size="lg"
           :disabled="install.isPending.value"
           @click="install.mutate()"
         >
-          <Spinner v-if="install.isPending.value" />
+          <Spinner v-if="install.isPending.value" class="size-6" />
           {{ t("update.install") }}
         </Button>
-        <Button v-else :disabled="reboot.isPending.value" @click="reboot.mutate()">
+        <Button v-else size="lg" :disabled="reboot.isPending.value" @click="reboot.mutate()">
           {{ t("update.reboot") }}
         </Button>
       </template>

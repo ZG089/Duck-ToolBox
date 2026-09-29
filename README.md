@@ -55,7 +55,7 @@ ui/src/
   core/               Bridge to the root manager, validated duckd client, i18n, theme,
                       extension points and shared components.
   features/<id>/      One folder per tool: index.ts, api.ts (zod), locales/, pages, mock.ts.
-  components/ui/      shadcn-vue components (generated).
+  components/ui/      shadcn-vue components, restyled for Material 3 Expressive on phones.
 module/               Module payload: scripts, then the built WebUI and backend binary.
 ```
 

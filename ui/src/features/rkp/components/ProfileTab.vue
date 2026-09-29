@@ -45,7 +45,7 @@ const infoRows = computed(() =>
 </script>
 
 <template>
-  <div v-if="draft" class="flex flex-col gap-4">
+  <div v-if="draft" class="flex flex-col gap-6">
     <KeySourceCard v-model="draft" />
     <DeviceCard v-model="draft" />
     <AdvancedCard v-model="draft" />
@@ -54,23 +54,24 @@ const infoRows = computed(() =>
       <KeyValueList :rows="infoRows" />
     </SectionCard>
 
-    <p class="text-muted-foreground px-1 text-xs break-all">
+    <p class="text-muted-foreground px-4 text-xs break-all">
       {{ t("profile.secretsNote", { path: secretsPath }) }}
     </p>
 
-    <div class="flex flex-wrap gap-2">
-      <Button class="flex-1" :disabled="save.isPending.value" @click="save.mutate()">
-        <Spinner v-if="save.isPending.value" />
+    <div class="flex flex-wrap gap-3">
+      <Button size="lg" class="flex-1" :disabled="save.isPending.value" @click="save.mutate()">
+        <Spinner v-if="save.isPending.value" class="size-6" />
         <Save v-else />
         {{ t("profile.save") }}
       </Button>
       <Button
-        variant="outline"
+        variant="secondary"
+        size="lg"
         class="flex-1"
         :disabled="check.isPending.value"
         @click="check.mutate()"
       >
-        <Spinner v-if="check.isPending.value" />
+        <Spinner v-if="check.isPending.value" class="size-6" />
         <KeyRound v-else />
         {{ t("profile.check") }}
       </Button>

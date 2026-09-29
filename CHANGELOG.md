@@ -31,6 +31,13 @@
 - Rebuilt on Vue 3.5, Vite 8, Tailwind CSS 4 and shadcn-vue.
   - A black and white theme, light or dark, where color only marks errors, success and
     warnings.
+  - Designed for phones along Material 3 Expressive:
+    - 48dp touch targets and a visible response to every press.
+    - Round buttons that square up while pressed, segmented lists, and spring motion.
+    - A large title that collapses into the 64dp app bar, for one-handed reach.
+    - Tonal gray surfaces instead of borders and shadows, with contrast checked
+      against WCAG.
+  - Menus, tabs and button groups mirror in right-to-left languages too.
   - Follows the KernelSU manager's window insets.
   - The Android back gesture closes dialogs and sheets.
 - Every tool is a self-contained feature folder, discovered automatically.

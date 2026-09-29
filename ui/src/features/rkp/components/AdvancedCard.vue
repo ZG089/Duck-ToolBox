@@ -41,37 +41,44 @@ function setDevice(key: DeviceKey, value: string | number, numeric?: boolean) {
 <template>
   <Card class="py-0">
     <Collapsible v-model:open="open">
-      <CollapsibleTrigger class="flex w-full items-center justify-between gap-3 p-4 text-start">
-        <span>
-          <span class="block font-semibold">{{ t("profile.advanced") }}</span>
+      <CollapsibleTrigger
+        class="state-layer focus-visible:ring-ring/50 relative flex min-h-18 w-full items-center justify-between gap-4 rounded-lg p-4 text-start outline-none focus-visible:ring-3"
+      >
+        <span class="flex flex-col gap-1">
+          <span class="text-base">{{ t("profile.advanced") }}</span>
           <span class="text-muted-foreground text-sm">{{ t("profile.advancedHint") }}</span>
         </span>
-        <ChevronDown :class="['size-4 shrink-0 transition-transform', open ? 'rotate-180' : '']" />
+        <ChevronDown
+          :class="[
+            'text-muted-foreground size-5 shrink-0 transition-transform duration-350 ease-spring-fast',
+            open ? 'rotate-180' : '',
+          ]"
+        />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <CardContent class="flex flex-col gap-4 px-4 pb-4">
+        <CardContent class="flex flex-col gap-5 px-4 pt-1 pb-4">
           <Field>
             <FieldLabel for="fingerprint">{{ t("profile.fingerprint") }}</FieldLabel>
-            <Input id="fingerprint" v-model="draft.fingerprint" class="font-mono text-xs" />
+            <Input id="fingerprint" v-model="draft.fingerprint" class="font-mono text-sm" />
           </Field>
           <Field>
             <FieldLabel for="server-url">{{ t("profile.serverUrl") }}</FieldLabel>
             <Input
               id="server-url"
               v-model="draft.server_url"
-              class="font-mono text-xs"
+              class="font-mono text-sm"
               inputmode="url"
             />
           </Field>
           <Field>
             <FieldLabel for="output-path">{{ t("profile.outputPath") }}</FieldLabel>
-            <Input id="output-path" v-model="draft.output_path" class="font-mono text-xs" />
+            <Input id="output-path" v-model="draft.output_path" class="font-mono text-sm" />
           </Field>
           <Field>
             <FieldLabel for="vbmeta">{{ t("profile.vbmetaDigest") }}</FieldLabel>
-            <Input id="vbmeta" v-model="draft.device.vbmeta_digest" class="font-mono text-xs" />
+            <Input id="vbmeta" v-model="draft.device.vbmeta_digest" class="font-mono text-sm" />
           </Field>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-x-3 gap-y-5">
             <Field v-for="field in deviceFields" :key="field.key">
               <FieldLabel :for="`device-${field.key}`">{{ field.label }}</FieldLabel>
               <Input

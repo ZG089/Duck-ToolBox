@@ -34,7 +34,7 @@ const log = useQuery({
         :key="`${entry.ts}-${index}`"
         size="sm"
       >
-        <ItemMedia variant="icon" :class="entry.ok ? 'text-primary' : 'text-destructive'">
+        <ItemMedia variant="icon" :class="entry.ok ? '' : 'bg-destructive/10 text-destructive'">
           <CircleCheck v-if="entry.ok" />
           <CircleX v-else />
         </ItemMedia>

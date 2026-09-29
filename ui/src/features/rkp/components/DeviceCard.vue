@@ -94,15 +94,16 @@ function update(id: string, next: unknown) {
         {{ t("profile.readDevice") }}
       </Button>
     </template>
-    <div class="flex flex-col gap-4">
-      <div class="bg-muted/50 rounded-lg p-3 text-sm">
-        <p class="font-medium">{{ draft.device.brand }} {{ draft.device.model }}</p>
+    <div class="flex flex-col gap-5">
+      <div class="bg-muted rounded-md p-4">
+        <p class="text-base">{{ draft.device.brand }} {{ draft.device.model }}</p>
         <p class="text-muted-foreground font-mono text-xs">
           {{ draft.device.device }} · Android {{ draft.device.os_version }} ·
           {{ draft.device.system_patch_level }}
         </p>
       </div>
-      <div class="grid grid-cols-2 gap-3">
+      <!-- Two columns only where the longest option still fits beside its chevron. -->
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-3 gap-y-5">
         <Field v-for="select in selects" :key="select.id">
           <FieldLabel :for="select.id">{{ select.label }}</FieldLabel>
           <Select :model-value="value(select.id)" @update:model-value="update(select.id, $event)">

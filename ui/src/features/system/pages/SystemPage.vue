@@ -41,7 +41,7 @@ const rows = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <SectionCard :title="t('module.title')">
       <QueryState
         :loading="info.isPending.value"

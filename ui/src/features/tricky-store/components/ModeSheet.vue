@@ -12,6 +12,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field"
+import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
 import { useRouteModal } from "@/core/modal"
@@ -72,25 +73,26 @@ function save() {
         </DrawerHeader>
 
         <div class="flex min-h-0 flex-col gap-5 overflow-y-auto px-4 pb-2">
-          <RadioGroup v-if="store.schema?.supports_app_mode" v-model="mode" class="gap-2">
-            <Field
+          <RadioGroup v-if="store.schema?.supports_app_mode" v-model="mode" class="gap-0.5">
+            <!-- Segmented rows: the whole row selects, and the selected one turns round. -->
+            <Label
               v-for="option in modes"
               :key="option"
-              orientation="horizontal"
-              class="rounded-lg border p-3"
+              :for="`mode-${option}`"
+              class="state-layer bg-muted has-data-[state=checked]:bg-secondary relative min-h-14 gap-4 rounded-xs px-4 py-2 text-base leading-snug font-normal transition-[border-radius,background-color] duration-350 ease-spring-fast first:rounded-t-lg last:rounded-b-lg has-data-[state=checked]:rounded-lg"
             >
               <RadioGroupItem :id="`mode-${option}`" :value="option" />
-              <FieldLabel :for="`mode-${option}`" class="flex-1 font-normal">
+              <span class="flex-1">
                 {{ modeLabels[option]() }}
                 <span v-if="option !== 'auto'" class="text-muted-foreground font-mono">
                   {{ option === "generate" ? "!" : "?" }}
                 </span>
-              </FieldLabel>
-            </Field>
+              </span>
+            </Label>
           </RadioGroup>
 
           <template v-if="store.schema?.supports_per_app_policy">
-            <Field orientation="horizontal">
+            <Field orientation="horizontal" class="bg-muted min-h-14 gap-4 rounded-lg px-4 py-3">
               <FieldContent>
                 <FieldLabel for="mode-custom-policy">{{ t("policy.custom") }}</FieldLabel>
               </FieldContent>
@@ -105,7 +107,7 @@ function save() {
           </template>
         </div>
 
-        <DrawerFooter class="flex-row pb-safe">
+        <DrawerFooter class="flex-row pb-[calc(1rem+var(--inset-bottom))]">
           <Button variant="outline" class="flex-1" @click="close()">
             {{ global.t("core.actions.cancel") }}
           </Button>

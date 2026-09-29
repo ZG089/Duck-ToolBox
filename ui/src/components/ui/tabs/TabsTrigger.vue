@@ -16,7 +16,9 @@ const forwardedProps = useForwardProps(delegatedProps)
   <TabsTrigger
     data-slot="tabs-trigger"
     :class="cn(
-      `data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-3 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
+      `state-layer data-[state=active]:text-foreground focus-visible:ring-ring/50 relative inline-flex flex-1 items-center justify-center gap-1.5 rounded-t-md px-3 text-sm font-medium whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5`,
+      // Material 3 primary tab indicator: 3dp, rounded on top.
+      `after:bg-primary after:absolute after:inset-x-3 after:bottom-0 after:h-0.75 after:scale-x-0 after:rounded-t-full after:transition-transform after:duration-350 after:ease-spring-fast data-[state=active]:after:scale-x-100`,
       props.class,
     )"
     v-bind="forwardedProps"

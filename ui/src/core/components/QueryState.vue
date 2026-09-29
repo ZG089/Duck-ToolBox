@@ -27,9 +27,9 @@ const { t } = useI18n()
 
 <template>
   <div v-if="loading" class="flex flex-col gap-3" aria-busy="true">
-    <Skeleton v-for="row in skeletonRows ?? 3" :key="row" class="h-16 w-full rounded-xl" />
+    <Skeleton v-for="row in skeletonRows ?? 3" :key="row" class="h-16 w-full rounded-lg" />
   </div>
-  <Empty v-else-if="error" class="border">
+  <Empty v-else-if="error">
     <EmptyHeader>
       <EmptyMedia variant="icon">
         <CircleAlert />
@@ -39,11 +39,11 @@ const { t } = useI18n()
         {{ errorDescription(error) }}
       </EmptyDescription>
     </EmptyHeader>
-    <EmptyContent class="flex-row justify-center">
-      <Button variant="outline" size="sm" @click="showErrorDetails(error)">
+    <EmptyContent class="flex-row justify-center gap-2">
+      <Button variant="outline" @click="showErrorDetails(error)">
         {{ t("core.actions.details") }}
       </Button>
-      <Button size="sm" @click="emit('retry')">{{ t("core.actions.retry") }}</Button>
+      <Button @click="emit('retry')">{{ t("core.actions.retry") }}</Button>
     </EmptyContent>
   </Empty>
   <slot v-else />

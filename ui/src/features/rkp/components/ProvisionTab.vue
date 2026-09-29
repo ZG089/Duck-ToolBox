@@ -42,10 +42,10 @@ const rows = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <p v-if="!provision" class="text-muted-foreground text-sm">{{ t("provision.empty") }}</p>
-    <Button :disabled="run.isPending.value" @click="run.mutate()">
-      <Spinner v-if="run.isPending.value" />
+  <div class="flex flex-col gap-6">
+    <p v-if="!provision" class="text-muted-foreground px-4 text-sm">{{ t("provision.empty") }}</p>
+    <Button size="lg" :disabled="run.isPending.value" @click="run.mutate()">
+      <Spinner v-if="run.isPending.value" class="size-6" />
       <CloudUpload v-else />
       {{ t("provision.run") }}
     </Button>
@@ -73,7 +73,7 @@ const rows = computed(() => {
           <div
             v-for="chain in provision.cert_chains"
             :key="chain.path"
-            class="rounded-lg border p-3"
+            class="bg-muted rounded-md p-4"
           >
             <div class="flex items-center justify-between gap-2">
               <span class="font-mono text-xs">cert_chain_{{ chain.index }}</span>

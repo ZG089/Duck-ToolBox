@@ -43,13 +43,13 @@ const save = useMutation({
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <QueryState
       :loading="status.isPending.value"
       :error="status.error.value"
       @retry="status.refetch()"
     >
-      <p v-if="!store.schema?.default_policy.length" class="text-muted-foreground text-sm">
+      <p v-if="!store.schema?.default_policy.length" class="text-muted-foreground px-4 text-sm">
         {{ t("policy.none") }}
       </p>
       <template v-else>
@@ -60,7 +60,7 @@ const save = useMutation({
             id-prefix="default-policy"
           />
         </SectionCard>
-        <Button :disabled="save.isPending.value" @click="save.mutate()">
+        <Button size="lg" :disabled="save.isPending.value" @click="save.mutate()">
           <Spinner v-if="save.isPending.value" />
           <Save v-else />
           {{ t("ta.functional_button_save") }}

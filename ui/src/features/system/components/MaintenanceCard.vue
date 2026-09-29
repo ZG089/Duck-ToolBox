@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/vue-query"
 import { Power, Trash2 } from "@lucide/vue"
 import { ref } from "vue"
 
-import { Button } from "@/components/ui/button"
+import { Item, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item"
 import ConfirmDialog from "@/core/components/ConfirmDialog.vue"
 import SectionCard from "@/core/components/SectionCard.vue"
 import { notifySuccess } from "@/core/notify"
@@ -23,22 +23,34 @@ const uninstall = useMutation({
 </script>
 
 <template>
-  <SectionCard :title="t('maintenance.title')">
-    <div class="flex flex-col gap-2">
-      <Button variant="outline" class="justify-start" @click="confirmReboot = true">
-        <Power />
-        {{ t("maintenance.reboot") }}
-      </Button>
-      <Button
-        variant="outline"
-        class="text-destructive justify-start"
+  <SectionCard :title="t('maintenance.title')" plain>
+    <ItemGroup>
+      <Item
+        as="button"
+        variant="segmented"
+        size="sm"
+        class="state-layer relative w-full text-start"
+        @click="confirmReboot = true"
+      >
+        <ItemMedia variant="icon"><Power /></ItemMedia>
+        <ItemContent>
+          <ItemTitle>{{ t("maintenance.reboot") }}</ItemTitle>
+        </ItemContent>
+      </Item>
+      <Item
+        as="button"
+        variant="segmented"
+        size="sm"
+        class="state-layer text-destructive relative w-full text-start disabled:opacity-50"
         :disabled="uninstall.isSuccess.value"
         @click="confirmUninstall = true"
       >
-        <Trash2 />
-        {{ t("maintenance.uninstall") }}
-      </Button>
-    </div>
+        <ItemMedia variant="icon" class="bg-destructive/10 text-destructive"><Trash2 /></ItemMedia>
+        <ItemContent>
+          <ItemTitle>{{ t("maintenance.uninstall") }}</ItemTitle>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
     <ConfirmDialog
       v-model:open="confirmReboot"
       :title="t('maintenance.rebootConfirm')"

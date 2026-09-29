@@ -56,8 +56,11 @@ const markers: Record<TargetMode, string> = { auto: "", generate: "!", hack: "?"
     tabindex="0"
     :aria-checked="mode !== null"
     :class="[
-      'flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 transition-colors select-none [contain-intrinsic-size:auto_60px] [content-visibility:auto]',
-      mode !== null ? 'bg-primary/10' : 'hover:bg-accent',
+      'state-layer focus-visible:ring-ring/50 relative flex min-h-18 cursor-pointer items-center gap-4 py-3 ps-4 pe-3 transition-[border-radius,background-color] duration-350 ease-spring-fast outline-none select-none focus-visible:ring-3 [contain-intrinsic-size:auto_72px] [content-visibility:auto]',
+      // Material 3 Expressive segmented list: a selected row turns fully round.
+      mode !== null
+        ? 'bg-secondary rounded-lg'
+        : 'bg-card rounded-xs first:rounded-t-lg last:rounded-b-lg',
     ]"
     @click="click"
     @contextmenu.prevent
@@ -66,7 +69,7 @@ const markers: Record<TargetMode, string> = { auto: "", generate: "!", hack: "?"
   >
     <AppIcon :package-name="packageName" :label="label" />
     <div class="min-w-0 flex-1">
-      <div class="truncate text-sm font-medium">{{ label }}</div>
+      <div class="truncate text-base">{{ label }}</div>
       <div dir="ltr" class="text-muted-foreground truncate font-mono text-xs rtl:text-right">
         {{ packageName }}
       </div>
@@ -78,7 +81,7 @@ const markers: Record<TargetMode, string> = { auto: "", generate: "!", hack: "?"
           <span class="font-mono">{{ markers[mode] }}</span>
           {{ mode === "generate" ? t("ta.mode_certificate_generating") : t("ta.mode_leaf_hack") }}
         </Badge>
-        <Badge v-if="customPolicy && mode !== null" variant="secondary">{{
+        <Badge v-if="customPolicy && mode !== null" variant="secondary" class="bg-card">{{
           t("list.customPolicy")
         }}</Badge>
         <Badge v-if="system" variant="outline">{{ t("list.system") }}</Badge>
@@ -87,11 +90,11 @@ const markers: Record<TargetMode, string> = { auto: "", generate: "!", hack: "?"
     <Button
       v-if="mode !== null && tunable"
       variant="ghost"
-      size="icon-sm"
+      size="icon"
       :aria-label="t('list.tune', { name: label })"
       @click.stop="emit('tune')"
     >
-      <SlidersHorizontal />
+      <SlidersHorizontal class="size-5" />
     </Button>
     <Checkbox
       :model-value="mode !== null"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ChevronRight } from "@lucide/vue"
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 
@@ -33,13 +32,13 @@ const badge = computed(() =>
 <template>
   <Item
     as="button"
-    variant="outline"
-    class="bg-card w-full text-start disabled:opacity-60"
+    variant="segmented"
+    class="state-layer relative w-full text-start disabled:opacity-60"
     :disabled="blocked"
     @click="emit('open', feature)"
   >
-    <ItemMedia variant="icon" class="bg-secondary text-secondary-foreground size-10 rounded-xl">
-      <component :is="feature.icon" class="size-5" />
+    <ItemMedia variant="icon">
+      <component :is="feature.icon" />
     </ItemMedia>
     <ItemContent class="min-w-0">
       <ItemTitle>{{ t(`${feature.namespace}.meta.title`) }}</ItemTitle>
@@ -47,9 +46,8 @@ const badge = computed(() =>
         {{ t(`${feature.namespace}.meta.description`) }}
       </ItemDescription>
     </ItemContent>
-    <ItemActions>
-      <Badge v-if="badge" variant="secondary">{{ badge }}</Badge>
-      <ChevronRight v-else class="text-muted-foreground rtl-flip size-4" />
+    <ItemActions v-if="badge">
+      <Badge variant="secondary">{{ badge }}</Badge>
     </ItemActions>
   </Item>
 </template>

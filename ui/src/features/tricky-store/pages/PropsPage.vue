@@ -59,7 +59,7 @@ const save = useMutation({
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-6 p-4">
     <QueryState
       :loading="status.isPending.value"
       :error="status.error.value"
@@ -80,7 +80,7 @@ const save = useMutation({
               id="boot-hash"
               v-model="bootHash"
               rows="3"
-              class="font-mono text-xs"
+              class="font-mono text-sm"
               placeholder="241890bd44131d34c077cb01a0c3ea1ff68533b21e9d83b3f3adca6663c3d443"
               autocapitalize="off"
               spellcheck="false"
@@ -91,7 +91,7 @@ const save = useMutation({
           </Field>
         </div>
       </SectionCard>
-      <Button :disabled="invalid || save.isPending.value" @click="save.mutate()">
+      <Button size="lg" :disabled="invalid || save.isPending.value" @click="save.mutate()">
         <Spinner v-if="save.isPending.value" />
         <Save v-else />
         {{ t("ta.functional_button_save") }}

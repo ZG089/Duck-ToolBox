@@ -115,7 +115,7 @@ function confirmed() {
 </script>
 
 <template>
-  <SectionCard :title="t('keybox.custom')" content-class="px-2">
+  <SectionCard :title="t('keybox.custom')" plain>
     <template #action>
       <Button size="sm" variant="secondary" @click="edit(null)">
         <Plus />
@@ -128,26 +128,33 @@ function confirmed() {
       :error="providers.error.value"
       @retry="providers.refetch()"
     >
-      <p v-if="!list.length" class="text-muted-foreground px-2 py-3 text-sm">
+      <p v-if="!list.length" class="bg-card text-muted-foreground rounded-lg p-4 text-sm">
         {{ t("keybox.customEmpty") }}
       </p>
       <ItemGroup v-else>
-        <Item v-for="(provider, index) in list" :key="`${provider.name}-${index}`" size="sm">
+        <Item
+          v-for="(provider, index) in list"
+          :key="`${provider.name}-${index}`"
+          variant="segmented"
+          class="pe-3"
+        >
           <ItemContent class="min-w-0">
             <ItemTitle>{{ provider.name }}</ItemTitle>
-            <ItemDescription class="truncate font-mono text-xs">{{ provider.url }}</ItemDescription>
+            <ItemDescription dir="ltr" class="truncate font-mono text-xs rtl:text-right">{{
+              provider.url
+            }}</ItemDescription>
           </ItemContent>
-          <ItemActions>
+          <ItemActions class="gap-2">
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               :aria-label="t('keybox.editProvider')"
               @click="edit(index)"
             >
-              <Pencil />
+              <Pencil class="size-5" />
             </Button>
             <Button
-              size="icon-sm"
+              size="icon"
               :aria-label="provider.name"
               :disabled="fetchKeybox.isPending.value"
               @click="fetchKeybox.mutate(provider)"
@@ -155,28 +162,23 @@ function confirmed() {
               <Spinner
                 v-if="fetchKeybox.isPending.value && fetchKeybox.variables.value === provider"
               />
-              <CloudDownload v-else />
+              <CloudDownload v-else class="size-5" />
             </Button>
           </ItemActions>
         </Item>
       </ItemGroup>
     </QueryState>
 
-    <div class="mt-3 flex flex-wrap gap-2 px-2">
-      <Button variant="outline" size="sm" @click="importing = true">
+    <div class="mt-3 flex flex-wrap gap-2">
+      <Button variant="outline" @click="importing = true">
         <Upload />
         {{ t("keybox.import") }}
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        :disabled="exportFile.isPending.value"
-        @click="exportProviders"
-      >
+      <Button variant="outline" :disabled="exportFile.isPending.value" @click="exportProviders">
         <Download />
         {{ t("keybox.export") }}
       </Button>
-      <Button variant="ghost" size="sm" class="ms-auto" @click="confirm = 'reset'">
+      <Button variant="ghost" class="ms-auto" @click="confirm = 'reset'">
         <RotateCcw />
         {{ t("keybox.resetProviders") }}
       </Button>

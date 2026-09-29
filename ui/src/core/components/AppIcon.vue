@@ -18,7 +18,7 @@ const initial = computed(() => (props.label || props.packageName).trim().charAt(
 
 <template>
   <span
-    class="bg-muted text-muted-foreground relative inline-flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl text-sm font-semibold"
+    class="bg-muted text-muted-foreground relative inline-flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-semibold"
   >
     <span aria-hidden="true">{{ initial }}</span>
     <!-- Native lazy loading: long lists only request icons that scroll into view. -->
